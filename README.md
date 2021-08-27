@@ -1,9 +1,6 @@
 eyetrackingR
 =====================================
 
-## Warning: Unmaintained
-
-This package has not been updated in several years and is no longer actively maintained. There are several outstanding issues. If anyone is interested in taking over package maintenance, please reach out.
 
 ## Recent Updates:
 
@@ -11,6 +8,7 @@ EyetrackingR is now compatible with dplyr > 0.5.0.
 
 ## Eye-tracking Data: Cleaning, Analysis, & Visualization
 
+- Samuel Forbes (samuel.h.forbes@gmail.com)
 - Jacob Dink (jacobwdink@gmail.com)
 - Brock Ferguson (brock.ferguson@gmail.com)
 

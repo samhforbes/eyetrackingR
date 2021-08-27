@@ -61,10 +61,16 @@ make_onset_data <- function(data, onset_time, fixation_window_length = NULL, tar
   time_col <- as.name(data_options$time_column)
   
   ## Translate TimeWindow units from time to number of rows (for rolling mean):
-  df_time_per_row <- group_by_(data, .dots = c(data_options$participant_column, data_options$trial_column) )
-  df_time_per_row <- summarize_(df_time_per_row,
-                               .dots = list(TimePerRow = interp(~mean(diff(TIME_COL)), TIME_COL = time_col)
-                                            ))
+  # df_time_per_row <- group_by_(data, .dots = c(data_options$participant_column, data_options$trial_column) )
+  # df_time_per_row <- summarize_(df_time_per_row,
+  #                              .dots = list(TimePerRow = interp(~mean(diff(TIME_COL)), TIME_COL = time_col)
+  #                                           ))
+  
+  df_time_per_row <- group_by(data, 
+                              !!sym(data_options$participant_column),
+                              !!sym(data_options$trial_column))
+  df_time_per_row <- summarize(df_time_per_row,
+                                TimePerRow = mean(diff(!!time_col)))
 
   time_per_row <- round(mean(df_time_per_row[["TimePerRow"]]))
   if (is.null(fixation_window_length)) 
@@ -74,25 +80,33 @@ make_onset_data <- function(data, onset_time, fixation_window_length = NULL, tar
   stopifnot(fixation_window_length_rows >= 1)
   
   if (fixation_window_length_rows > 1) {
-    warning('Smoothing in make_onset_data() using fixation_window_length_rows is experimental. We
+    message('Smoothing in make_onset_data() using fixation_window_length_rows is experimental. We
             recommend looking closely at the output to validate it.')
   }
 
   ## Determine First AOI, Assign Switch Value for each timepoint
   
   # Group by Participant*Trial:
-  df_grouped <- group_by_(data, .dots = list(data_options$participant_column, data_options$trial_column) )
+  # df_grouped <- group_by_(data, .dots = list(data_options$participant_column, data_options$trial_column) )
+  df_grouped <- group_by(data, 
+                         !!sym(data_options$participant_column),
+                         !!sym(data_options$trial_column) )
   
   # We assume data are in chronological order
-  df_grouped <- arrange_(df_grouped, .dots = list(data_options$time_column) )
+  # df_grouped <- arrange_(df_grouped, .dots = list(data_options$time_column) )
+  df_grouped <- arrange(df_grouped, !!data_options$time_column) #here
 
   # Create a rolling-average of 'inside-aoi' logical for target and distractor, to give a smoother estimate of fixations
-  df_smoothed <- mutate_(df_grouped,
-                        .dots = list(.Target    = interp(~na_replace_rollmean(TARGET_AOI, fixation_window_length_rows), TARGET_AOI = as.name(target_aoi)),
-                                     .Distractor= interp(~na_replace_rollmean(DISTRACTOR_AOI, fixation_window_length_rows), DISTRACTOR_AOI = as.name(distractor_aoi)),
-                                     .Time      = interp(~TIME_COL, TIME_COL = time_col)
-                                     ))
-  
+  # df_smoothed <- mutate_(df_grouped,
+  #                       .dots = list(.Target    = interp(~na_replace_rollmean(TARGET_AOI, fixation_window_length_rows), TARGET_AOI = as.name(target_aoi)),
+  #                                    .Distractor= interp(~na_replace_rollmean(DISTRACTOR_AOI, fixation_window_length_rows), DISTRACTOR_AOI = as.name(distractor_aoi)),
+  #                                    .Time      = interp(~TIME_COL, TIME_COL = time_col)
+  #                                    ))
+  df_smoothed <- mutate(df_grouped,
+                         .Target = na_replace_rollmean(!!sym(target_aoi), fixation_window_length_rows),
+                         .Distractor = na_replace_rollmean(!!sym(distractor_aoi), fixation_window_length_rows), 
+                         .Time = !!sym(time_col))#here
+                        
   # Calculate FirstAOI
   # For any trials where no data for onset timepoint is available, find the closest timepoint.
   df_first_aoi <- mutate(df_smoothed,
@@ -197,16 +211,26 @@ make_switch_data.onset_data <- function(data, predictor_columns=NULL, summarize_
   time_col <- as.name(data_options$time_column)
 
   df_cleaned <- filter(data, !is.na(FirstAOI))
-  df_grouped <- group_by_(data,
-                         .dots = c(summarize_by,
-                                   "FirstAOI",
-                                   predictor_columns))
+  # df_grouped <- group_by_(data,
+  #                        .dots = c(summarize_by,
+  #                                  "FirstAOI",
+  #                                  predictor_columns))
+  # 
+  # df_summarized <- summarize_(df_grouped,
+  #                           .dots = list(FirstSwitch = interp(~ifelse(sum(which(SwitchAOI)) > 0,
+  #                                                                     min(TIME_COL[SwitchAOI], na.rm=TRUE),
+  #                                                                     NA), TIME_COL = as.name(time_col))
+  #                           ))
+
   
-  df_summarized <- summarize_(df_grouped,
-                            .dots = list(FirstSwitch = interp(~ifelse(sum(which(SwitchAOI)) > 0,
-                                                                      min(TIME_COL[SwitchAOI], na.rm=TRUE),
-                                                                      NA), TIME_COL = as.name(time_col))
-                            ))
+  df_grouped <- group_by(data,
+                          !!!syms(summarize_by),
+                                    FirstAOI,
+                                    !!!syms(predictor_columns))
+  
+  df_summarized <- summarize(df_grouped,
+                              FirstSwitch = ifelse(sum(which(SwitchAOI)) > 0,
+                                                   min((!!sym(time_col))[SwitchAOI], na.rm=TRUE),  NA))
                               
   df_summarized <- as.data.frame(df_summarized)
   class(df_summarized) <- unique(c('switch_data', 'eyetrackingR_df', class(df_summarized)))
@@ -258,16 +282,21 @@ plot.onset_data <- function(x, predictor_columns=NULL, ...) {
   # summarize by time bin:
   df_clean[[".Time"]] <- floor(df_clean[[data_options$time_column]] / smoothing_window_size) * smoothing_window_size
   
-  df_grouped <- group_by_(df_clean,
-                         .dots = c(predictor_columns, data_options$participant_column, ".Time", "FirstAOI"))
+  # df_grouped <- group_by_(df_clean,
+  #                        .dots = c(predictor_columns, data_options$participant_column, ".Time", "FirstAOI"))
+  df_grouped <- group_by(df_clean,
+                          !!!syms(predictor_columns), !!sym(data_options$participant_column), .Time, FirstAOI)
   df_smoothed <- summarize(df_grouped, SwitchAOI = mean(SwitchAOI, na.rm=TRUE))
 
   # collapse into lines for graphing:
-  df_summarized <- group_by_(df_smoothed, .dots = c(".Time", "FirstAOI", predictor_columns) )
+  # df_summarized <- group_by_(df_smoothed, .dots = c(".Time", "FirstAOI", predictor_columns) )
+  df_summarized <- group_by(df_smoothed, 
+                            .Time, FirstAOI,!!!syms(predictor_columns) )
   df_summarized <- summarize(df_summarized, SwitchAOI = mean(SwitchAOI, na.rm=TRUE))
 
   # compute grayed area:
-  df_plot <- group_by_(df_summarized, .dots = c(".Time", predictor_columns) )
+  # df_plot <- group_by_(df_summarized, .dots = c(".Time", predictor_columns) )
+  df_plot <- group_by(df_summarized, .Time, !!!syms(predictor_columns) )
   df_plot <- mutate(df_plot,
                     Max= max(SwitchAOI),
                     Min= min(SwitchAOI),
@@ -294,7 +323,7 @@ plot.onset_data <- function(x, predictor_columns=NULL, ...) {
     coord_cartesian(xlim=c(onset_attr$onset_time, max(df_plot$.Time) )) +
     ylab("Proportion Switch Looking") +
     xlab("Time") +
-    guides(colour=FALSE)
+    guides(colour='none')
 
   ## Add Facets for Conditions:
   if (length(predictor_columns)>1) return(g+facet_grid(as.formula(paste(predictor_columns, collapse="~"))))
@@ -326,7 +355,8 @@ plot.switch_data <- function(x, predictor_columns=NULL, ...) {
 
   ## Prepare for Graphing:
   data <- filter(x, !is.na(FirstAOI))
-  df_grouped <- group_by_(data, .dots = c(data_options$participant_column, predictor_columns, "FirstAOI"))
+  # df_grouped <- group_by_(data, .dots = c(data_options$participant_column, predictor_columns, "FirstAOI"))
+  df_grouped <- group_by(data, !!sym(data_options$participant_column), !!!syms(predictor_columns), FirstAOI)
   df_plot <- summarize(df_grouped, MeanFirstSwitch = mean(FirstSwitch))
 
   ## Figure out predictor columns: 
@@ -358,7 +388,7 @@ plot.switch_data <- function(x, predictor_columns=NULL, ...) {
     coord_flip() +
     ylab("Mean Switch Time") +
     xlab("Onset AOI") +
-    guides(colour=FALSE)
+    guides(colour='none')
 
   ## Add Facets for Conditions:
   if (length(predictor_columns)>1) return(g+facet_grid(as.formula(paste(predictor_columns, collapse="~"))))

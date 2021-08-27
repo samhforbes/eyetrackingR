@@ -1,9 +1,10 @@
 Package: eyetrackingR
 Type: Package
-Version: 0.1.8
+Version: 0.1.8.999
 Title: Eye-Tracking Data Analysis
 Authors@R: c(
-	person("Jacob", "Dink", email = "jacobwdink@gmail.com", role = c("aut", "cre")),
+    person("Samuel", "Forbes", email = "samuel.h.forbes@gmail.com", role = c("aut", "cre")),
+	person("Jacob", "Dink", email = "jacobwdink@gmail.com", role = c("aut")),
 	person("Brock", "Ferguson", email = "brock.ferguson@gmail.com", role = c("aut"))
 	)
 Description: A set of tools that address tasks along the pipeline from raw
@@ -13,7 +14,7 @@ Description: A set of tools that address tasks along the pipeline from raw
     bootstrapping approaches.
 URL: http://eyetracking-r.com
 BugReports: https://github.com/jwdink/eyetrackingR/issues
-Date: 2018-12-03
+Date: 2021-08-25
 Depends: 
     R (>= 3.2.0),
     dplyr (>= 0.7.4)
@@ -21,8 +22,10 @@ License: MIT + file LICENSE
 LazyData: true
 Imports: 
     broom (>= 0.3.7),
+    broom.mixed,
     ggplot2 (>= 2.0),
     lazyeval (>= 0.1.10),
+    rlang,
     zoo (>= 1.7-12),
     tidyr (>= 0.3.1),
     purrr (>= 0.2.4)
@@ -30,6 +33,8 @@ Suggests:
     pbapply,
     knitr,
     lme4 (>= 1.1-10),
+    glmmTMB,
+    Mass,
     Matrix,
     testthat,
     rmarkdown,

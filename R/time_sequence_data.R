@@ -119,8 +119,12 @@ make_time_sequence_data <- function (data,
   data[["TimeBin"]] <- floor(data[[data_options$time_column]] / time_bin_size)
   # check that the last time bin has an appropriate amount of data inside it
   # (e.g., it's not just a couple of samples at the end of the trial)
-  df_grouped <- group_by_(data, .dots = c("TimeBin", data_options$trial_column))
-  df_tb_sum <- summarize_(df_grouped, .dots = list(N = interp(~n_distinct(TIME), TIME = as.name(data_options$time_column))) )
+  # df_grouped <- group_by_(data, .dots = c("TimeBin", data_options$trial_column))
+  groupy <- c("TimeBin", data_options$trial_column)
+  df_grouped <- group_by(data, !!!syms(groupy))
+  # df_tb_sum <- summarize_(df_grouped, .dots = list(N = interp(~n_distinct(TIME), TIME = as.name(data_options$time_column))) )
+  df_tb_sum <- summarize(df_grouped, 
+                         N = n_distinct(!!sym(data_options$time_column)))
   df_tb_sum <- summarize(df_tb_sum, N = mean(N))
   too_small_tb <- df_tb_sum$N[which.max(df_tb_sum$TimeBin)] < median(df_tb_sum$N, na.rm=TRUE) / 3
   if (too_small_tb) warning("With the current time-bin size, the final time-bin has a much smaller number of ",
@@ -263,7 +267,9 @@ analyze_time_bins.time_sequence_data <- function(data,
     
     # for lm, t.test, wilcox, need to check that there's no more than one observation per 
     # participant per predictor-level per time bin.
-    df_grouped <- group_by_(data, .dots = paste0("`",c("Time", data_summarized_by, predictor_column), "`"))
+    # df_grouped <- group_by_(data, .dots = paste0("`",c("Time", data_summarized_by, predictor_column), "`"))
+    df_grouped <- group_by(data, 
+                           Time, !!!syms(data_summarized_by), !!!syms(predictor_column))
     df_summarized <- summarize(df_grouped, N = n()) %>% ungroup()
     if (any(df_summarized$N > 1)) {
       warning(test, " almost always requires no more than one observation per ", data_summarized_by, 
@@ -380,7 +386,7 @@ analyze_time_bins.time_sequence_data <- function(data,
         out <- df_err
       } else {
         if (test %in% c("lmer","glmer")) {
-          out <- broom::tidy(res_err_warn$res, effects = 'fixed')
+          out <- broom.mixed::tidy(res_err_warn$res, effects = 'fixed')
         } else {
           out <- broom::tidy(res_err_warn$res)
         }
@@ -486,7 +492,8 @@ analyze_time_bins.time_sequence_data <- function(data,
     )
     new_cols <- append(new_cols, grep("WarningMsg", colnames(df_models), value = TRUE))
     new_cols <- append(new_cols, grep("ErrorMsg", colnames(df_models), value = TRUE))
-    out <- select_(.data = df_models_this_param, .dots = new_cols)
+    #out <- select_(.data = df_models_this_param, .dots = new_cols)
+    out <- select(.data = df_models_this_param, !!!(new_cols))
 
   } else if (test=="boot_splines") {
 
@@ -656,12 +663,41 @@ plot.time_sequence_data <- function(x, predictor_column = NULL, dv='Prop', model
 
   # Add model predictions to dataframe:
   if (!is.null(model)) {
+    if('glm' %in% class(model)){
+      if('binomial' %in% model$family){
+      if(dv != 'Prop'){stop('Can only plot binomial against raw Prop. Try another method if this doesnt work for you')}
+      x$.Predicted = predict(model, x, type = 'response', re.form = NA)
+      }
+    }else{
+      if('glmmTMB' %in% class(model)){
+        if(model$modelInfo$family$family == 'binomial' ){
+          if(dv != 'Prop'){stop('Can only plot binomial against raw Prop. Try another method if this doesnt work for you')}
+          x$.Predicted = predict(model, x, type = 'response', re.form = NA)
+        }else {
+          formula_as_character <- Reduce(paste, deparse(formula(model)))
+          if (!grepl(dv, formula_as_character, fixed = TRUE)) {
+            stop("Your model appears to use a different DV than the one you are attempting to plot. Change the 'dv' arg in plot.")
+          }
+          x$.Predicted = predict(model, x, re.form = NA)}
+      }else{
+        if('glmerMod' %in% class(model)){
+          if(model@call$family == 'binomial' ){
+            if(dv != 'Prop'){stop('Can only plot binomial against raw Prop. Try another method if this doesnt work for you')}
+            x$.Predicted = predict(model, x, type = 'response', re.form = NA)
+          }
+        }else{
+          if('glmmPQL' %in% class(model)){
+            if(model$family$family == 'binomial' ){
+              if(dv != 'Prop'){stop('Can only plot binomial against raw Prop. Try another method if this doesnt work for you')}
+              x$.Predicted = predict(model, x, type = 'response', re.form = NA)
+            }
+          }else{
     formula_as_character <- Reduce(paste, deparse(formula(model)))
     if (!grepl(dv, formula_as_character, fixed = TRUE)) {
       stop("Your model appears to use a different DV than the one you are attempting to plot. Change the 'dv' arg in plot.")
     }
     x$.Predicted = predict(model, x, re.form = NA)
-  } 
+  } }}}}
 
   ## Collapse by-subject for plotting
   if (is.null(attr(x, "eyetrackingR")$summarized_by)) {
@@ -703,12 +739,12 @@ plot.time_sequence_data <- function(x, predictor_column = NULL, dv='Prop', model
   }
   
   g <- g + 
-    stat_summary(fun.y='mean', geom='line', linetype = 'F1') + 
+    stat_summary(fun='mean', geom='line', linetype = 'F1') + 
     stat_summary(fun.data=mean_se, geom='ribbon', alpha= .25, colour=NA)
   
   if (!is.null(model)) {
     g <- g +
-      stat_summary(aes(y = .Predicted), fun.y = 'mean', geom="line", size= 1.2) 
+      stat_summary(aes(y = .Predicted), fun = 'mean', geom="line", size= 1.2) 
   }
   if (dv %in% c("Prop", "Elog", "LogitAdjusted", "ArcSin")) {
     if (length(unique(df_plot$AOI))>1) {

@@ -191,12 +191,17 @@ make_boot_splines_data.time_sequence_data <- function (data,
     # Group by participant, timebin; Calculate the difference in proportion between level1 and level2
     level1 <- levels(data[[predictor_column]])[1]
     level2 <- levels(data[[predictor_column]])[2]
-    df_grouped <- group_by_(data, .dots = c(summarized_by, "Time") )
-    df_diff <- summarize_(df_grouped,
-                         .dots = list(Prop1 = interp(~mean(Prop[PRED_COL == level1]), PRED_COL = as.name(predictor_column)),
-                                      Prop2 = interp(~mean(Prop[PRED_COL == level2]), PRED_COL = as.name(predictor_column)),
-                                      Prop  = interp(~Prop1 - Prop2)
-                         ))
+    # df_grouped <- group_by_(data, .dots = c(summarized_by, "Time") )
+    # df_diff <- summarize_(df_grouped,
+    #                      .dots = list(Prop1 = interp(~mean(Prop[PRED_COL == level1]), PRED_COL = as.name(predictor_column)),
+    #                                   Prop2 = interp(~mean(Prop[PRED_COL == level2]), PRED_COL = as.name(predictor_column)),
+    #                                   Prop  = interp(~Prop1 - Prop2)
+    #                      )) #here
+    df_grouped <- group_by(data, !!!syms(summarized_by), Time)
+    df_diff <- summarize(df_grouped,
+                         Prop1 = mean(Prop[!!sym(predictor_column) == level1]),
+                         Prop2 = mean(Prop[!!sym(predictor_column) == level2]),
+                         Prop = Prop1 - Prop2)
 
     # remove all samples where Prop == NA;
     df_diff <- df_diff[!is.na(df_diff$Prop), ]

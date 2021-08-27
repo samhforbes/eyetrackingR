@@ -35,16 +35,24 @@
     }
     
     # Group, summarize Samples
-    
     summarize_expression <- list(
       SamplesInAOI = interp( ~ sum(AOI_COL, na.rm = TRUE), AOI_COL = aoi_col),
-      SamplesTotal = interp( ~ sum(!is.na(AOI_COL)), AOI_COL = aoi_col) # ignore all NAs
+      SamplesTotal = interp( ~ sum(!is.na(AOI_COL)), AOI_COL = aoi_col)
+      # ignore all NAs
+       # 'SamplesInAOI = sum(.data$aoi_col, na.rm = TRUE)',
+       # 'SamplesTotal = sum(!is.na(.data$aoi_col))'
       )
     for (other_dv in other_dv_columns) {
       summarize_expression[[other_dv]] <- interp( ~ mean(OTHER_DV, na.rm=TRUE), OTHER_DV = as.name(other_dv) )
     }
-    df_grouped <- group_by_(data, .dots = groups)
-    df_summarized <- summarize_(df_grouped, .dots = summarize_expression)
+    # df_grouped <- group_by_(data, .dots = groups)
+     # groups <- syms(groups)
+     #this way
+    df_grouped <- group_by(data, !!!syms(groups))
+    # df_summarized <- summarize_(df_grouped, .dots = summarize_expression)
+    df_summarized <- summarize(df_grouped, 
+                               SamplesInAOI = sum(!!aoi_col, na.rm = TRUE),
+                               SamplesTotal = sum(!is.na(!!aoi_col)))
     
     # Calculate Proportion, Elog, etc.
     aoi <- as.character(aoi_col)

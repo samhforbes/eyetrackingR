@@ -1,5 +1,9 @@
 # eyetrackingR 
 
+Changes in 0.1.8.999
+* Repairing for resubmission to CRAN
+* Inbuilt support for binomial, glmmPQL and glmmTMB models
+
 Changes in 0.1.8:
 * Fixes a bug in make_onset_data.
 

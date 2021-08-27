@@ -129,7 +129,7 @@ model_time_sequence <- lmer(Elog ~ TargetC*(ot1) + (1 + ot1 | Trial) + (1 + ot1 
               data = response_time, REML = FALSE)
 
 # cleanly show important parts of model (see `summary()` for more)
-broom::tidy(model_time_sequence, effects = "fixed")
+broom.mixed::tidy(model_time_sequence, effects = "fixed")
 drop1(model_time_sequence, ~., test="Chi")
 ```
 
@@ -159,7 +159,7 @@ model_time_sequence <- lmer(Elog ~ TargetC*(ot1 + ot2 + ot3 + ot4) + (1 | Trial)
 #                             data = response_time, REML = FALSE)
 
 # cleanly show important parts of model (see `summary()` for more)
-broom::tidy(model_time_sequence, effects = "fixed")
+broom.mixed::tidy(model_time_sequence, effects = "fixed")
 drop1(model_time_sequence, ~., test="Chi")
 
 plot(response_time, predictor_column = "Target", dv = "Elog", model = model_time_sequence) +

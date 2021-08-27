@@ -138,7 +138,7 @@ response_window_agg$TargetC <- as.numeric(scale(response_window_agg$TargetC, cen
 model_time_window <- lmer(Elog ~ TargetC + (1 + TargetC | Trial) + (1 | ParticipantName), 
                           data = response_window_agg, REML = FALSE)
 # cleanly show important parts of model (see `summary()` for more)
-(est <- broom::tidy(model_time_window, effects="fixed"))
+(est <- broom.mixed::tidy(model_time_window, effects="fixed"))
 
 # use model comparison to attain p-values
 drop1(model_time_window,~.,test="Chi")
@@ -180,7 +180,7 @@ model_time_window_logit <- lmer(LogitAdjusted ~ TargetC + (1 + TargetC | Trial) 
                                 data = response_window_agg, REML = FALSE)
 plot(model_time_window_logit)
 drop1(model_time_window_logit,~.,test="Chi")
-est_logit <- broom::tidy(model_time_window_logit, effects="fixed")
+est_logit <- broom.mixed::tidy(model_time_window_logit, effects="fixed")
 condition_estimate_logit <- with(est_logit, 
                            c(estimate[term=="(Intercept)"] + estimate[term=="TargetC"] / 2,
                              estimate[term=="(Intercept)"] - estimate[term=="TargetC"] / 2))
@@ -200,7 +200,7 @@ response_window_agg$MCDI_TotalC <- response_window_agg$MCDI_Total - mean(respons
 model_time_window_add_predictors <- lmer(Elog ~ TargetC*AgeC*MCDI_TotalC + (1 + TargetC | Trial) + (1 | ParticipantName), 
               data = response_window_agg, REML = FALSE)
 # cleanly show important parts of model (see `summary()` for more)
-broom::tidy(model_time_window_add_predictors, effects="fixed")
+broom.mixed::tidy(model_time_window_add_predictors, effects="fixed")
 
 # use model comparison to attain p-values
 drop1(model_time_window_add_predictors,~.,test="Chi")
