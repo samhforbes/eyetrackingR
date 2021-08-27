@@ -201,7 +201,7 @@ make_boot_splines_data.time_sequence_data <- function (data,
     df_diff <- summarize(df_grouped,
                          Prop1 = mean(Prop[!!sym(predictor_column) == level1]),
                          Prop2 = mean(Prop[!!sym(predictor_column) == level2]),
-                         Prop = Prop1 - Prop2)
+                         Prop = .data$Prop1 - .data$Prop2)
 
     # remove all samples where Prop == NA;
     df_diff <- df_diff[!is.na(df_diff$Prop), ]
