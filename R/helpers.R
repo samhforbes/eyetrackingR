@@ -72,7 +72,7 @@
     out <- mutate(out,
                   AOI = aoi,
                   Elog = if_else(SamplesTotal==0, NA_real_, log((SamplesInAOI + .5) / (SamplesTotal - SamplesInAOI + .5))),
-                  Weights = if_else(SamplesTotal==0, NA_real_,1 / ( (1 / (SamplesInAOI + .5)) / (1 / (SamplesTotal - SamplesInAOI + .5)) ) ),
+                  Weights = if_else(SamplesTotal==0, NA_real_,1 / ( (1 / (SamplesInAOI + .5)) + (1 / (SamplesTotal - SamplesInAOI + .5)) ) ),
                   Prop = SamplesInAOI / SamplesTotal,
                   LogitAdjusted = .logit_adj(Prop),
                   ArcSin = asin(sqrt(Prop))
