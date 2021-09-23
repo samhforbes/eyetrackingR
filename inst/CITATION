@@ -8,4 +8,4 @@ bibentry(bibtype = "Manual",
                     person("Brock", "Ferguson")),
          year = year,
          note = note,
-         url = "http://www.eyetracking-R.com/")
+         url = "http://www.eyetracking-r.com/")
