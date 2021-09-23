@@ -4,8 +4,13 @@
 \alias{make_time_window_data}
 \title{Make a dataset collapsing over a time-window}
 \usage{
-make_time_window_data(data, aois = NULL, predictor_columns = NULL,
-  other_dv_columns = NULL, summarize_by = NULL)
+make_time_window_data(
+  data,
+  aois = NULL,
+  predictor_columns = NULL,
+  other_dv_columns = NULL,
+  summarize_by = NULL
+)
 }
 \arguments{
 \item{data}{The output of \code{make_eyetrackingr_data}}

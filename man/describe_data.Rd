@@ -4,8 +4,12 @@
 \alias{describe_data}
 \title{Describe dataset}
 \usage{
-describe_data(data, describe_column, group_columns, quantiles = c(0.025,
-  0.975))
+describe_data(
+  data,
+  describe_column,
+  group_columns,
+  quantiles = c(0.025, 0.975)
+)
 }
 \arguments{
 \item{data}{Data already run through \code{make_eyetrackingr_data}}

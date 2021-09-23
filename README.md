@@ -1,7 +1,10 @@
 eyetrackingR
 =====================================
 
-
+<!-- badges: start -->
+  [![CRAN status](https://www.r-pkg.org/badges/version/eyetrackingR)](https://CRAN.R-project.org/package=eyetrackingR)
+  <!-- badges: end -->
+  
 ## Recent Updates:
 
 Note this is an active development (with permission) of the archived CRAN package eyetrackingR. The archived version is still available at https://github.com/jwdink/eyetrackingr
@@ -61,6 +64,6 @@ From here, all of eyetrackingR's functionality becomes available for this data. 
 
 ***
 
-Copyright (c) 2015, Jacob Dink and Brock Ferguson
+Copyright (c) 2021, Samuel Forbes, Jacob Dink and Brock Ferguson
 
 Released under the MIT License (see LICENSE for details)

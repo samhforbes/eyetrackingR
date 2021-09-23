@@ -12,7 +12,7 @@ Description: A set of tools that address tasks along the pipeline from raw
     popular types of analyses, including linear and growth curve time analyses,
     onset-contingent reaction time analyses, as well as several non-parametric
     bootstrapping approaches.
-URL: http://eyetracking-r.com
+URL: http://www.eyetracking-r.com/
 BugReports: https://github.com/samhforbes/eyetrackingR/issues
 Date: 2021-08-25
 Depends: 
@@ -41,4 +41,4 @@ Suggests:
     doMC,
     foreach
 VignetteBuilder: knitr
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1

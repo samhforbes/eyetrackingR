@@ -4,9 +4,15 @@
 \alias{simulate_eyetrackingr_data}
 \title{Simulate an eyetrackingR dataset}
 \usage{
-simulate_eyetrackingr_data(num_participants = 16,
-  num_items_per_condition = 6, trial_length = 5000, pref = 0.5,
-  pref_window = c(1, trial_length), noisy_window = NULL, ...)
+simulate_eyetrackingr_data(
+  num_participants = 16,
+  num_items_per_condition = 6,
+  trial_length = 5000,
+  pref = 0.5,
+  pref_window = c(1, trial_length),
+  noisy_window = NULL,
+  ...
+)
 }
 \arguments{
 \item{num_participants}{Number of participants}

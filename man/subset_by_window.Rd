@@ -4,10 +4,19 @@
 \alias{subset_by_window}
 \title{Extract a subset of the dataset within a time-window in each trial.}
 \usage{
-subset_by_window(data, rezero = TRUE, remove = TRUE,
-  window_start_msg = NULL, window_end_msg = NULL, msg_col = NULL,
-  window_start_col = NULL, window_end_col = NULL,
-  window_start_time = NULL, window_end_time = NULL, quiet = FALSE)
+subset_by_window(
+  data,
+  rezero = TRUE,
+  remove = TRUE,
+  window_start_msg = NULL,
+  window_end_msg = NULL,
+  msg_col = NULL,
+  window_start_col = NULL,
+  window_end_col = NULL,
+  window_start_time = NULL,
+  window_end_time = NULL,
+  quiet = FALSE
+)
 }
 \arguments{
 \item{data}{Your original dataset}

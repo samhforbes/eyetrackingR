@@ -4,7 +4,8 @@
 \name{word_recognition}
 \alias{word_recognition}
 \title{Data collected in an infant eyetracking study}
-\format{A data frame with 53940 rows and 10 variables: \describe{ \item{ParticipantName}{Uniaue 
+\format{
+A data frame with 53940 rows and 10 variables: \describe{ \item{ParticipantName}{Uniaue 
   participant ID} \item{Sex}{M or F} \item{Age}{Age, in months} \item{TrialNum}{Unique Trial 
   Number} \item{Trial}{Name of item shown on trial (also unique for each participant)} 
   \item{TimeFromTrialOnset}{Time within trial} \item{Subphase}{Subphase within trial (see above)}
@@ -12,7 +13,8 @@
   \item{Animate}{Are they looking at the animate AOI?} \item{Inanimate}{Are they looking at the 
   inanimate AOI?} \item{TrackLoss}{Does current sample not have valid tracking data?} 
   \item{MCDI_Total}{Total vocabulary score on MCDI} \item{MCDI_Nouns}{Noun vocabulary score on 
-  MCDI} \item{MCDI_Verbs}{Verb vocabulary score on MCDI} ... }}
+  MCDI} \item{MCDI_Verbs}{Verb vocabulary score on MCDI} ... }
+}
 \source{
 Ferguson, B., Graf, E., & Waxman, S. R. (2014). Infants use known verbs to learn novel
   nouns: Evidence from 15- and 19-month-olds. Cognition, 131(1), 139-146.

@@ -4,8 +4,13 @@
 \alias{make_onset_data}
 \title{Make onset-contingent data.}
 \usage{
-make_onset_data(data, onset_time, fixation_window_length = NULL,
-  target_aoi, distractor_aoi = NULL)
+make_onset_data(
+  data,
+  onset_time,
+  fixation_window_length = NULL,
+  target_aoi,
+  distractor_aoi = NULL
+)
 }
 \arguments{
 \item{data}{The original (verified) data}

@@ -7,9 +7,16 @@
 \usage{
 analyze_time_clusters(data, ...)
 
-\method{analyze_time_clusters}{time_cluster_data}(data, within_subj,
-  samples = 2000, formula = NULL, shuffle_by = NULL,
-  parallel = FALSE, quiet = FALSE, ...)
+\method{analyze_time_clusters}{time_cluster_data}(
+  data,
+  within_subj,
+  samples = 2000,
+  formula = NULL,
+  shuffle_by = NULL,
+  parallel = FALSE,
+  quiet = FALSE,
+  ...
+)
 }
 \arguments{
 \item{data}{The output of the \code{make_time_cluster_data} function}

@@ -3,7 +3,6 @@
 \docType{package}
 \name{eyetrackingR}
 \alias{eyetrackingR}
-\alias{eyetrackingR-package}
 \title{eyetrackingR: A package for cleaning, analyzing, and visualizing eye-tracking datasets}
 \description{
 This package addresses tasks along the pipeline from raw eye-tracking data to analysis and
@@ -12,5 +11,5 @@ growth curve time analyses, onset-contingent reaction time analyses, and cluster
 analyses, as well as novel non-parametric approaches to time-series data.
 }
 \details{
-For more information and tutorials, visit \href{http://www.eyetrackingr.com}{eyetrackingR.com}.
+For more information and tutorials, visit \href{http://www.eyetracking-r.com/}{http://www.eyetracking-r.com/}.
 }

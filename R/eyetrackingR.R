@@ -5,7 +5,7 @@
 #' growth curve time analyses, onset-contingent reaction time analyses, and cluster mass
 #' analyses, as well as novel non-parametric approaches to time-series data.
 #'
-#' For more information and tutorials, visit \href{http://www.eyetrackingr.com}{eyetrackingR.com}.
+#' For more information and tutorials, visit \href{http://www.eyetracking-r.com/}{http://www.eyetracking-r.com/}.
 #'
 #' @importFrom lazyeval interp
 #' @import ggplot2

@@ -7,8 +7,7 @@
 \usage{
 make_switch_data(data, predictor_columns, summarize_by)
 
-\method{make_switch_data}{onset_data}(data, predictor_columns = NULL,
-  summarize_by = NULL)
+\method{make_switch_data}{onset_data}(data, predictor_columns = NULL, summarize_by = NULL)
 }
 \arguments{
 \item{data}{The output of \code{make_onset_data}}
