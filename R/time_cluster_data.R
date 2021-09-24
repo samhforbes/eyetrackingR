@@ -30,6 +30,7 @@ analyze_time_clusters <-function(data, ...) {
 #'   \code{make_time_cluster_data} function
 #'   
 #' @examples 
+#' \dontrun{
 #' data(word_recognition)
 #' data <- make_eyetrackingr_data(word_recognition, 
 #'                                participant_column = "ParticipantName",
@@ -51,7 +52,7 @@ analyze_time_clusters <-function(data, ...) {
 #' plot(time_cluster_data)
 #' 
 #' # analyze time clusters in a non-parametric analysis
-#' \dontrun{
+#' 
 #' tc_analysis <- analyze_time_clusters(time_cluster_data, within_subj = FALSE,
 #'                                      samples = 2000)
 #' plot(tc_analysis)
@@ -95,11 +96,14 @@ analyze_time_clusters.time_cluster_data <-function(data,
 
   # Progress Bar / Parallel:
   if (parallel) {
+    if(requireNamespace("doMC", quietly = T)){
     success <- c(requireNamespace("foreach", quietly = TRUE),
                  requireNamespace("parallel", quietly = TRUE),
                  requireNamespace("doMC", quietly = TRUE))
     if (!all(success)) stop("For parallel = TRUE, the 'doMC' package must be installed.")
-    doMC::registerDoMC()
+      doMC::registerDoMC()
+      }
+    
   } else {
     if (!requireNamespace("pbapply", quietly = TRUE)) {
       pbsapply <- sapply
@@ -394,6 +398,7 @@ make_time_cluster_data <-function(data, ...) {
 #'   var.equal, etc.)
 #'   
 #' @examples 
+#' \dontrun{
 #' data(word_recognition)
 #' data <- make_eyetrackingr_data(word_recognition, 
 #'                                participant_column = "ParticipantName",
@@ -435,6 +440,7 @@ make_time_cluster_data <-function(data, ...) {
 #'                            threshold = 1.5,
 #'                            formula = LogitAdjusted ~ Sex + (1|Trial) + (1|ParticipantName)
 #' )
+#' }
 #'   
 #' @export
 #' @return The original data, augmented with information about clusters. Calling summary on this data will

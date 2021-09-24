@@ -26,6 +26,7 @@ make_boot_splines_data = function(data, predictor_column, within_subj, aoi, bs_s
 #' @param ... Ignored
 #' 
 #' @examples 
+#' \dontrun{
 #' data(word_recognition)
 #' data <- make_eyetrackingr_data(word_recognition, 
 #'                                participant_column = "ParticipantName",
@@ -46,7 +47,7 @@ make_boot_splines_data = function(data, predictor_column, within_subj, aoi, bs_s
 #'                                           bs_samples = 500, 
 #'                                           alpha = .05,
 #'                                           smoother = "smooth.spline") 
-#' 
+#' }
 #' 
 #' @export
 #' @return A bootstrapped distribution of samples for each time-bin
@@ -259,6 +260,7 @@ analyze_boot_splines <- function(data) {
 #' @param  data The output of the \code{boot_splines_data} function
 #' 
 #' @examples 
+#' \dontrun{
 #' data(word_recognition)
 #' data <- make_eyetrackingr_data(word_recognition, 
 #'                                participant_column = "ParticipantName",
@@ -285,7 +287,7 @@ analyze_boot_splines <- function(data) {
 #' # analyze the divergences that occurred
 #' boot_splines_analysis <- analyze_boot_splines(df_bootstrapped)
 #' summary(boot_splines_analysis)
-#' 
+#' }
 #' @export
 #' @return A dataframe indicating means and CIs for each time-bin
 analyze_boot_splines.boot_splines_data <- function(data) {

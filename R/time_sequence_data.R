@@ -212,6 +212,7 @@ analyze_time_bins = function(data, ...) {
 #'   paired, var.equal, etc.)
 #'   
 #' @examples 
+#' \dontrun{
 #' data(word_recognition)
 #' data <- make_eyetrackingr_data(word_recognition, 
 #'                                participant_column = "ParticipantName",
@@ -227,6 +228,7 @@ analyze_time_bins = function(data, ...) {
 #' tb_analysis <- analyze_time_bins(response_time, predictor_column = "MCDI_Total", 
 #'                                  test = "lm", threshold = 2)
 #' summary(tb_analysis)
+#' }
 #'   
 #' @export
 #' @return A dataframe indicating the results of the test at each time-bin.

@@ -178,4 +178,4 @@ For more general approaches to estimating time windows of divergence (estimating
 
 ## References
 
-Mirman, D., Dixon, J., & Magnuson, J. S. (2008). Statistical and computational models of the visual world paradigm: Growth curves and individual differences. Journal of Memory and Language, 59, 474–494.
+Mirman, D., Dixon, J., & Magnuson, J. S. (2008). Statistical and computational models of the visual world paradigm: Growth curves and individual differences. Journal of Memory and Language, 59, 474–494. https://doi.org/10.1016/j.jml.2007.11.006.

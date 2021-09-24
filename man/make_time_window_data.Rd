@@ -73,6 +73,7 @@ response_window_agg_by_sub <- make_time_window_data(data,
                                                     summarize_by = "ParticipantName"
 )
 
+\dontrun{
 # optionally included additional columns for use as predictors
 # in later statistical models
 response_window_agg_by_sub <- make_time_window_data(data,
@@ -83,5 +84,6 @@ response_window_agg_by_sub <- make_time_window_data(data,
 
 # plot the aggregated data for sanity check
 plot(response_window_agg_by_sub, predictor_columns="Age", dv = "LogitAdjusted") 
+}
 
 }

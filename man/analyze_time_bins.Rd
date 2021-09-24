@@ -78,6 +78,7 @@ estimates vary over time. P-values can be adjusted for multiple comparisons with
 }}
 
 \examples{
+\dontrun{
 data(word_recognition)
 data <- make_eyetrackingr_data(word_recognition, 
                                participant_column = "ParticipantName",
@@ -93,5 +94,6 @@ response_time <- make_time_sequence_data(data, time_bin_size = 250,
 tb_analysis <- analyze_time_bins(response_time, predictor_column = "MCDI_Total", 
                                  test = "lm", threshold = 2)
 summary(tb_analysis)
+}
   
 }

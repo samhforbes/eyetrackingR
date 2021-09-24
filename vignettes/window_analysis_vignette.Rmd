@@ -222,7 +222,7 @@ It is important to consider what we are losing in a window analysis. By collapsi
 
 ## References
 
-Barr, D. J. (2008). Analyzing “visual world” eyetracking data using multilevel logistic regression. Journal of Memory and Language, 59, 457–474.
+Barr, D. J. (2008). Analyzing “visual world” eyetracking data using multilevel logistic regression. Journal of Memory and Language, 59, 457–474. https://doi.org/10.1016/j.jml.2007.09.002
 
 Dixon, P. (2008). Models of accuracy in repeated-measures designs. Journal of Memory and Language, 59(4), 447–456. https://doi.org/10.1016/j.jml.2007.11.004
 

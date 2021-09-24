@@ -29,6 +29,7 @@ from \code{boot_splines_data}. Confidence intervals are derived from the alpha a
 }}
 
 \examples{
+\dontrun{
 data(word_recognition)
 data <- make_eyetrackingr_data(word_recognition, 
                                participant_column = "ParticipantName",
@@ -55,5 +56,5 @@ df_bootstrapped <- make_boot_splines_data(response_time,
 # analyze the divergences that occurred
 boot_splines_analysis <- analyze_boot_splines(df_bootstrapped)
 summary(boot_splines_analysis)
-
+}
 }

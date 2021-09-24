@@ -7,14 +7,16 @@ Authors@R: c(
 	person("Jacob", "Dink", email = "jacobwdink@gmail.com", role = c("aut")),
 	person("Brock", "Ferguson", email = "brock.ferguson@gmail.com", role = c("aut"))
 	)
-Description: A set of tools that address tasks along the pipeline from raw
+Description: Addresses tasks along the pipeline from raw
     data to analysis and visualization for eye-tracking data. Offers several
     popular types of analyses, including linear and growth curve time analyses,
     onset-contingent reaction time analyses, as well as several non-parametric
-    bootstrapping approaches.
+    bootstrapping approaches. For references to the approach see Mirman, 
+    Dixon & Magnuson (2008) <doi:10.1016/j.jml.2007.11.006>, and
+    Barr (2008) <doi:10.1016/j.jml.2007.09.002>.
 URL: http://www.eyetracking-r.com/
 BugReports: https://github.com/samhforbes/eyetrackingR/issues
-Date: 2021-08-25
+Date: 2021-09-24
 Depends: 
     R (>= 3.2.0),
     dplyr (>= 0.7.4)

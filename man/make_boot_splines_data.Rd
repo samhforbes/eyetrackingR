@@ -68,6 +68,7 @@ Limited to statistical test between two conditions.
 }}
 
 \examples{
+\dontrun{
 data(word_recognition)
 data <- make_eyetrackingr_data(word_recognition, 
                                participant_column = "ParticipantName",
@@ -88,6 +89,6 @@ df_bootstrapped <- make_boot_splines_data(response_time,
                                           bs_samples = 500, 
                                           alpha = .05,
                                           smoother = "smooth.spline") 
-
+}
 
 }

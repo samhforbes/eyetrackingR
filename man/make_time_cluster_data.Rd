@@ -69,6 +69,7 @@ by manually specifying the formula.
 }}
 
 \examples{
+\dontrun{
 data(word_recognition)
 data <- make_eyetrackingr_data(word_recognition, 
                                participant_column = "ParticipantName",
@@ -110,5 +111,6 @@ time_cluster_data <- make_time_cluster_data(data = response_time,
                            threshold = 1.5,
                            formula = LogitAdjusted ~ Sex + (1|Trial) + (1|ParticipantName)
 )
+}
   
 }

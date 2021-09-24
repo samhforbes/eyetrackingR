@@ -61,6 +61,7 @@ shuffling/resampling the data and extracting the largest cluster from each resam
 }}
 
 \examples{
+\dontrun{
 data(word_recognition)
 data <- make_eyetrackingr_data(word_recognition, 
                                participant_column = "ParticipantName",
@@ -82,7 +83,7 @@ summary(time_cluster_data)
 plot(time_cluster_data)
 
 # analyze time clusters in a non-parametric analysis
-\dontrun{
+
 tc_analysis <- analyze_time_clusters(time_cluster_data, within_subj = FALSE,
                                      samples = 2000)
 plot(tc_analysis)

@@ -12,6 +12,7 @@
 #' @param distractor_aoi  Which AOI is the distractor that should be switched *from* (default = !target_aoi)
 #'
 #' @examples 
+#' \dontrun{
 #' data(word_recognition)
 #' data <- make_eyetrackingr_data(word_recognition, 
 #'                                participant_column = "ParticipantName",
@@ -25,6 +26,7 @@
 #'                                     rezero = FALSE)
 #' inanimate_trials <- subset(response_window, grepl('(Spoon|Bottle)', Trial))
 #' onsets <- make_onset_data(inanimate_trials, onset_time = 15500, target_aoi='Inanimate')
+#' }
 #' 
 #' @export
 #' @return Original dataframe augmented with column indicating switch away from target AOI
@@ -177,6 +179,7 @@ make_switch_data <- function(data, predictor_columns, summarize_by) {
 #' @export
 #' 
 #' @examples 
+#' \dontrun{
 #' data(word_recognition)
 #' data <- make_eyetrackingr_data(word_recognition, 
 #'                                participant_column = "ParticipantName",
@@ -195,6 +198,7 @@ make_switch_data <- function(data, predictor_columns, summarize_by) {
 #' df_switch <- make_switch_data(onsets, predictor_columns = "MCDI_Total", 
 #'              summarize_by = "ParticipantName")
 #' plot(df_switch, "MCDI_Total")
+#' }
 #'                           
 #' @return A dataframe indicating initial AOI and time-to-switch from that AOI for each
 #'   trial/subject/item/etc.
