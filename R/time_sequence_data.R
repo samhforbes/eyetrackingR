@@ -638,6 +638,7 @@ summary.bin_analysis <- function(object, ...) {
 #' @param ... Ignored
 #' 
 #' @examples 
+#' \dontrun{
 #' data(word_recognition)
 #' data <- make_eyetrackingr_data(word_recognition, 
 #'                                participant_column = "ParticipantName",
@@ -653,7 +654,7 @@ summary.bin_analysis <- function(object, ...) {
 #' 
 #' # visualize time results
 #' plot(response_time, predictor_column = "MCDI_Total") 
-#' 
+#' }
 #' 
 #' @export
 #' @return A ggplot object

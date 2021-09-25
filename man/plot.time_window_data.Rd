@@ -29,6 +29,7 @@ data for each AOI is set in a separate facet.
 Data are collapsed by-participants for plotting.
 }
 \examples{
+\dontrun{
 data(word_recognition)
 data <- make_eyetrackingr_data(word_recognition, 
                                participant_column = "ParticipantName",
@@ -42,5 +43,6 @@ response_window_agg_by_sub <- make_time_window_data(data,
                                                     predictor_columns=c('Age','MCDI_Total'))
                                                     
 plot(response_window_agg_by_sub, predictor_columns="Age", dv = "LogitAdjusted") 
+}
 
 }

@@ -31,6 +31,7 @@ split into groups by a predictor column. Data is collapsed by subject for plotti
 overlaying the predictions of a growth-curve mixed effects model on the data
 }
 \examples{
+\dontrun{
 data(word_recognition)
 data <- make_eyetrackingr_data(word_recognition, 
                                participant_column = "ParticipantName",
@@ -46,6 +47,6 @@ response_time <- make_time_sequence_data(data, time_bin_size = 250,
 
 # visualize time results
 plot(response_time, predictor_column = "MCDI_Total") 
-
+}
 
 }
