@@ -704,7 +704,13 @@ plot.time_sequence_data <- function(x, predictor_column = NULL, dv='Prop', model
 
   ## Collapse by-subject for plotting
   if (is.null(attr(x, "eyetrackingR")$summarized_by)) {
-    df_plot <- group_by_(x, .dots = c(data_options$participant_column, "Time", "AOI", predictor_column))
+
+    # df_plot <- group_by_(x, .dots = c(data_options$participant_column, "Time", "AOI", predictor_column))
+    data_summarized_by = c(data_options$participant_column, "Time", "AOI", predictor_column)
+
+    df_plot <- group_by(data,
+                           Time, !!!syms(data_summarized_by), !!!syms(predictor_column))
+
     summarize_arg <- list(interp(~mean(DV, na.rm=TRUE), DV = as.name(dv)))
     names(summarize_arg) <- dv
     if (!is.null(model)) summarize_arg[[".Predicted"]] <- ~mean(.Predicted, na.rm=TRUE)
