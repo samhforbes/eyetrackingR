@@ -1,10 +1,10 @@
 #' Make a dataset collapsing over a time-window
 #'
 #' Collapse time across our entire window and return a dataframe ready for analyses
-#' 
+#'
 #' Aside from proportion looking (\code{Prop}), this function returns several columns useful for subsequent
 #' analysis:
-#' 
+#'
 #' \itemize{
 #'  \item \code{LogitAdjusted} - The logit is defined as \code{log( Prop / (1 - Prop) )}. This
 #'  transformation attempts to map bounded \code{0,1} data to the real number line. Unfortunately,
@@ -18,7 +18,7 @@
 #'  variance of the logit depends on the mean. They can be used in a mixed effects model by setting
 #'  the \code{weights=Weights} in \code{lmer} (note that this is the reciprocal of the
 #' weights calculated in \href{http://talklab.psy.gla.ac.uk/tvw/elogit-wt.html}{this empirical logit
-#' walkthrough}, so you do *not* set \code{weights = 1/Weights} as done there.) 
+#' walkthrough}, so you do *not* set \code{weights = 1/Weights} as done there.)
 #'  \item \code{ArcSin} - The arcsine-root transformation of the raw proportions, defined as
 #' \code{asin(sqrt(Prop))}
 #' }
@@ -28,15 +28,15 @@
 #'   \code{make_eyetracking_r_data}
 #' @param predictor_columns  Which columns indicate predictor vars, and therefore should be preserved in
 #'   grouping operations?
-#' @param other_dv_columns  Within each participant/trial (or whatever is specified in \code{summarize_by}), 
-#'    this function will calculate not only proportion-looking, but also the mean of any columns specified here. 
+#' @param other_dv_columns  Within each participant/trial (or whatever is specified in \code{summarize_by}),
+#'    this function will calculate not only proportion-looking, but also the mean of any columns specified here.
 #' @param summarize_by  Should the data be summarized along, e.g., participants, items, etc.? If so, give
 #'   column names here. If left blank, will leave trials distinct. The former is needed for more traditional
 #'   analyses (\code{t.test}, \code{ANOVA}), while the latter is preferable for mixed-effects models (\code{lmer})
-#'   
-#' @examples 
+#'
+#' @examples
 #' data(word_recognition)
-#' data <- make_eyetrackingr_data(word_recognition, 
+#' data <- make_eyetrackingr_data(word_recognition,
 #'                                participant_column = "ParticipantName",
 #'                                trial_column = "Trial",
 #'                                time_column = "TimeFromTrialOnset",
@@ -44,13 +44,13 @@
 #'                                aoi_columns = c('Animate','Inanimate'),
 #'                                treat_non_aoi_looks_as_missing = TRUE
 #' )
-#' 
+#'
 #' # generate a dataset summarizing an AOI (Animate) by ParticipantName
 #' response_window_agg_by_sub <- make_time_window_data(data,
 #'                                                     aois='Animate',
 #'                                                     summarize_by = "ParticipantName"
 #' )
-#' 
+#'
 #' \dontrun{
 #' # optionally included additional columns for use as predictors
 #' # in later statistical models
@@ -59,9 +59,9 @@
 #'                                                     predictor_columns=c('Age','MCDI_Total'),
 #'                                                     summarize_by = "ParticipantName"
 #' )
-#' 
+#'
 #' # plot the aggregated data for sanity check
-#' plot(response_window_agg_by_sub, predictor_columns="Age", dv = "LogitAdjusted") 
+#' plot(response_window_agg_by_sub, predictor_columns="Age", dv = "LogitAdjusted")
 #'}
 #'
 #' @export
@@ -81,14 +81,14 @@ make_time_window_data <- function(data,
          "If so, this information has been removed. This can happen when using functions that ",
          "transform your data significantly, like dplyr::summarise or dplyr::select.")
   }
-  
+
   if (is.null(aois)) aois = data_options$aoi_columns
 
   # For Multiple AOIs:
   if (length(aois) > 1) {
     list_of_dfs <- lapply(X = aois, FUN = function(this_aoi) {
       message("Analyzing ", this_aoi, "...")
-      make_time_window_data(data = data, aois = this_aoi, 
+      make_time_window_data(data = data, aois = this_aoi,
         predictor_columns=predictor_columns, other_dv_columns = other_dv_columns, summarize_by=summarize_by)
     })
     out <- bind_rows(list_of_dfs)
@@ -123,13 +123,13 @@ make_time_window_data <- function(data,
 }
 
 #' Plot a time-window dataset
-#' 
+#'
 #' Plots the data returned from \code{make_time_window_data}. Data can be mapped onto (up to two)
 #' predictor columns. If no predictor columns are supplied, AOI is placed on the x-axis; otherwise,
 #' data for each AOI is set in a separate facet.
-#' 
+#'
 #' Data are collapsed by-participants for plotting.
-#' 
+#'
 #' @param x The data returned by make_time_window_data()
 #' @param predictor_columns Up to two columns indicating predictors. The first maps to the X-axis,
 #'   the second to group/color. If the latter is numeric, a median split is performed.
@@ -137,24 +137,24 @@ make_time_window_data <- function(data,
 #'   ("Elog"), or "ArcSin"?
 #' @param ... Ignored
 #' @export
-#' 
-#' @examples 
+#'
+#' @examples
 #' \dontrun{
 #' data(word_recognition)
-#' data <- make_eyetrackingr_data(word_recognition, 
+#' data <- make_eyetrackingr_data(word_recognition,
 #'                                participant_column = "ParticipantName",
 #'                                trial_column = "Trial",
 #'                                time_column = "TimeFromTrialOnset",
 #'                                trackloss_column = "TrackLoss",
 #'                                aoi_columns = c('Animate','Inanimate'),
 #'                                treat_non_aoi_looks_as_missing = TRUE)
-#' response_window_agg_by_sub <- make_time_window_data(data, 
+#' response_window_agg_by_sub <- make_time_window_data(data,
 #'                                                     aois='Animate',
 #'                                                     predictor_columns=c('Age','MCDI_Total'))
-#'                                                     
-#' plot(response_window_agg_by_sub, predictor_columns="Age", dv = "LogitAdjusted") 
+#'
+#' plot(response_window_agg_by_sub, predictor_columns="Age", dv = "LogitAdjusted")
 #' }
-#' 
+#'
 #' @return A ggplot object
 
 plot.time_window_data <- function(x, predictor_columns = NULL, dv = "Prop", ...) {
@@ -163,7 +163,7 @@ plot.time_window_data <- function(x, predictor_columns = NULL, dv = "Prop", ...)
   data <- x
   data_options = attr(data, "eyetrackingR")$data_options
   if (!dv %in% colnames(data)) stop("Selected 'dv' is not in data.")
-  
+
   # Organize Vars:
   if (is.null(predictor_columns)) {
     predictor_columns <- "AOI"
@@ -189,14 +189,20 @@ plot.time_window_data <- function(x, predictor_columns = NULL, dv = "Prop", ...)
 
   # Summarize by Participants:
   if (is.null(attr(data, "eyetrackingR")$summarized_by)) {
-    df_grouped = group_by_(data, .dots = c(data_options$participant_column, x_axis_column, group_column, "AOI"))
+
+    data_summarized_by = c(data_options$participant_column, x_axis_column, group_column, "AOI")
+
+    # df_grouped = group_by_(data, .dots = c(data_options$participant_column, x_axis_column, group_column, "AOI"))
+    df_grouped <- group_by(data,
+                        !!!syms(data_summarized_by), !!!syms(AOI))
+
     summarize_arg <- list(interp(~mean(DV, na.rm=TRUE), DV = as.name(dv)))
     names(summarize_arg) <- dv
     df_plot <- summarize_(df_grouped, .dots = summarize_arg )
   } else {
     df_plot <- data
   }
-  
+
   if (x_axis_column!="AOI") df_plot$AOI <- paste("AOI: ", df_plot$AOI)
 
   # Plot:
