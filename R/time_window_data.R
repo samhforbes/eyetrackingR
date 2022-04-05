@@ -194,11 +194,15 @@ plot.time_window_data <- function(x, predictor_columns = NULL, dv = "Prop", ...)
 
     # df_grouped = group_by_(data, .dots = c(data_options$participant_column, x_axis_column, group_column, "AOI"))
     df_grouped <- group_by(data,
-                        !!!syms(data_summarized_by), !!!syms(AOI))
+                        !!!syms(data_summarized_by))
 
-    summarize_arg <- list(interp(~mean(DV, na.rm=TRUE), DV = as.name(dv)))
-    names(summarize_arg) <- dv
-    df_plot <- summarize_(df_grouped, .dots = summarize_arg )
+    # summarize_arg <- list(interp(~mean(DV, na.rm=TRUE), DV = as.name(dv)))
+    # names(summarize_arg) <- dv
+    # df_plot <- summarize_(df_grouped, .dots = summarize_arg )
+
+    df_plot <- summarize(df_grouped,
+                         !!sym(dv) := mean(!!sym(dv), na.rm = T))
+
   } else {
     df_plot <- data
   }

@@ -27,35 +27,35 @@ analyze_time_bins(data, ...)
 \item{...}{Any other arguments to be passed to the selected 'test' function (e.g.,
 paired, var.equal, etc.)}
 
-\item{predictor_column}{The variable whose test statistic you are interested in. If you are not 
+\item{predictor_column}{The variable whose test statistic you are interested in. If you are not
 interested in a predictor, but the intercept, you can enter "intercept" for this argument.
 Interaction terms are not currently supported.}
 
-\item{test}{What type of test should be performed in each time bin? Supports 
+\item{test}{What type of test should be performed in each time bin? Supports
   \code{t.test}, \code{wilcox.test}, \code{(g)lm}, and \code{(g)lmer}. Also includes support for
-the "bootstrapped-splines" test (see \code{?make_boot_splines_data} and 
+the "bootstrapped-splines" test (see \code{?make_boot_splines_data} and
 \href{http://www.eyetracking-r.com/vignettes/divergence}{the divergence vignette} for more info).}
 
 \item{threshold}{Value of statistic used in determining significance}
 
 \item{alpha}{Alpha value for determining significance, ignored if threshold is given}
 
-\item{aoi}{Which AOI should be analyzed? If not specified (and dataframe has multiple AOIs), 
-then AOI should be a predictor/covariate in your model (so `formula` needs 
+\item{aoi}{Which AOI should be analyzed? If not specified (and dataframe has multiple AOIs),
+then AOI should be a predictor/covariate in your model (so `formula` needs
 to be specified).}
 
 \item{formula}{What formula should be used for the test? Optional for all but
 \code{(g)lmer}, if unset will use \code{Prop ~ [predictor_column]}. Change this if you want to use a custom DV.}
 
-\item{treatment_level}{If your predictor is a factor, regression functions like `lm` and `lmer` by default will 
-treatment-code it. One option is to sum-code this predictor yourself before entering it 
-into this function. Another is to use the `treatment_level` argument, which specifies the 
-level of the predictor. For example, you are testing a model where `Target` is a predictor, 
-which has two levels, 'Animate' and 'Inanimate'. R will code 'Animate' as the reference 
-level, and code 'Inanimate' as the treatment level. You'd therefore want to set 
+\item{treatment_level}{If your predictor is a factor, regression functions like `lm` and `lmer` by default will
+treatment-code it. One option is to sum-code this predictor yourself before entering it
+into this function. Another is to use the `treatment_level` argument, which specifies the
+level of the predictor. For example, you are testing a model where `Target` is a predictor,
+which has two levels, 'Animate' and 'Inanimate'. R will code 'Animate' as the reference
+level, and code 'Inanimate' as the treatment level. You'd therefore want to set
 `treatment_level = Inanimate`.}
 
-\item{p_adjust_method}{Method to adjust p.values for multiple corrections (default="none"). 
+\item{p_adjust_method}{Method to adjust p.values for multiple corrections (default="none").
 See \code{p.adjust.methods}.}
 
 \item{quiet}{Should messages and progress bars be suppressed? Default is to show}
@@ -66,8 +66,8 @@ A dataframe indicating the results of the test at each time-bin.
 \description{
 Runs a test on each time-bin of \code{time_sequence_data}. Supports \code{t.test},
 \code{wilcox.test}, \code{(g)lm}, and \code{(g)lmer}. Also includes support for
-the "bootstrapped-splines" test (see \code{?make_boot_splines_data} and 
-\href{http://www.eyetracking-r.com/vignettes/divergence}{the divergence vignette} for more info). 
+the "bootstrapped-splines" test (see \code{?make_boot_splines_data} and
+\href{http://www.eyetracking-r.com/vignettes/divergence}{the divergence vignette} for more info).
 By default, this function uses 'proportion-looking' (\code{Prop}) as the DV, which can be changed
 by manually specifying the formula. Results can be plotted to see how test-results or parameters
 estimates vary over time. P-values can be adjusted for multiple comparisons with \code{p_adjust_method}.
@@ -80,7 +80,7 @@ estimates vary over time. P-values can be adjusted for multiple comparisons with
 \examples{
 \dontrun{
 data(word_recognition)
-data <- make_eyetrackingr_data(word_recognition, 
+data <- make_eyetrackingr_data(word_recognition,
                                participant_column = "ParticipantName",
                                trial_column = "Trial",
                                time_column = "TimeFromTrialOnset",
@@ -88,12 +88,12 @@ data <- make_eyetrackingr_data(word_recognition,
                                aoi_columns = c('Animate','Inanimate'),
                                treat_non_aoi_looks_as_missing = TRUE
 )
-response_time <- make_time_sequence_data(data, time_bin_size = 250, 
+response_time <- make_time_sequence_data(data, time_bin_size = 250,
                                          predictor_columns = c("MCDI_Total"),
                                          aois = "Animate", summarize_by = "ParticipantName")
-tb_analysis <- analyze_time_bins(response_time, predictor_column = "MCDI_Total", 
+tb_analysis <- analyze_time_bins(response_time, predictor_column = "MCDI_Total",
                                  test = "lm", threshold = 2)
 summary(tb_analysis)
 }
-  
+
 }

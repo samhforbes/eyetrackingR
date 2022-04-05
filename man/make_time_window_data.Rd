@@ -21,7 +21,7 @@ make_time_window_data(
 \item{predictor_columns}{Which columns indicate predictor vars, and therefore should be preserved in
 grouping operations?}
 
-\item{other_dv_columns}{Within each participant/trial (or whatever is specified in \code{summarize_by}), 
+\item{other_dv_columns}{Within each participant/trial (or whatever is specified in \code{summarize_by}),
 this function will calculate not only proportion-looking, but also the mean of any columns specified here.}
 
 \item{summarize_by}{Should the data be summarized along, e.g., participants, items, etc.? If so, give
@@ -51,14 +51,14 @@ use 0.5).
  variance of the logit depends on the mean. They can be used in a mixed effects model by setting
  the \code{weights=Weights} in \code{lmer} (note that this is the reciprocal of the
 weights calculated in \href{http://talklab.psy.gla.ac.uk/tvw/elogit-wt.html}{this empirical logit
-walkthrough}, so you do *not* set \code{weights = 1/Weights} as done there.) 
+walkthrough}, so you do *not* set \code{weights = 1/Weights} as done there.)
  \item \code{ArcSin} - The arcsine-root transformation of the raw proportions, defined as
 \code{asin(sqrt(Prop))}
 }
 }
 \examples{
 data(word_recognition)
-data <- make_eyetrackingr_data(word_recognition, 
+data <- make_eyetrackingr_data(word_recognition,
                                participant_column = "ParticipantName",
                                trial_column = "Trial",
                                time_column = "TimeFromTrialOnset",
@@ -83,7 +83,7 @@ response_window_agg_by_sub <- make_time_window_data(data,
 )
 
 # plot the aggregated data for sanity check
-plot(response_window_agg_by_sub, predictor_columns="Age", dv = "LogitAdjusted") 
+plot(response_window_agg_by_sub, predictor_columns="Age", dv = "LogitAdjusted")
 }
 
 }

@@ -1,6 +1,6 @@
 ---
 title: "Performing a window analysis using eyetrackingR"
-author: "Jacob Dink & Brock Ferguson"
+author: "Samuel Forbes, Jacob Dink & Brock Ferguson"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >

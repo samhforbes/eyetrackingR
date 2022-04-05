@@ -19,3 +19,4 @@ inst/doc
 packrat/lib*/
 *.RDS
 *behav_research_method_paper.pdf
+docs

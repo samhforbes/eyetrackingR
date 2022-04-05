@@ -1,6 +1,6 @@
 ---
-title: "Estimating time windows of divergence using eyetrackingR"
-author: "Jacob Dink & Brock Ferguson"
+title: "Estimating time windows of divergence"
+author: "Samuel Forbes, Jacob Dink & Brock Ferguson"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
