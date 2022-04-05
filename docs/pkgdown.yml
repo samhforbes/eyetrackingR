@@ -1,0 +1,11 @@
+pandoc: 2.11.4
+pkgdown: 2.0.2
+pkgdown_sha: ~
+articles:
+  divergence_vignette: divergence_vignette.html
+  growth_curve_analysis_vignette: growth_curve_analysis_vignette.html
+  onset_contingent_analysis_vignette: onset_contingent_analysis_vignette.html
+  preparing_your_data_vignette: preparing_your_data_vignette.html
+  window_analysis_vignette: window_analysis_vignette.html
+last_built: 2022-04-05T15:11Z
+
