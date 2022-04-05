@@ -14,7 +14,7 @@ Description: Addresses tasks along the pipeline from raw
     bootstrapping approaches. For references to the approach see Mirman, 
     Dixon & Magnuson (2008) <doi:10.1016/j.jml.2007.11.006>, and
     Barr (2008) <doi:10.1016/j.jml.2007.09.002>.
-URL: http://www.eyetracking-r.com/
+URL: http://samforbes.me/eyetrackingR/
 BugReports: https://github.com/samhforbes/eyetrackingR/issues
 Date: 2021-09-24
 Depends: 
