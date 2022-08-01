@@ -3,6 +3,7 @@ eyetrackingR
 
 <!-- badges: start -->
   [![CRAN status](https://www.r-pkg.org/badges/version/eyetrackingR)](https://CRAN.R-project.org/package=eyetrackingR)
+  [![R-CMD-check](https://github.com/samhforbes/eyetrackingR/actions/workflows/r.yml/badge.svg)](https://github.com/samhforbes/eyetrackingR/actions/workflows/r.yml)
   <!-- badges: end -->
   
 ## Recent Updates:
