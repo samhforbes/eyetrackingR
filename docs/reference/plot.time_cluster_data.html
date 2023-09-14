@@ -20,7 +20,7 @@ Plot time_cluster_data, highlights clusters of above-threshold time-bins."><!-- 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">eyetrackingR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
       </span>
     </div>
 
@@ -29,7 +29,7 @@ Plot time_cluster_data, highlights clusters of above-threshold time-bins."><!-- 
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -80,26 +80,33 @@ Plot time_cluster_data, highlights clusters of above-threshold time-bins.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S3 method for time_cluster_data</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for time_cluster_data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>The output of <code>make_time_cluster_data</code></p></dd>
+
+
 <dt>type</dt>
 <dd><p>This function can plot the test-statistic ("statistic"), the parameter estimate +/-
 std. error ("estimate"), the p-value ("pvalue") or the negative-log-pvalue ("neg_log_pvalue").
 When test gives critical-statistic, default is to plot the test-statistic. Otherwise, default
-is to plot the estimate. For wilcox, only p-values can be plotted; for boot-splines, p-values 
+is to plot the estimate. For wilcox, only p-values can be plotted; for boot-splines, p-values
 cannot be plotted.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Ignored</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A ggplot object</p>
+    
+
+<p>A ggplot object</p>
     </div>
 
   </div>
@@ -114,7 +121,7 @@ cannot be plotted.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

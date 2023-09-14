@@ -18,7 +18,7 @@ within that area for each sample. This function creates an AOI column if needed.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">eyetrackingR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
       </span>
     </div>
 
@@ -27,7 +27,7 @@ within that area for each sample. This function creates an AOI column if needed.
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -77,39 +77,52 @@ within that area for each sample. This function creates an AOI column if needed.
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">add_aoi</span><span class="op">(</span>
-  <span class="va">data</span>,
-  <span class="va">aoi_dataframe</span>,
-  <span class="va">x_col</span>,
-  <span class="va">y_col</span>,
-  <span class="va">aoi_name</span>,
-  x_min_col <span class="op">=</span> <span class="st">"L"</span>,
-  x_max_col <span class="op">=</span> <span class="st">"R"</span>,
-  y_min_col <span class="op">=</span> <span class="st">"T"</span>,
-  y_max_col <span class="op">=</span> <span class="st">"B"</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add_aoi</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">aoi_dataframe</span>,</span>
+<span>  <span class="va">x_col</span>,</span>
+<span>  <span class="va">y_col</span>,</span>
+<span>  <span class="va">aoi_name</span>,</span>
+<span>  x_min_col <span class="op">=</span> <span class="st">"L"</span>,</span>
+<span>  x_max_col <span class="op">=</span> <span class="st">"R"</span>,</span>
+<span>  y_min_col <span class="op">=</span> <span class="st">"T"</span>,</span>
+<span>  y_max_col <span class="op">=</span> <span class="st">"B"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>Your data</p></dd>
+
+
 <dt>aoi_dataframe</dt>
 <dd><p>A dataframe specifying the bounding-box for the AOI</p></dd>
+
+
 <dt>x_col, y_col</dt>
 <dd><p>What are the column names for the x and y coordinates in your dataset?</p></dd>
+
+
 <dt>aoi_name</dt>
 <dd><p>What is the name of this AOI?</p></dd>
+
+
 <dt>x_min_col, x_max_col</dt>
 <dd><p>What are the column names for the left and right edge of the AOI-bounding box?
 Default "L","R"</p></dd>
+
+
 <dt>y_min_col, y_max_col</dt>
 <dd><p>What are the column names for the top and bottom edge of the AOI-bounding box?
 Default "T","B"</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Dataset with a new column indicating whether gaze is in the AOI</p>
+    
+
+<p>Dataset with a new column indicating whether gaze is in the AOI</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -135,7 +148,7 @@ there's a unique AOI for each "Trial" in the <code>aoi_dataframe</code>, and the
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">eyetrackingR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
       </span>
     </div>
 
@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -75,36 +75,47 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">make_time_window_data</span><span class="op">(</span>
-  <span class="va">data</span>,
-  aois <span class="op">=</span> <span class="cn">NULL</span>,
-  predictor_columns <span class="op">=</span> <span class="cn">NULL</span>,
-  other_dv_columns <span class="op">=</span> <span class="cn">NULL</span>,
-  summarize_by <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">make_time_window_data</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  aois <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  predictor_columns <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  other_dv_columns <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  summarize_by <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>The output of <code>make_eyetrackingr_data</code></p></dd>
+
+
 <dt>aois</dt>
 <dd><p>Which AOI(s) is/are of interest? Defaults to all specified in
 <code>make_eyetracking_r_data</code></p></dd>
+
+
 <dt>predictor_columns</dt>
 <dd><p>Which columns indicate predictor vars, and therefore should be preserved in
 grouping operations?</p></dd>
+
+
 <dt>other_dv_columns</dt>
 <dd><p>Within each participant/trial (or whatever is specified in <code>summarize_by</code>),
 this function will calculate not only proportion-looking, but also the mean of any columns specified here.</p></dd>
+
+
 <dt>summarize_by</dt>
 <dd><p>Should the data be summarized along, e.g., participants, items, etc.? If so, give
 column names here. If left blank, will leave trials distinct. The former is needed for more traditional
 analyses (<code>t.test</code>, <code>ANOVA</code>), while the latter is preferable for mixed-effects models (<code>lmer</code>)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Data with proportion-looking and transformations (logit, arc-sin, etc.)</p>
+    
+
+<p>Data with proportion-looking and transformations (logit, arc-sin, etc.)</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -121,7 +132,7 @@ use 0.5).</p></li>
 <li><p><code>Weights</code> - These attempt to further correct the Elog transformation, since the
  variance of the logit depends on the mean. They can be used in a mixed effects model by setting
  the <code>weights=Weights</code> in <code>lmer</code> (note that this is the reciprocal of the
-weights calculated in <a href="http://talklab.psy.gla.ac.uk/tvw/elogit-wt.html" class="external-link">this empirical logit
+weights calculated in <a href="https://talklab.psy.gla.ac.uk/tvw/elogit-wt.html" class="external-link">this empirical logit
 walkthrough</a>, so you do *not* set <code>weights = 1/Weights</code> as done there.)</p></li>
 <li><p><code>ArcSin</code> - The arcsine-root transformation of the raw proportions, defined as
 <code>asin(sqrt(Prop))</code></p></li>
@@ -129,35 +140,35 @@ walkthrough</a>, so you do *not* set <code>weights = 1/Weights</code> as done th
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">word_recognition</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="make_eyetrackingr_data.html">make_eyetrackingr_data</a></span><span class="op">(</span><span class="va">word_recognition</span>,</span>
-<span class="r-in">                               participant_column <span class="op">=</span> <span class="st">"ParticipantName"</span>,</span>
-<span class="r-in">                               trial_column <span class="op">=</span> <span class="st">"Trial"</span>,</span>
-<span class="r-in">                               time_column <span class="op">=</span> <span class="st">"TimeFromTrialOnset"</span>,</span>
-<span class="r-in">                               trackloss_column <span class="op">=</span> <span class="st">"TrackLoss"</span>,</span>
-<span class="r-in">                               aoi_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Animate'</span>,<span class="st">'Inanimate'</span><span class="op">)</span>,</span>
-<span class="r-in">                               treat_non_aoi_looks_as_missing <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># generate a dataset summarizing an AOI (Animate) by ParticipantName</span></span>
-<span class="r-in"><span class="va">response_window_agg_by_sub</span> <span class="op">&lt;-</span> <span class="fu">make_time_window_data</span><span class="op">(</span><span class="va">data</span>,</span>
-<span class="r-in">                                                    aois<span class="op">=</span><span class="st">'Animate'</span>,</span>
-<span class="r-in">                                                    summarize_by <span class="op">=</span> <span class="st">"ParticipantName"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="co"># optionally included additional columns for use as predictors</span></span>
-<span class="r-in"><span class="co"># in later statistical models</span></span>
-<span class="r-in"><span class="va">response_window_agg_by_sub</span> <span class="op">&lt;-</span> <span class="fu">make_time_window_data</span><span class="op">(</span><span class="va">data</span>,</span>
-<span class="r-in">                                                    aois<span class="op">=</span><span class="st">'Animate'</span>,</span>
-<span class="r-in">                                                    predictor_columns<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Age'</span>,<span class="st">'MCDI_Total'</span><span class="op">)</span>,</span>
-<span class="r-in">                                                    summarize_by <span class="op">=</span> <span class="st">"ParticipantName"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># plot the aggregated data for sanity check</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">response_window_agg_by_sub</span>, predictor_columns<span class="op">=</span><span class="st">"Age"</span>, dv <span class="op">=</span> <span class="st">"LogitAdjusted"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">word_recognition</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="make_eyetrackingr_data.html">make_eyetrackingr_data</a></span><span class="op">(</span><span class="va">word_recognition</span>,</span></span>
+<span class="r-in"><span>                               participant_column <span class="op">=</span> <span class="st">"ParticipantName"</span>,</span></span>
+<span class="r-in"><span>                               trial_column <span class="op">=</span> <span class="st">"Trial"</span>,</span></span>
+<span class="r-in"><span>                               time_column <span class="op">=</span> <span class="st">"TimeFromTrialOnset"</span>,</span></span>
+<span class="r-in"><span>                               trackloss_column <span class="op">=</span> <span class="st">"TrackLoss"</span>,</span></span>
+<span class="r-in"><span>                               aoi_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Animate'</span>,<span class="st">'Inanimate'</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                               treat_non_aoi_looks_as_missing <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># generate a dataset summarizing an AOI (Animate) by ParticipantName</span></span></span>
+<span class="r-in"><span><span class="va">response_window_agg_by_sub</span> <span class="op">&lt;-</span> <span class="fu">make_time_window_data</span><span class="op">(</span><span class="va">data</span>,</span></span>
+<span class="r-in"><span>                                                    aois<span class="op">=</span><span class="st">'Animate'</span>,</span></span>
+<span class="r-in"><span>                                                    summarize_by <span class="op">=</span> <span class="st">"ParticipantName"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># optionally included additional columns for use as predictors</span></span></span>
+<span class="r-in"><span><span class="co"># in later statistical models</span></span></span>
+<span class="r-in"><span><span class="va">response_window_agg_by_sub</span> <span class="op">&lt;-</span> <span class="fu">make_time_window_data</span><span class="op">(</span><span class="va">data</span>,</span></span>
+<span class="r-in"><span>                                                    aois<span class="op">=</span><span class="st">'Animate'</span>,</span></span>
+<span class="r-in"><span>                                                    predictor_columns<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Age'</span>,<span class="st">'MCDI_Total'</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                                                    summarize_by <span class="op">=</span> <span class="st">"ParticipantName"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># plot the aggregated data for sanity check</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">response_window_agg_by_sub</span>, predictor_columns<span class="op">=</span><span class="st">"Age"</span>, dv <span class="op">=</span> <span class="st">"LogitAdjusted"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -172,7 +183,7 @@ walkthrough</a>, so you do *not* set <code>weights = 1/Weights</code> as done th
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

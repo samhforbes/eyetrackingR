@@ -22,7 +22,7 @@ information).'><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/li
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">eyetrackingR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
       </span>
     </div>
 
@@ -31,7 +31,7 @@ information).'><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/li
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -85,32 +85,44 @@ information).</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">make_eyetrackingr_data</span><span class="op">(</span>
-  <span class="va">data</span>,
-  <span class="va">participant_column</span>,
-  <span class="va">trackloss_column</span>,
-  <span class="va">time_column</span>,
-  <span class="va">trial_column</span>,
-  <span class="va">aoi_columns</span>,
-  <span class="va">treat_non_aoi_looks_as_missing</span>,
-  item_columns <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">make_eyetrackingr_data</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">participant_column</span>,</span>
+<span>  <span class="va">trackloss_column</span>,</span>
+<span>  <span class="va">time_column</span>,</span>
+<span>  <span class="va">trial_column</span>,</span>
+<span>  <span class="va">aoi_columns</span>,</span>
+<span>  <span class="va">treat_non_aoi_looks_as_missing</span>,</span>
+<span>  item_columns <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>Your original data. See details section below.</p></dd>
+
+
 <dt>participant_column</dt>
 <dd><p>Column name for participant identifier</p></dd>
+
+
 <dt>trackloss_column</dt>
 <dd><p>Column name indicating trackloss</p></dd>
+
+
 <dt>time_column</dt>
 <dd><p>Column name indicating time</p></dd>
+
+
 <dt>trial_column</dt>
 <dd><p>Column name indicating trial identifier</p></dd>
+
+
 <dt>aoi_columns</dt>
 <dd><p>Names of AOIs</p></dd>
+
+
 <dt>treat_non_aoi_looks_as_missing</dt>
 <dd><p>This is a logical indicating how you would like to perform
 "proportion-looking" calculations, which are central to eyetrackingR's eyetracking analyses. If set to
@@ -120,12 +132,17 @@ proportion looking to an AOI, this will be calculated as "time looking to that A
 time looking to all other AOIs." In contrast, if this parameter is set to FALSE, proportion 
 looking to an AOI will be calculated as "time looking to that AOI divided by total time 
 looking."</p></dd>
+
+
 <dt>item_columns</dt>
 <dd><p>Column names indicating items (optional)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Dataframe ready for use in eyetrackingR.</p>
+    
+
+<p>Dataframe ready for use in eyetrackingR.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -141,16 +158,16 @@ basic format.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">word_recognition</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">make_eyetrackingr_data</span><span class="op">(</span><span class="va">word_recognition</span>, </span>
-<span class="r-in">                               participant_column <span class="op">=</span> <span class="st">"ParticipantName"</span>,</span>
-<span class="r-in">                               trial_column <span class="op">=</span> <span class="st">"Trial"</span>,</span>
-<span class="r-in">                               time_column <span class="op">=</span> <span class="st">"TimeFromTrialOnset"</span>,</span>
-<span class="r-in">                               trackloss_column <span class="op">=</span> <span class="st">"TrackLoss"</span>,</span>
-<span class="r-in">                               aoi_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Animate'</span>,<span class="st">'Inanimate'</span><span class="op">)</span>,</span>
-<span class="r-in">                               treat_non_aoi_looks_as_missing <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in">  </span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">word_recognition</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">make_eyetrackingr_data</span><span class="op">(</span><span class="va">word_recognition</span>, </span></span>
+<span class="r-in"><span>                               participant_column <span class="op">=</span> <span class="st">"ParticipantName"</span>,</span></span>
+<span class="r-in"><span>                               trial_column <span class="op">=</span> <span class="st">"Trial"</span>,</span></span>
+<span class="r-in"><span>                               time_column <span class="op">=</span> <span class="st">"TimeFromTrialOnset"</span>,</span></span>
+<span class="r-in"><span>                               trackloss_column <span class="op">=</span> <span class="st">"TrackLoss"</span>,</span></span>
+<span class="r-in"><span>                               aoi_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Animate'</span>,<span class="st">'Inanimate'</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                               treat_non_aoi_looks_as_missing <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span>  </span></span>
 </code></pre></div>
     </div>
   </div>
@@ -165,7 +182,7 @@ basic format.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

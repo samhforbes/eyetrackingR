@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">eyetrackingR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
       </span>
     </div>
 
@@ -43,7 +43,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -90,10 +90,12 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Preparing your data for use with eyetrackingR</h1>
-                        <h4 data-toc-skip class="author">Samuel Forbes, Jacob Dink &amp; Brock Ferguson</h4>
+      <h1 data-toc-skip>Preparing your data for use with
+eyetrackingR</h1>
+                        <h4 data-toc-skip class="author">Samuel Forbes,
+Jacob Dink &amp; Brock Ferguson</h4>
             
-            <h4 data-toc-skip class="date">2022-04-05</h4>
+            <h4 data-toc-skip class="date">2023-09-14</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/samhforbes/eyetrackingR/blob/HEAD/vignettes/preparing_your_data_vignette.Rmd" class="external-link"><code>vignettes/preparing_your_data_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>preparing_your_data_vignette.Rmd</code></div>
@@ -103,263 +105,389 @@
     
     
 <blockquote>
-<p><strong>Our Experiment</strong>: Each eyetrackingR vignette uses the <em>eyetrackingR</em> package to analyze real data from a simple 2-alternative forced choice (2AFC) word recognition task administered to 19- and 24-month-olds. On each trial, infants were shown a picture of an animate object (e.g., a horse) and an inanimate object (e.g., a spoon). After inspecting the images, they disappeared and they heard a label referring to one of them (e.g., “The horse is nearby!”). Finally, the objects re-appeared on the screen and they were prompted to look at the target (e.g., “Look at the horse!”).</p>
+<p><strong>Our Experiment</strong>: Each eyetrackingR vignette uses the
+<em>eyetrackingR</em> package to analyze real data from a simple
+2-alternative forced choice (2AFC) word recognition task administered to
+19- and 24-month-olds. On each trial, infants were shown a picture of an
+animate object (e.g., a horse) and an inanimate object (e.g., a spoon).
+After inspecting the images, they disappeared and they heard a label
+referring to one of them (e.g., “The horse is nearby!”). Finally, the
+objects re-appeared on the screen and they were prompted to look at the
+target (e.g., “Look at the horse!”).</p>
 </blockquote>
 <div class="section level2">
 <h2 id="overview-of-this-vignette">Overview of this vignette<a class="anchor" aria-label="anchor" href="#overview-of-this-vignette"></a>
 </h2>
-<p>This vignette will cover the basics of preparing your data for use with eyetrackingR.</p>
+<p>This vignette will cover the basics of preparing your data for use
+with eyetrackingR.</p>
 <div class="section level3">
 <h3 id="your-data">Your Data<a class="anchor" aria-label="anchor" href="#your-data"></a>
 </h3>
-<p>eyetrackingR is designed to deal with data in a (relatively) raw form, where <strong>each row specifies a sample.</strong> Each row should represent an equally spaced unit of time (e.g., if your eye-tracker’s sample rate is 100hz, then each row corresponds to the eye-position every 10ms).</p>
-<p>This is in contrast to the more parsed data that the software bundled with eye-trackers can sometimes output (e.g., already parsed into saccades or fixations). For eyetrackingR, the simplest data is the best.</p>
-<p>This also <strong>maximizes compatibility:</strong> eyetrackingR will work with any eye-tracker’s data (e.g., Eyelink, Tobii, etc.), since it requires the most basic format.</p>
-<p><strong>Note:</strong> eyetrackingR does not handle reading your data into R. Most software bundled with your eyetracker should be capable of exporting your data to a delimited format (.csv, tab-delimited .txt), etc. From there, you can use base functions like <code>read.delim</code>, or (recommended) check out the package <a href="https://cran.r-project.org/package=readr" class="external-link">readr</a>.</p>
+<p>eyetrackingR is designed to deal with data in a (relatively) raw
+form, where <strong>each row specifies a sample.</strong> Each row
+should represent an equally spaced unit of time (e.g., if your
+eye-tracker’s sample rate is 100hz, then each row corresponds to the
+eye-position every 10ms).</p>
+<p>This is in contrast to the more parsed data that the software bundled
+with eye-trackers can sometimes output (e.g., already parsed into
+saccades or fixations). For eyetrackingR, the simplest data is the
+best.</p>
+<p>This also <strong>maximizes compatibility:</strong> eyetrackingR will
+work with any eye-tracker’s data (e.g., Eyelink, Tobii, etc.), since it
+requires the most basic format.</p>
+<p><strong>Note:</strong> eyetrackingR does not handle reading your data
+into R. Most software bundled with your eyetracker should be capable of
+exporting your data to a delimited format (.csv, tab-delimited .txt),
+etc. From there, you can use base functions like
+<code>read.delim</code>, or (recommended) check out the package
+<a href="https://cran.r-project.org/package=readr" class="external-link">readr</a>.</p>
 <hr>
 <p>eyetrackingR just needs to the following columns:</p>
 <ul>
 <li>
-<strong>Participant Columns:</strong> Specifies the unique code for each participant (e.g., ‘SUBJ101’)</li>
+<strong>Participant Columns:</strong> Specifies the unique code for
+each participant (e.g., ‘SUBJ101’)</li>
 <li>
-<strong>Trial Columns:</strong> Specifies the unique name or number of each trial. For experiments in which each subject sees each item only once, this can be either a name (e.g., ‘HORSE-DOG’) or a number (e.g., trial 1, 2, 3, etc.). But if trials see items multiple times, this will almost always be a number.</li>
+<strong>Trial Columns:</strong> Specifies the unique name or number
+of each trial. For experiments in which each subject sees each item only
+once, this can be either a name (e.g., ‘HORSE-DOG’) or a number (e.g.,
+trial 1, 2, 3, etc.). But if trials see items multiple times, this will
+almost always be a number.</li>
 <li>
-<strong>Timestamp Column:</strong> Specifies the cumulative time passed within each trial (e.g., in milliseconds: 0, 50, 100, …, 1500). This column specifies the time-within-trial. If you have a timestamp column, but the beginning of the timestamp doesn’t correspond to the beginning of the trial in the way you’d like, the function <code>subset_by_window</code> can help fix this.</li>
+<strong>Timestamp Column:</strong> Specifies the cumulative time
+passed within each trial (e.g., in milliseconds: 0, 50, 100, …, 1500).
+This column specifies the time-within-trial. If you have a timestamp
+column, but the beginning of the timestamp doesn’t correspond to the
+beginning of the trial in the way you’d like, the function
+<code>subset_by_window</code> can help fix this.</li>
 <li>
-<strong>AOI Column(s):</strong> (Note: If you don’t have these columns, the function <code>add_aoi</code> can create them– see below.) These columns specify whether the gaze is in a particular ‘Area of Interest.’ Each AOI should have a corresponding column. The elements of this column specify, for each sample, whether the participant’s gaze was in that AOI.</li>
+<strong>AOI Column(s):</strong> (Note: If you don’t have these
+columns, the function <code>add_aoi</code> can create them– see below.)
+These columns specify whether the gaze is in a particular ‘Area of
+Interest.’ Each AOI should have a corresponding column. The elements of
+this column specify, for each sample, whether the participant’s gaze was
+in that AOI.</li>
 <li>
-<strong>Trackloss Column:</strong> Specifies, for each sample, whether the eye-tracker lost the eyes for that sample. Helpful for cleaning data and removing unreliable trials. See <code>clean_by_trackloss</code> below.</li>
+<strong>Trackloss Column:</strong> Specifies, for each sample,
+whether the eye-tracker lost the eyes for that sample. Helpful for
+cleaning data and removing unreliable trials. See
+<code>clean_by_trackloss</code> below.</li>
 </ul>
-<p>There are also some optional columns, which you might want to use depending on your analysis:</p>
+<p>There are also some optional columns, which you might want to use
+depending on your analysis:</p>
 <ul>
 <li>
-<strong>Item column(s):</strong> This corresponds to any ‘items’ in your experiment: types of stimuli presented across trials. This is likely to always be a name (e.g., ‘HORSE-DOG’) and, unlike the ‘Trial’ column, this does not need to be unique.</li>
+<strong>Item column(s):</strong> This corresponds to any ‘items’ in
+your experiment: types of stimuli presented across trials. This is
+likely to always be a name (e.g., ‘HORSE-DOG’) and, unlike the ‘Trial’
+column, this does not need to be unique.</li>
 <li>
-<strong>Miscellaneous predictor column(s):</strong> These are columns specifying predictors (e.g., Condition, Age, Sex). Unlike the types above, these are specified separately for each analysis, not at the outset).</li>
+<strong>Miscellaneous predictor column(s):</strong> These are
+columns specifying predictors (e.g., Condition, Age, Sex). Unlike the
+types above, these are specified separately for each analysis, not at
+the outset).</li>
 </ul>
-<p>If your dataset has these columns, you’re ready to begin using eyetrackingR.</p>
+<p>If your dataset has these columns, you’re ready to begin using
+eyetrackingR.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="data-preparation">Data Preparation<a class="anchor" aria-label="anchor" href="#data-preparation"></a>
 </h2>
 <div class="section level3">
-<h3 id="load-dataset-and-dependencies-set-data-options-for-eyetrackingr-">Load dataset and dependencies, set data options for eyetrackingR.<a class="anchor" aria-label="anchor" href="#load-dataset-and-dependencies-set-data-options-for-eyetrackingr-"></a>
+<h3 id="load-dataset-and-dependencies-set-data-options-for-eyetrackingr-">Load dataset and dependencies, set data options for
+eyetrackingR.<a class="anchor" aria-label="anchor" href="#load-dataset-and-dependencies-set-data-options-for-eyetrackingr-"></a>
 </h3>
-<p>Before being used in eyetrackingR, data must be run through the <code>make_eyetrackingr_data</code> function.</p>
-<p>This lets you provide the information about your dataset that was just described above. The function will perform some checks on your data to make sure it’s in the correct format.</p>
-<p>For this dataset, because each participant saw each item only once in this experiment, <code>trial_column</code> specifies a unique name for each trial (e.g., “FamiliarCow”) and we don’t specify an <code>item_column</code>.</p>
+<p>Before being used in eyetrackingR, data must be run through the
+<code>make_eyetrackingr_data</code> function.</p>
+<p>This lets you provide the information about your dataset that was
+just described above. The function will perform some checks on your data
+to make sure it’s in the correct format.</p>
+<p>For this dataset, because each participant saw each item only once in
+this experiment, <code>trial_column</code> specifies a unique name for
+each trial (e.g., “FamiliarCow”) and we don’t specify an
+<code>item_column</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span>
-
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="http://Matrix.R-forge.R-project.org/" class="external-link">"Matrix"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/lme4/lme4/" class="external-link">"lme4"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="http://www.eyetracking-r.com/" class="external-link">"eyetrackingR"</a></span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Loading required package: dplyr</span></code></pre>
-<pre><code><span class="co">## </span>
-<span class="co">## Attaching package: 'dplyr'</span></code></pre>
-<pre><code><span class="co">## The following objects are masked from 'package:stats':</span>
-<span class="co">## </span>
-<span class="co">##     filter, lag</span></code></pre>
-<pre><code><span class="co">## The following objects are masked from 'package:base':</span>
-<span class="co">## </span>
-<span class="co">##     intersect, setdiff, setequal, union</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://Matrix.R-forge.R-project.org" class="external-link">"Matrix"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/lme4/lme4/" class="external-link">"lme4"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="http://samforbes.me/eyetrackingR/" class="external-link">"eyetrackingR"</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Loading required package: dplyr</span></span></code></pre>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## Attaching package: 'dplyr'</span></span></code></pre>
+<pre><code><span><span class="co">## The following objects are masked from 'package:stats':</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     filter, lag</span></span></code></pre>
+<pre><code><span><span class="co">## The following objects are masked from 'package:base':</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     intersect, setdiff, setequal, union</span></span></code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"word_recognition"</span><span class="op">)</span>
-<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_eyetrackingr_data.html">make_eyetrackingr_data</a></span><span class="op">(</span><span class="va">word_recognition</span>, 
-                               participant_column <span class="op">=</span> <span class="st">"ParticipantName"</span>,
-                               trial_column <span class="op">=</span> <span class="st">"Trial"</span>,
-                               time_column <span class="op">=</span> <span class="st">"TimeFromTrialOnset"</span>,
-                               trackloss_column <span class="op">=</span> <span class="st">"TrackLoss"</span>,
-                               aoi_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Animate'</span>,<span class="st">'Inanimate'</span><span class="op">)</span>,
-                               treat_non_aoi_looks_as_missing <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"word_recognition"</span><span class="op">)</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_eyetrackingr_data.html">make_eyetrackingr_data</a></span><span class="op">(</span><span class="va">word_recognition</span>, </span>
+<span>                               participant_column <span class="op">=</span> <span class="st">"ParticipantName"</span>,</span>
+<span>                               trial_column <span class="op">=</span> <span class="st">"Trial"</span>,</span>
+<span>                               time_column <span class="op">=</span> <span class="st">"TimeFromTrialOnset"</span>,</span>
+<span>                               trackloss_column <span class="op">=</span> <span class="st">"TrackLoss"</span>,</span>
+<span>                               aoi_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Animate'</span>,<span class="st">'Inanimate'</span><span class="op">)</span>,</span>
+<span>                               treat_non_aoi_looks_as_missing <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <div class="section level4">
 <h4 id="dealing-with-non-aoi-looks">Dealing with Non-AOI Looks<a class="anchor" aria-label="anchor" href="#dealing-with-non-aoi-looks"></a>
 </h4>
-<p>You might be wondering about the <code>treat_non_aoi_looks_as_missing</code> argument above.</p>
-<p>Almost all eyetracking analyses require calculating proportion looking–across a trial, within a time bin, etc. One important choice you as the researcher have to make is whether to include non-AOI looking in this calculation. There are two options:</p>
+<p>You might be wondering about the
+<code>treat_non_aoi_looks_as_missing</code> argument above.</p>
+<p>Almost all eyetracking analyses require calculating proportion
+looking–across a trial, within a time bin, etc. One important choice you
+as the researcher have to make is whether to include non-AOI looking in
+this calculation. There are two options:</p>
 <ul>
 <li>
-<strong>Treat Non-AOI Looks as Missing Data.</strong> For many visual world paradigms, this move reflects the assumption that looking to a blank portion of the screen might as well be considered trackloss. The main advantage to this technique is that it makes analyses focusing on the tradeoff between two or more AOI more easily interpretable. Without treating outside looks as trackloss, it can be difficult to interpret an increase in looking to a single AOI across conditions. Was this due to an overall increase in attention (that is, looking to <em>all</em> AOIs, including the one of interest, increased)? Or due to an increase in preference for that AOI specifically?</li>
+<strong>Treat Non-AOI Looks as Missing Data.</strong> For many
+visual world paradigms, this move reflects the assumption that looking
+to a blank portion of the screen might as well be considered trackloss.
+The main advantage to this technique is that it makes analyses focusing
+on the tradeoff between two or more AOI more easily interpretable.
+Without treating outside looks as trackloss, it can be difficult to
+interpret an increase in looking to a single AOI across conditions. Was
+this due to an overall increase in attention (that is, looking to
+<em>all</em> AOIs, including the one of interest, increased)? Or due to
+an increase in preference for that AOI specifically?</li>
 <li>
-<strong>Treat Non-AOI Looks as Valid Data</strong> The tradeoff with the above is that, if we are interested in overall attention to all AOIs across conditions, then the previous approach will obscure this difference. So the alternative is to treat non-AOI looks as valid.</li>
+<strong>Treat Non-AOI Looks as Valid Data</strong> The tradeoff with
+the above is that, if we are interested in overall attention to all AOIs
+across conditions, then the previous approach will obscure this
+difference. So the alternative is to treat non-AOI looks as valid.</li>
 </ul>
-<p>The argument <code>treat_non_aoi_looks_as_missing</code> lets you decide which of these options eyetrackingR will do. If set to TRUE, when it comes time for eyetrackingR to calculate proportion looking to an AOI, this will be calculated as “time looking to that AOI divided by time looking to all other AOIs.” In contrast, if this parameter is set to FALSE, proportion looking to an AOI will be calculated as “time looking to that AOI divided by total time looking (excluding actual trackloss).”</p>
+<p>The argument <code>treat_non_aoi_looks_as_missing</code> lets you
+decide which of these options eyetrackingR will do. If set to TRUE, when
+it comes time for eyetrackingR to calculate proportion looking to an
+AOI, this will be calculated as “time looking to that AOI divided by
+time looking to all other AOIs.” In contrast, if this parameter is set
+to FALSE, proportion looking to an AOI will be calculated as “time
+looking to that AOI divided by total time looking (excluding actual
+trackloss).”</p>
 </div>
 </div>
 <div class="section level3">
 <h3 id="cleaning-up-messy-data">Cleaning Up Messy Data:<a class="anchor" aria-label="anchor" href="#cleaning-up-messy-data"></a>
 </h3>
-<p>We all wish our data came right out of our eye-tracker ready for analysis, but this isn’t always the case. Two of the more annoying problems you might encounter are:</p>
+<p>We all wish our data came right out of our eye-tracker ready for
+analysis, but this isn’t always the case. Two of the more annoying
+problems you might encounter are:</p>
 <ul>
-<li><p><strong>Your data doesn’t have any columns corresponding to areas-of-interest.</strong> Maybe you needed to create or revise these after running the experiment, or your eyetracking software just doesn’t let you specify them.</p></li>
-<li><p><strong>Your data doesn’t specify when the relevant things in a trial start.</strong> Experiments are complicated. There are pre-phases, fixation-contigent attention-getters, etc. etc. All this means that the stuff you actually want to analyze within a trial could be buried among lots of irrelevant data. For example, you might want to only analyze data after stimulus presentation, but have stimuli that starts at a different timepoint on each trial.</p></li>
+<li><p><strong>Your data doesn’t have any columns corresponding to
+areas-of-interest.</strong> Maybe you needed to create or revise these
+after running the experiment, or your eyetracking software just doesn’t
+let you specify them.</p></li>
+<li><p><strong>Your data doesn’t specify when the relevant things in a
+trial start.</strong> Experiments are complicated. There are pre-phases,
+fixation-contigent attention-getters, etc. etc. All this means that the
+stuff you actually want to analyze within a trial could be buried among
+lots of irrelevant data. For example, you might want to only analyze
+data after stimulus presentation, but have stimuli that starts at a
+different timepoint on each trial.</p></li>
 </ul>
 <p>Luckily, eyetrackingR has tools to address both of these problems</p>
 <div class="section level4">
 <h4 id="adding-an-area-of-interest">Adding an Area-of-Interest<a class="anchor" aria-label="anchor" href="#adding-an-area-of-interest"></a>
 </h4>
-<p>Your eyetracking data doesn’t have any columns corresponding to areas of interest. However, it does have columns give you the x,y gaze coordinates. You also have a csv file for each AOI, specifying its boundaries on each type of trial.</p>
+<p>Your eyetracking data doesn’t have any columns corresponding to areas
+of interest. However, it does have columns give you the x,y gaze
+coordinates. You also have a csv file for each AOI, specifying its
+boundaries on each type of trial.</p>
 <p>In that case, it’s easy to add AOIs to your dataframe:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">animate_aoi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"./interest_areas_for_animate_aoi.csv"</span><span class="op">)</span>
-
-<span class="co">#            Trial Left Top Right Bottom</span>
-<span class="co"># 1   FamiliarBird  500 100   900    500</span>
-<span class="co"># 2 FamiliarBottle  400 200   800    600</span>
-<span class="co"># 3    FamiliarCow  500 300   900    700</span>
-<span class="co"># 4    FamiliarDog  300 100   700    500</span>
-<span class="co"># 5  FamiliarHorse  500 200   900    600</span>
-<span class="co"># 6  FamiliarSpoon  350 300   750    700</span>
-
-<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_aoi.html">add_aoi</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, aoi_dataframe <span class="op">=</span> <span class="va">animate_aoi</span>, 
-               x_col <span class="op">=</span> <span class="st">"GazeX"</span>, y_col <span class="op">=</span> <span class="st">"GazeY"</span>, 
-               aoi_name <span class="op">=</span> <span class="st">"Animate"</span>,
-               x_min_col <span class="op">=</span> <span class="st">"Left"</span>, x_max_col <span class="op">=</span> <span class="st">"Right"</span>, y_min_col <span class="op">=</span> <span class="st">"Top"</span>, y_max_col <span class="op">=</span> <span class="st">"Bottom"</span><span class="op">)</span></code></pre></div>
-<p>This can be done for each AOI: just load in a csv file and run the <code>add_aoi</code> function for each.</p>
-<p>After using this function, you should probably check that the added AOI column actually indicates that the gaze was ever in the AOI. For example:</p>
+<code class="sourceCode R"><span><span class="va">animate_aoi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"./interest_areas_for_animate_aoi.csv"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#            Trial Left Top Right Bottom</span></span>
+<span><span class="co"># 1   FamiliarBird  500 100   900    500</span></span>
+<span><span class="co"># 2 FamiliarBottle  400 200   800    600</span></span>
+<span><span class="co"># 3    FamiliarCow  500 300   900    700</span></span>
+<span><span class="co"># 4    FamiliarDog  300 100   700    500</span></span>
+<span><span class="co"># 5  FamiliarHorse  500 200   900    600</span></span>
+<span><span class="co"># 6  FamiliarSpoon  350 300   750    700</span></span>
+<span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_aoi.html">add_aoi</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, aoi_dataframe <span class="op">=</span> <span class="va">animate_aoi</span>, </span>
+<span>               x_col <span class="op">=</span> <span class="st">"GazeX"</span>, y_col <span class="op">=</span> <span class="st">"GazeY"</span>, </span>
+<span>               aoi_name <span class="op">=</span> <span class="st">"Animate"</span>,</span>
+<span>               x_min_col <span class="op">=</span> <span class="st">"Left"</span>, x_max_col <span class="op">=</span> <span class="st">"Right"</span>, y_min_col <span class="op">=</span> <span class="st">"Top"</span>, y_max_col <span class="op">=</span> <span class="st">"Bottom"</span><span class="op">)</span></span></code></pre></div>
+<p>This can be done for each AOI: just load in a csv file and run the
+<code>add_aoi</code> function for each.</p>
+<p>After using this function, you should probably check that the added
+AOI column actually indicates that the gaze was ever in the AOI. For
+example:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">Animate</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## </span>
-<span class="co">## FALSE  TRUE </span>
-<span class="co">## 49681 82460</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">Animate</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## FALSE  TRUE </span></span>
+<span><span class="co">## 49681 82460</span></span></code></pre>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">Animate</span><span class="op">)</span><span class="op">)</span> <span class="co"># if all TRUE, then something went wrong.</span></code></pre></div>
-<pre><code><span class="co">## </span>
-<span class="co">##  FALSE   TRUE </span>
-<span class="co">## 132141  63771</span></code></pre>
-<p>(Note that you should typically add your AOIs to your dataframe <strong>before</strong> running <code>make_eyetrackingr_data</code>, since that function will check your AOIs.)</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">Animate</span><span class="op">)</span><span class="op">)</span> <span class="co"># if all TRUE, then something went wrong.</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  FALSE   TRUE </span></span>
+<span><span class="co">## 132141  63771</span></span></code></pre>
+<p>(Note that you should typically add your AOIs to your dataframe
+<strong>before</strong> running <code>make_eyetrackingr_data</code>,
+since that function will check your AOIs.)</p>
 </div>
 <div class="section level4">
 <h4 id="subsetting-into-the-time-window-of-interest-across-trials">Subsetting into the Time-Window of Interest Across Trials<a class="anchor" aria-label="anchor" href="#subsetting-into-the-time-window-of-interest-across-trials"></a>
 </h4>
-<p>eyetrackingR’s <code>subset_by_window</code> has several methods for getting the data you’re interested in. These are powerful because they can be used repeatedly/iteratively to home in on the relevant data. We show this below.</p>
-<p>In this example, let’s imagine that our Timestamp doesn’t actually specify the start of the trial– instead, it specifies the time since the eye-tracker was turned on!</p>
-<p>Fortunately, our eye-tracker sends a message when each trial starts (this is not always the same as the very first sample for the trial– recording often starts a few hundred milliseconds before the trial does). This message can be used to set the zero-point for each trial.</p>
+<p>eyetrackingR’s <code>subset_by_window</code> has several methods for
+getting the data you’re interested in. These are powerful because they
+can be used repeatedly/iteratively to home in on the relevant data. We
+show this below.</p>
+<p>In this example, let’s imagine that our Timestamp doesn’t actually
+specify the start of the trial– instead, it specifies the time since the
+eye-tracker was turned on!</p>
+<p>Fortunately, our eye-tracker sends a message when each trial starts
+(this is not always the same as the very first sample for the trial–
+recording often starts a few hundred milliseconds before the trial
+does). This message can be used to set the zero-point for each
+trial.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/subset_by_window.html">subset_by_window</a></span><span class="op">(</span><span class="va">data</span>, window_start_msg <span class="op">=</span> <span class="st">"TrialStart"</span>, msg_col <span class="op">=</span> <span class="st">"Message"</span>, rezero<span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<p>Unfortunately, the eye-tracker didn’t send a message for when the response-window starts. Instead, it added a column that tells you how long after the start of the trial the response-window started. Now that we have rezero’d our data so that 0 = trial-start, this column specifying the time after trial start can be used easily.</p>
+<code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/subset_by_window.html">subset_by_window</a></span><span class="op">(</span><span class="va">data</span>, window_start_msg <span class="op">=</span> <span class="st">"TrialStart"</span>, msg_col <span class="op">=</span> <span class="st">"Message"</span>, rezero<span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p>Unfortunately, the eye-tracker didn’t send a message for when the
+response-window starts. Instead, it added a column that tells you how
+long after the start of the trial the response-window started. Now that
+we have rezero’d our data so that 0 = trial-start, this column
+specifying the time after trial start can be used easily.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">response_window</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/subset_by_window.html">subset_by_window</a></span><span class="op">(</span><span class="va">data</span>, window_start_col <span class="op">=</span> <span class="st">"ResponseWindowStart"</span>, rezero<span class="op">=</span> <span class="cn">FALSE</span>, remove<span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<p>Finally, our trials always ended after 21 seconds. So we’ll simply remove data from after this.</p>
+<code class="sourceCode R"><span><span class="va">response_window</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/subset_by_window.html">subset_by_window</a></span><span class="op">(</span><span class="va">data</span>, window_start_col <span class="op">=</span> <span class="st">"ResponseWindowStart"</span>, rezero<span class="op">=</span> <span class="cn">FALSE</span>, remove<span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p>Finally, our trials always ended after 21 seconds. So we’ll simply
+remove data from after this.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">response_window</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/subset_by_window.html">subset_by_window</a></span><span class="op">(</span><span class="va">response_window</span>, window_end_time <span class="op">=</span> <span class="fl">21000</span>, rezero<span class="op">=</span> <span class="cn">FALSE</span>, remove<span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<p>In summary, we have subset the data to focus on our time window of interest.</p>
+<code class="sourceCode R"><span><span class="va">response_window</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/subset_by_window.html">subset_by_window</a></span><span class="op">(</span><span class="va">response_window</span>, window_end_time <span class="op">=</span> <span class="fl">21000</span>, rezero<span class="op">=</span> <span class="cn">FALSE</span>, remove<span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p>In summary, we have subset the data to focus on our time window of
+interest.</p>
 </div>
 </div>
 <div class="section level3">
 <h3 id="dealing-with-trackloss">Dealing with trackloss<a class="anchor" aria-label="anchor" href="#dealing-with-trackloss"></a>
 </h3>
-<p>Trackloss occurs when the eye-tracker loses track of the participant’s eyes (e.g., when they turn away or blink) or when it captures their gaze location but with very low validity.</p>
-<p>We need to decide which trials to remove (if any) due to very high trackloss. To do so here, we will:</p>
+<p>Trackloss occurs when the eye-tracker loses track of the
+participant’s eyes (e.g., when they turn away or blink) or when it
+captures their gaze location but with very low validity.</p>
+<p>We need to decide which trials to remove (if any) due to very high
+trackloss. To do so here, we will:</p>
 <ul>
 <li>Calculate the amount of trackloss in each trial</li>
 <li>Remove trials with over 25% trackloss</li>
 </ul>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># analyze amount of trackloss by subjects and trials</span>
-<span class="op">(</span><span class="va">trackloss</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trackloss_analysis.html">trackloss_analysis</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">response_window</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 155 × 6</span></span>
-<span class="co">##    ParticipantName Trial          Samples TracklossSamples TracklossForTrial</span>
-<span class="co">##    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;"> 1</span> ANCAT139        FamiliarBottle     330              161            0.488 </span>
-<span class="co">## <span style="color: #BCBCBC;"> 2</span> ANCAT18         FamiliarBird       330               74            0.224 </span>
-<span class="co">## <span style="color: #BCBCBC;"> 3</span> ANCAT18         FamiliarBottle     330               43            0.130 </span>
-<span class="co">## <span style="color: #BCBCBC;"> 4</span> ANCAT18         FamiliarCow        330              159            0.482 </span>
-<span class="co">## <span style="color: #BCBCBC;"> 5</span> ANCAT18         FamiliarDog        330               95            0.288 </span>
-<span class="co">## <span style="color: #BCBCBC;"> 6</span> ANCAT18         FamiliarHorse      330              165            0.5   </span>
-<span class="co">## <span style="color: #BCBCBC;"> 7</span> ANCAT18         FamiliarSpoon      330               95            0.288 </span>
-<span class="co">## <span style="color: #BCBCBC;"> 8</span> ANCAT22         FamiliarBird       330               14            0.042<span style="text-decoration: underline;">4</span></span>
-<span class="co">## <span style="color: #BCBCBC;"> 9</span> ANCAT22         FamiliarBottle     330                8            0.024<span style="text-decoration: underline;">2</span></span>
-<span class="co">## <span style="color: #BCBCBC;">10</span> ANCAT22         FamiliarDog        330               55            0.167 </span>
-<span class="co">## <span style="color: #949494;"># … with 145 more rows, and 1 more variable: TracklossForParticipant &lt;dbl&gt;</span></span></code></pre>
+<code class="sourceCode R"><span><span class="co"># analyze amount of trackloss by subjects and trials</span></span>
+<span><span class="op">(</span><span class="va">trackloss</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trackloss_analysis.html">trackloss_analysis</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">response_window</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 155 × 6</span></span></span>
+<span><span class="co">##    ParticipantName Trial          Samples TracklossSamples TracklossForTrial</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> ANCAT139        FamiliarBottle     330              161            0.488 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> ANCAT18         FamiliarBird       330               74            0.224 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> ANCAT18         FamiliarBottle     330               43            0.130 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> ANCAT18         FamiliarCow        330              159            0.482 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> ANCAT18         FamiliarDog        330               95            0.288 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> ANCAT18         FamiliarHorse      330              165            0.5   </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> ANCAT18         FamiliarSpoon      330               95            0.288 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> ANCAT22         FamiliarBird       330               14            0.042<span style="text-decoration: underline;">4</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> ANCAT22         FamiliarBottle     330                8            0.024<span style="text-decoration: underline;">2</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> ANCAT22         FamiliarDog        330               55            0.167 </span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 145 more rows</span></span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 1 more variable: TracklossForParticipant &lt;dbl&gt;</span></span></span></code></pre>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">response_window_clean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/clean_by_trackloss.html">clean_by_trackloss</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">response_window</span>, trial_prop_thresh <span class="op">=</span> <span class="fl">.25</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Performing Trackloss Analysis...</span></code></pre>
-<pre><code><span class="co">## Will exclude trials whose trackloss proportion is greater than : 0.25</span></code></pre>
-<pre><code><span class="co">##  ...removed  33  trials.</span></code></pre>
+<code class="sourceCode R"><span><span class="va">response_window_clean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/clean_by_trackloss.html">clean_by_trackloss</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">response_window</span>, trial_prop_thresh <span class="op">=</span> <span class="fl">.25</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Performing Trackloss Analysis...</span></span></code></pre>
+<pre><code><span><span class="co">## Will exclude trials whose trackloss proportion is greater than : 0.25</span></span></code></pre>
+<pre><code><span><span class="co">##  ...removed  33  trials.</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="how-much-data-are-we-left-with">How much data are we left with?<a class="anchor" aria-label="anchor" href="#how-much-data-are-we-left-with"></a>
 </h3>
-<p>After data cleaning, it’s important to assess how much data you are ultimately left with to (a) report along with your findings and, (b) identify any problematic participants who didn’t contribute enough trials from which to reliably estimate their performance.</p>
+<p>After data cleaning, it’s important to assess how much data you are
+ultimately left with to (a) report along with your findings and, (b)
+identify any problematic participants who didn’t contribute enough
+trials from which to reliably estimate their performance.</p>
 <div class="section level4">
 <h4 id="assess-mean-trackloss-for-each-participant">Assess mean trackloss for each participant<a class="anchor" aria-label="anchor" href="#assess-mean-trackloss-for-each-participant"></a>
 </h4>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">trackloss_clean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trackloss_analysis.html">trackloss_analysis</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">response_window_clean</span><span class="op">)</span>
-
-<span class="op">(</span><span class="va">trackloss_clean_subjects</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">trackloss_clean</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'ParticipantName'</span>,<span class="st">'TracklossForParticipant'</span><span class="op">)</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 27 × 2</span></span>
-<span class="co">##    ParticipantName TracklossForParticipant</span>
-<span class="co">##    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>                             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;"> 1</span> ANCAT18                          0.177 </span>
-<span class="co">## <span style="color: #BCBCBC;"> 2</span> ANCAT22                          0.058<span style="text-decoration: underline;">8</span></span>
-<span class="co">## <span style="color: #BCBCBC;"> 3</span> ANCAT23                          0.062<span style="text-decoration: underline;">6</span></span>
-<span class="co">## <span style="color: #BCBCBC;"> 4</span> ANCAT26                          0.097<span style="text-decoration: underline;">0</span></span>
-<span class="co">## <span style="color: #BCBCBC;"> 5</span> ANCAT39                          0.037<span style="text-decoration: underline;">9</span></span>
-<span class="co">## <span style="color: #BCBCBC;"> 6</span> ANCAT45                          0.013<span style="text-decoration: underline;">1</span></span>
-<span class="co">## <span style="color: #BCBCBC;"> 7</span> ANCAT50                          0.057<span style="text-decoration: underline;">6</span></span>
-<span class="co">## <span style="color: #BCBCBC;"> 8</span> ANCAT53                          0.048<span style="text-decoration: underline;">5</span></span>
-<span class="co">## <span style="color: #BCBCBC;"> 9</span> ANCAT55                          0.043<span style="text-decoration: underline;">0</span></span>
-<span class="co">## <span style="color: #BCBCBC;">10</span> ANCAT58                          0.026<span style="text-decoration: underline;">1</span></span>
-<span class="co">## <span style="color: #949494;"># … with 17 more rows</span></span></code></pre>
+<code class="sourceCode R"><span><span class="va">trackloss_clean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trackloss_analysis.html">trackloss_analysis</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">response_window_clean</span><span class="op">)</span></span>
+<span></span>
+<span><span class="op">(</span><span class="va">trackloss_clean_subjects</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">trackloss_clean</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'ParticipantName'</span>,<span class="st">'TracklossForParticipant'</span><span class="op">)</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 27 × 2</span></span></span>
+<span><span class="co">##    ParticipantName TracklossForParticipant</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>                             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> ANCAT18                          0.177 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> ANCAT22                          0.058<span style="text-decoration: underline;">8</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> ANCAT23                          0.062<span style="text-decoration: underline;">6</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> ANCAT26                          0.097<span style="text-decoration: underline;">0</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> ANCAT39                          0.037<span style="text-decoration: underline;">9</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> ANCAT45                          0.013<span style="text-decoration: underline;">1</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> ANCAT50                          0.057<span style="text-decoration: underline;">6</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> ANCAT53                          0.048<span style="text-decoration: underline;">5</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> ANCAT55                          0.043<span style="text-decoration: underline;">0</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> ANCAT58                          0.026<span style="text-decoration: underline;">1</span></span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 17 more rows</span></span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="summarize-samples-contributed-per-trial">Summarize samples contributed per trial<a class="anchor" aria-label="anchor" href="#summarize-samples-contributed-per-trial"></a>
 </h4>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># get mean samples contributed per trials, with SD</span>
-<span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">trackloss_clean_subjects</span><span class="op">$</span><span class="va">TracklossForParticipant</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## [1] 0.9313075</span></code></pre>
+<code class="sourceCode R"><span><span class="co"># get mean samples contributed per trials, with SD</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">trackloss_clean_subjects</span><span class="op">$</span><span class="va">TracklossForParticipant</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0.9313075</span></span></code></pre>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="fl">1</span><span class="op">-</span> <span class="va">trackloss_clean_subjects</span><span class="op">$</span><span class="va">TracklossForParticipant</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## [1] 0.05208985</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="fl">1</span><span class="op">-</span> <span class="va">trackloss_clean_subjects</span><span class="op">$</span><span class="va">TracklossForParticipant</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0.05208985</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="assess-number-of-trials-contributed-by-each-participant">Assess number of trials contributed by each participant<a class="anchor" aria-label="anchor" href="#assess-number-of-trials-contributed-by-each-participant"></a>
 </h4>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># look at the NumTrials column</span>
-<span class="op">(</span><span class="va">final_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/describe_data.html">describe_data</a></span><span class="op">(</span><span class="va">response_window_clean</span>, describe_column <span class="op">=</span> <span class="st">'Animate'</span>, group_columns <span class="op">=</span> <span class="st">'ParticipantName'</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 27 × 9</span></span>
-<span class="co">##    ParticipantName  Mean    SD LowerQ UpperQ   Min   Max     N NumTrials</span>
-<span class="co">##    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;"> 1</span> ANCAT18         0.169 0.375      0      1     0     1   660         2</span>
-<span class="co">## <span style="color: #BCBCBC;"> 2</span> ANCAT22         0.581 0.494      0      1     0     1  <span style="text-decoration: underline;">1</span>650         5</span>
-<span class="co">## <span style="color: #BCBCBC;"> 3</span> ANCAT23         0.780 0.414      0      1     0     1  <span style="text-decoration: underline;">1</span>980         6</span>
-<span class="co">## <span style="color: #BCBCBC;"> 4</span> ANCAT26         0.598 0.490      0      1     0     1  <span style="text-decoration: underline;">1</span>320         4</span>
-<span class="co">## <span style="color: #BCBCBC;"> 5</span> ANCAT39         0.650 0.477      0      1     0     1  <span style="text-decoration: underline;">1</span>980         6</span>
-<span class="co">## <span style="color: #BCBCBC;"> 6</span> ANCAT45         0.679 0.467      0      1     0     1   990         3</span>
-<span class="co">## <span style="color: #BCBCBC;"> 7</span> ANCAT50         0.836 0.370      0      1     0     1   990         3</span>
-<span class="co">## <span style="color: #BCBCBC;"> 8</span> ANCAT53         0.737 0.441      0      1     0     1   990         3</span>
-<span class="co">## <span style="color: #BCBCBC;"> 9</span> ANCAT55         0.745 0.436      0      1     0     1  <span style="text-decoration: underline;">1</span>650         5</span>
-<span class="co">## <span style="color: #BCBCBC;">10</span> ANCAT58         0.731 0.443      0      1     0     1  <span style="text-decoration: underline;">1</span>650         5</span>
-<span class="co">## <span style="color: #949494;"># … with 17 more rows</span></span></code></pre>
+<code class="sourceCode R"><span><span class="co"># look at the NumTrials column</span></span>
+<span><span class="op">(</span><span class="va">final_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/describe_data.html">describe_data</a></span><span class="op">(</span><span class="va">response_window_clean</span>, describe_column <span class="op">=</span> <span class="st">'Animate'</span>, group_columns <span class="op">=</span> <span class="st">'ParticipantName'</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 27 × 9</span></span></span>
+<span><span class="co">##    ParticipantName  Mean    SD LowerQ UpperQ   Min   Max     N NumTrials</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> ANCAT18         0.169 0.375      0      1     0     1   660         2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> ANCAT22         0.581 0.494      0      1     0     1  <span style="text-decoration: underline;">1</span>650         5</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> ANCAT23         0.780 0.414      0      1     0     1  <span style="text-decoration: underline;">1</span>980         6</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> ANCAT26         0.598 0.490      0      1     0     1  <span style="text-decoration: underline;">1</span>320         4</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> ANCAT39         0.650 0.477      0      1     0     1  <span style="text-decoration: underline;">1</span>980         6</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> ANCAT45         0.679 0.467      0      1     0     1   990         3</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> ANCAT50         0.836 0.370      0      1     0     1   990         3</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> ANCAT53         0.737 0.441      0      1     0     1   990         3</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> ANCAT55         0.745 0.436      0      1     0     1  <span style="text-decoration: underline;">1</span>650         5</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> ANCAT58         0.731 0.443      0      1     0     1  <span style="text-decoration: underline;">1</span>650         5</span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 17 more rows</span></span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="summarize-number-of-trials-contributed">Summarize number of trials contributed<a class="anchor" aria-label="anchor" href="#summarize-number-of-trials-contributed"></a>
 </h4>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">final_summary</span><span class="op">$</span><span class="va">NumTrials</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## [1] 4.518519</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">final_summary</span><span class="op">$</span><span class="va">NumTrials</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 4.518519</span></span></code></pre>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">final_summary</span><span class="op">$</span><span class="va">NumTrials</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## [1] 1.369176</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">final_summary</span><span class="op">$</span><span class="va">NumTrials</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 1.369176</span></span></code></pre>
 </div>
 </div>
 <div class="section level3">
 <h3 id="create-additional-columns-needed-for-analysis">Create additional columns needed for analysis<a class="anchor" aria-label="anchor" href="#create-additional-columns-needed-for-analysis"></a>
 </h3>
-<p>Now is the time to make sure that we have all the columns needed for our analyses, because this dataset is going to be shaped and subsetted as we analyze our data and it’s easier to add these columns once then to do it for derivative datasets.</p>
-<p>For the present experiment, one thing we want to do is create a “Target” condition column based on the name of each Trial.</p>
-<p>In each trial, the participant was told to look at either an Animate or Inanimate objects. Here we create a column specifying which for each column.</p>
+<p>Now is the time to make sure that we have all the columns needed for
+our analyses, because this dataset is going to be shaped and subsetted
+as we analyze our data and it’s easier to add these columns once then to
+do it for derivative datasets.</p>
+<p>For the present experiment, one thing we want to do is create a
+“Target” condition column based on the name of each Trial.</p>
+<p>In each trial, the participant was told to look at either an Animate
+or Inanimate objects. Here we create a column specifying which for each
+column.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">response_window_clean</span><span class="op">$</span><span class="va">Target</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span>test <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">'(Spoon|Bottle)'</span>, <span class="va">response_window_clean</span><span class="op">$</span><span class="va">Trial</span><span class="op">)</span>, 
-                                       yes <span class="op">=</span> <span class="st">'Inanimate'</span>, 
-                                       no  <span class="op">=</span> <span class="st">'Animate'</span><span class="op">)</span> <span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">response_window_clean</span><span class="op">$</span><span class="va">Target</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span>test <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">'(Spoon|Bottle)'</span>, <span class="va">response_window_clean</span><span class="op">$</span><span class="va">Trial</span><span class="op">)</span>, </span>
+<span>                                       yes <span class="op">=</span> <span class="st">'Inanimate'</span>, </span>
+<span>                                       no  <span class="op">=</span> <span class="st">'Animate'</span><span class="op">)</span> <span class="op">)</span></span></code></pre></div>
 <p>Our dataset is now ready for analysis!</p>
 </div>
 </div>
@@ -382,7 +510,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

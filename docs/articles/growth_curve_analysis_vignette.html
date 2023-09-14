@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">eyetrackingR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
       </span>
     </div>
 
@@ -43,7 +43,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -90,10 +90,12 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Performing a growth curve analysis using eyetrackingR</h1>
-                        <h4 data-toc-skip class="author">Samuel Forbes, Jacob Dink &amp; Brock Ferguson</h4>
+      <h1 data-toc-skip>Performing a growth curve analysis using
+eyetrackingR</h1>
+                        <h4 data-toc-skip class="author">Samuel Forbes,
+Jacob Dink &amp; Brock Ferguson</h4>
             
-            <h4 data-toc-skip class="date">2022-04-05</h4>
+            <h4 data-toc-skip class="date">2023-09-14</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/samhforbes/eyetrackingR/blob/HEAD/vignettes/growth_curve_analysis_vignette.Rmd" class="external-link"><code>vignettes/growth_curve_analysis_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>growth_curve_analysis_vignette.Rmd</code></div>
@@ -103,234 +105,307 @@
     
     
 <blockquote>
-<p><strong>Our Experiment</strong>: Each eyetrackingR vignette uses the <em>eyetrackingR</em> package to analyze real data from a simple 2-alternative forced choice (2AFC) word recognition task administered to 19- and 24-month-olds. On each trial, infants were shown a picture of an animate object (e.g., a horse) and an inanimate object (e.g., a spoon). After inspecting the images, they disappeared and they heard a label referring to one of them (e.g., “The horse is nearby!”). Finally, the objects re-appeared on the screen and they were prompted to look at the target (e.g., “Look at the horse!”).</p>
+<p><strong>Our Experiment</strong>: Each eyetrackingR vignette uses the
+<em>eyetrackingR</em> package to analyze real data from a simple
+2-alternative forced choice (2AFC) word recognition task administered to
+19- and 24-month-olds. On each trial, infants were shown a picture of an
+animate object (e.g., a horse) and an inanimate object (e.g., a spoon).
+After inspecting the images, they disappeared and they heard a label
+referring to one of them (e.g., “The horse is nearby!”). Finally, the
+objects re-appeared on the screen and they were prompted to look at the
+target (e.g., “Look at the horse!”).</p>
 </blockquote>
 <div class="section level2">
 <h2 id="overview-of-this-vignette">Overview of this vignette<a class="anchor" aria-label="anchor" href="#overview-of-this-vignette"></a>
 </h2>
-<p>In this vignette, we want to examine our data <em>without</em> throwing out time as a predictor. That is, we want to ask how are differences (if any) between the Target conditions emerged over time in each trial. To do so, we will perform a growth curve analysis.</p>
+<p>In this vignette, we want to examine our data <em>without</em>
+throwing out time as a predictor. That is, we want to ask how are
+differences (if any) between the Target conditions emerged over time in
+each trial. To do so, we will perform a growth curve analysis.</p>
 </div>
 <div class="section level2">
 <h2 id="prerequisites">Prerequisites<a class="anchor" aria-label="anchor" href="#prerequisites"></a>
 </h2>
-<p>Before performing this analysis, we’ll need to prepare and clean our dataset. Here we will to do this quickly and with few notes but, for more information, see the vignette on <a href="preparing_your_data_vignette.html">preparing your data</a>.</p>
+<p>Before performing this analysis, we’ll need to prepare and clean our
+dataset. Here we will to do this quickly and with few notes but, for
+more information, see the vignette on <a href="preparing_your_data_vignette.html">preparing your data</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="http://Matrix.R-forge.R-project.org/" class="external-link">"Matrix"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/lme4/lme4/" class="external-link">"lme4"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="http://www.eyetracking-r.com/" class="external-link">"eyetrackingR"</a></span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Loading required package: dplyr</span></code></pre>
-<pre><code><span class="co">## </span>
-<span class="co">## Attaching package: 'dplyr'</span></code></pre>
-<pre><code><span class="co">## The following objects are masked from 'package:stats':</span>
-<span class="co">## </span>
-<span class="co">##     filter, lag</span></code></pre>
-<pre><code><span class="co">## The following objects are masked from 'package:base':</span>
-<span class="co">## </span>
-<span class="co">##     intersect, setdiff, setequal, union</span></code></pre>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://Matrix.R-forge.R-project.org" class="external-link">"Matrix"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/lme4/lme4/" class="external-link">"lme4"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="http://samforbes.me/eyetrackingR/" class="external-link">"eyetrackingR"</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Loading required package: dplyr</span></span></code></pre>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## Attaching package: 'dplyr'</span></span></code></pre>
+<pre><code><span><span class="co">## The following objects are masked from 'package:stats':</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     filter, lag</span></span></code></pre>
+<pre><code><span><span class="co">## The following objects are masked from 'package:base':</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     intersect, setdiff, setequal, union</span></span></code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"word_recognition"</span><span class="op">)</span>
-<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_eyetrackingr_data.html">make_eyetrackingr_data</a></span><span class="op">(</span><span class="va">word_recognition</span>, 
-                       participant_column <span class="op">=</span> <span class="st">"ParticipantName"</span>,
-                       trial_column <span class="op">=</span> <span class="st">"Trial"</span>,
-                       time_column <span class="op">=</span> <span class="st">"TimeFromTrialOnset"</span>,
-                       trackloss_column <span class="op">=</span> <span class="st">"TrackLoss"</span>,
-                       aoi_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Animate'</span>,<span class="st">'Inanimate'</span><span class="op">)</span>,
-                       treat_non_aoi_looks_as_missing <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span>
-
-<span class="co"># subset to response window post word-onset</span>
-<span class="va">response_window</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/subset_by_window.html">subset_by_window</a></span><span class="op">(</span><span class="va">data</span>, 
-                                    window_start_time <span class="op">=</span> <span class="fl">15500</span>, 
-                                    window_end_time <span class="op">=</span> <span class="fl">21000</span>, 
-                                    rezero <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Avg. window length in new data will be 5500</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"word_recognition"</span><span class="op">)</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_eyetrackingr_data.html">make_eyetrackingr_data</a></span><span class="op">(</span><span class="va">word_recognition</span>, </span>
+<span>                       participant_column <span class="op">=</span> <span class="st">"ParticipantName"</span>,</span>
+<span>                       trial_column <span class="op">=</span> <span class="st">"Trial"</span>,</span>
+<span>                       time_column <span class="op">=</span> <span class="st">"TimeFromTrialOnset"</span>,</span>
+<span>                       trackloss_column <span class="op">=</span> <span class="st">"TrackLoss"</span>,</span>
+<span>                       aoi_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Animate'</span>,<span class="st">'Inanimate'</span><span class="op">)</span>,</span>
+<span>                       treat_non_aoi_looks_as_missing <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># subset to response window post word-onset</span></span>
+<span><span class="va">response_window</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/subset_by_window.html">subset_by_window</a></span><span class="op">(</span><span class="va">data</span>, </span>
+<span>                                    window_start_time <span class="op">=</span> <span class="fl">15500</span>, </span>
+<span>                                    window_end_time <span class="op">=</span> <span class="fl">21000</span>, </span>
+<span>                                    rezero <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Avg. window length in new data will be 5500</span></span></code></pre>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># analyze amount of trackloss by subjects and trials</span>
-<span class="op">(</span><span class="va">trackloss</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trackloss_analysis.html">trackloss_analysis</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">response_window</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># remove trials with &gt; 25% of trackloss</span>
-<span class="va">response_window_clean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/clean_by_trackloss.html">clean_by_trackloss</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">response_window</span>, trial_prop_thresh <span class="op">=</span> <span class="fl">.25</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Performing Trackloss Analysis...</span></code></pre>
-<pre><code><span class="co">## Will exclude trials whose trackloss proportion is greater than : 0.25</span></code></pre>
-<pre><code><span class="co">##  ...removed  33  trials.</span></code></pre>
+<code class="sourceCode R"><span><span class="co"># analyze amount of trackloss by subjects and trials</span></span>
+<span><span class="op">(</span><span class="va">trackloss</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trackloss_analysis.html">trackloss_analysis</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">response_window</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># remove trials with &gt; 25% of trackloss</span></span>
+<span><span class="va">response_window_clean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/clean_by_trackloss.html">clean_by_trackloss</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">response_window</span>, trial_prop_thresh <span class="op">=</span> <span class="fl">.25</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Performing Trackloss Analysis...</span></span></code></pre>
+<pre><code><span><span class="co">## Will exclude trials whose trackloss proportion is greater than : 0.25</span></span></code></pre>
+<pre><code><span><span class="co">##  ...removed  33  trials.</span></span></code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># create Target condition column</span>
-<span class="va">response_window_clean</span><span class="op">$</span><span class="va">Target</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span>test <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">'(Spoon|Bottle)'</span>, <span class="va">response_window_clean</span><span class="op">$</span><span class="va">Trial</span><span class="op">)</span>, 
-                                       yes <span class="op">=</span> <span class="st">'Inanimate'</span>, 
-                                       no  <span class="op">=</span> <span class="st">'Animate'</span><span class="op">)</span> <span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># create Target condition column</span></span>
+<span><span class="va">response_window_clean</span><span class="op">$</span><span class="va">Target</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span>test <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">'(Spoon|Bottle)'</span>, <span class="va">response_window_clean</span><span class="op">$</span><span class="va">Trial</span><span class="op">)</span>, </span>
+<span>                                       yes <span class="op">=</span> <span class="st">'Inanimate'</span>, </span>
+<span>                                       no  <span class="op">=</span> <span class="st">'Animate'</span><span class="op">)</span> <span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="visualize-the-timecourse">Visualize the timecourse<a class="anchor" aria-label="anchor" href="#visualize-the-timecourse"></a>
 </h2>
-<p>In this analysis, we are interested in the change of our data over time. Therefore, it’s very important that we visualize our data to see whether our statistical estimates make any sense at all.</p>
-<p>To plot the time-course of our data, we first need to convert it to eyetrackingR’s <code>time_sequence_data</code> format, which summarizes the data into time-bins and calculates proportion-looking for each (here we use 100ms time bins). From there, we simply use the <code>plot</code> method to plot the time-course.</p>
+<p>In this analysis, we are interested in the change of our data over
+time. Therefore, it’s very important that we visualize our data to see
+whether our statistical estimates make any sense at all.</p>
+<p>To plot the time-course of our data, we first need to convert it to
+eyetrackingR’s <code>time_sequence_data</code> format, which summarizes
+the data into time-bins and calculates proportion-looking for each (here
+we use 100ms time bins). From there, we simply use the <code>plot</code>
+method to plot the time-course.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># aggregate across trials within subjects in time analysis</span>
-<span class="va">response_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_time_sequence_data.html">make_time_sequence_data</a></span><span class="op">(</span><span class="va">response_window_clean</span>, time_bin_size <span class="op">=</span> <span class="fl">100</span>, 
-                                 predictor_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Target"</span><span class="op">)</span>,
-                                 aois <span class="op">=</span> <span class="st">"Animate"</span>
-                            <span class="op">)</span>
-
-<span class="co"># visualize time results</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">response_time</span>, predictor_column <span class="op">=</span> <span class="st">"Target"</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_light</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html" class="external-link">coord_cartesian</a></span><span class="op">(</span>ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># aggregate across trials within subjects in time analysis</span></span>
+<span><span class="va">response_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_time_sequence_data.html">make_time_sequence_data</a></span><span class="op">(</span><span class="va">response_window_clean</span>, time_bin_size <span class="op">=</span> <span class="fl">100</span>, </span>
+<span>                                 predictor_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Target"</span><span class="op">)</span>,</span>
+<span>                                 aois <span class="op">=</span> <span class="st">"Animate"</span></span>
+<span>                            <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># visualize time results</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">response_time</span>, predictor_column <span class="op">=</span> <span class="st">"Target"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_light</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html" class="external-link">coord_cartesian</a></span><span class="op">(</span>ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="growth_curve_analysis_vignette_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
-<p>From this plot, we should expect to see some big differences between Target conditions over time. However, an ideal analysis will also be consistent with the observation that these differences emerged after ~500ms – i.e, they were not present at window onset.</p>
+<p>From this plot, we should expect to see some big differences between
+Target conditions over time. However, an ideal analysis will also be
+consistent with the observation that these differences emerged after
+~500ms – i.e, they were not present at window onset.</p>
 </div>
 <div class="section level2">
 <h2 id="growth-curve-analysis">Growth curve analysis<a class="anchor" aria-label="anchor" href="#growth-curve-analysis"></a>
 </h2>
-<p>Growth curve analysis (GCA) lets us model the timecourse of attention by fitting curves to proportion-looking over the course of the trial, and statistically assessing the bends in these curves. Our implementation of a growth curve analysis modelled after Mirman et al. (2008).</p>
-<p>eyetrackingR sets us up nicely for GCA. Above, we used <code>make_time_sequence_data</code> to generate the dataframe. This dataframe includes everything we need for GCA.</p>
-<p>First, it includes the same dependent variable columns as <code>make_time_window_data</code>, giving us an option of analyzing raw proportions or its transformations (for more detail, see the documentation or the <a href="window_analysis_vignette.html">window analysis vignette</a> ).</p>
+<p>Growth curve analysis (GCA) lets us model the timecourse of attention
+by fitting curves to proportion-looking over the course of the trial,
+and statistically assessing the bends in these curves. Our
+implementation of a growth curve analysis modelled after Mirman et
+al. (2008).</p>
+<p>eyetrackingR sets us up nicely for GCA. Above, we used
+<code>make_time_sequence_data</code> to generate the dataframe. This
+dataframe includes everything we need for GCA.</p>
+<p>First, it includes the same dependent variable columns as
+<code>make_time_window_data</code>, giving us an option of analyzing raw
+proportions or its transformations (for more detail, see the
+documentation or the <a href="window_analysis_vignette.html">window
+analysis vignette</a> ).</p>
 <ul>
 <li>
 <code>Prop</code> – the mean of raw proportion scores</li>
 <li>
-<code>LogitAdjusted</code> – the logit transformation, <code>log( Prop / (1-Prop) )</code>, adjusted to avoid -/+ infinity</li>
+<code>LogitAdjusted</code> – the logit transformation,
+<code>log( Prop / (1-Prop) )</code>, adjusted to avoid -/+ infinity</li>
 <li>
-<code>Elog</code> – the empirical logit transformation <code>log( Prop+e / (1-Prop+e) )</code>
+<code>Elog</code> – the empirical logit transformation
+<code>log( Prop+e / (1-Prop+e) )</code>
 </li>
 <li>
 <code>ArcSin</code> – the arcsine-root transformation</li>
 </ul>
-<p>Second, <code>time_sequence_data</code> has a series columns corresponding to ‘orthogonal polynomial timecodes.’ You can think of these as the linear, quadratic, cubic, etc. component of our <code>Time</code> predictor (so <code>Time</code>, <code>Time^2</code>, <code>Time^3</code>, etc.). However, unlike simply taking the power, these transformations are <em>uncorrelated</em> with each other, and therefore more appropriate for multiple regression.</p>
-<p>If this seems confusing, it might help to simply visualize each of these vectors:</p>
+<p>Second, <code>time_sequence_data</code> has a series columns
+corresponding to ‘orthogonal polynomial timecodes.’ You can think of
+these as the linear, quadratic, cubic, etc. component of our
+<code>Time</code> predictor (so <code>Time</code>, <code>Time^2</code>,
+<code>Time^3</code>, etc.). However, unlike simply taking the power,
+these transformations are <em>uncorrelated</em> with each other, and
+therefore more appropriate for multiple regression.</p>
+<p>If this seems confusing, it might help to simply visualize each of
+these vectors:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># generate dataframe summarizing values of each vector</span>
-<span class="va">timecodes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">response_time</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'ot1'</span>,<span class="st">'ot2'</span>,<span class="st">'ot3'</span>,<span class="st">'ot4'</span>,<span class="st">'ot5'</span>,<span class="st">'ot6'</span>,<span class="st">'ot7'</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
-<span class="va">timecodes</span><span class="op">$</span><span class="va">num</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">timecodes</span><span class="op">)</span>
-
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">timecodes</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">num</span>, y<span class="op">=</span><span class="va">ot1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">ot2</span><span class="op">)</span>, color<span class="op">=</span><span class="st">'red'</span><span class="op">)</span> <span class="op">+</span>    <span class="co"># quadratic</span>
-               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">ot3</span><span class="op">)</span>, color<span class="op">=</span><span class="st">'blue'</span><span class="op">)</span> <span class="op">+</span>   <span class="co"># cubic</span>
-               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">ot4</span><span class="op">)</span>, color<span class="op">=</span><span class="st">'green'</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># quartic</span>
-               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">ot5</span><span class="op">)</span>, color<span class="op">=</span><span class="st">'purple'</span><span class="op">)</span> <span class="op">+</span> <span class="co"># quintic </span>
-               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">ot6</span><span class="op">)</span>, color<span class="op">=</span><span class="st">'yellow'</span><span class="op">)</span> <span class="op">+</span> <span class="co"># sextic</span>
-               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">ot7</span><span class="op">)</span>, color<span class="op">=</span><span class="st">'pink'</span><span class="op">)</span> <span class="op">+</span>   <span class="co"># septic</span>
-               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>name<span class="op">=</span><span class="st">""</span><span class="op">)</span> <span class="op">+</span>
-               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>name<span class="op">=</span><span class="st">""</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># generate dataframe summarizing values of each vector</span></span>
+<span><span class="va">timecodes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">response_time</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'ot1'</span>,<span class="st">'ot2'</span>,<span class="st">'ot3'</span>,<span class="st">'ot4'</span>,<span class="st">'ot5'</span>,<span class="st">'ot6'</span>,<span class="st">'ot7'</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">timecodes</span><span class="op">$</span><span class="va">num</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">timecodes</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">timecodes</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">num</span>, y<span class="op">=</span><span class="va">ot1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">ot2</span><span class="op">)</span>, color<span class="op">=</span><span class="st">'red'</span><span class="op">)</span> <span class="op">+</span>    <span class="co"># quadratic</span></span>
+<span>               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">ot3</span><span class="op">)</span>, color<span class="op">=</span><span class="st">'blue'</span><span class="op">)</span> <span class="op">+</span>   <span class="co"># cubic</span></span>
+<span>               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">ot4</span><span class="op">)</span>, color<span class="op">=</span><span class="st">'green'</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># quartic</span></span>
+<span>               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">ot5</span><span class="op">)</span>, color<span class="op">=</span><span class="st">'purple'</span><span class="op">)</span> <span class="op">+</span> <span class="co"># quintic </span></span>
+<span>               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">ot6</span><span class="op">)</span>, color<span class="op">=</span><span class="st">'yellow'</span><span class="op">)</span> <span class="op">+</span> <span class="co"># sextic</span></span>
+<span>               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">ot7</span><span class="op">)</span>, color<span class="op">=</span><span class="st">'pink'</span><span class="op">)</span> <span class="op">+</span>   <span class="co"># septic</span></span>
+<span>               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>name<span class="op">=</span><span class="st">""</span><span class="op">)</span> <span class="op">+</span></span>
+<span>               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>name<span class="op">=</span><span class="st">""</span><span class="op">)</span></span></code></pre></div>
 <p><img src="growth_curve_analysis_vignette_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">timecodes</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">7</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>,<span class="fl">5</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">##     ot1 ot2 ot3 ot4 ot5 ot6 ot7</span>
-<span class="co">## ot1   1   0   0   0   0   0   0</span>
-<span class="co">## ot2   0   1   0   0   0   0   0</span>
-<span class="co">## ot3   0   0   1   0   0   0   0</span>
-<span class="co">## ot4   0   0   0   1   0   0   0</span>
-<span class="co">## ot5   0   0   0   0   1   0   0</span>
-<span class="co">## ot6   0   0   0   0   0   1   0</span>
-<span class="co">## ot7   0   0   0   0   0   0   1</span></code></pre>
-<p>You can see the linear time code moving from the bottom left to top right corner of that plot (in black). Each of the other coloured lines corresponds to a different growth function.</p>
-<p>The idea behind GCA is that we can simulanteously regress differences between our conditions (here, Target) on each of these to see which (in combination, or independently) best captures the pattern of growth in our data. Importantly, because they are uncorrelated, they are sure to capture <em>distinct</em> variance in our data.</p>
-<p>Let’s fit our first GCA model, <strong>including <em>only</em> the linear time code for now</strong> (i.e., we temporarily want to ignore non-linear change over time):</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">timecodes</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">7</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>,<span class="fl">5</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##     ot1 ot2 ot3 ot4 ot5 ot6 ot7</span></span>
+<span><span class="co">## ot1   1   0   0   0   0   0   0</span></span>
+<span><span class="co">## ot2   0   1   0   0   0   0   0</span></span>
+<span><span class="co">## ot3   0   0   1   0   0   0   0</span></span>
+<span><span class="co">## ot4   0   0   0   1   0   0   0</span></span>
+<span><span class="co">## ot5   0   0   0   0   1   0   0</span></span>
+<span><span class="co">## ot6   0   0   0   0   0   1   0</span></span>
+<span><span class="co">## ot7   0   0   0   0   0   0   1</span></span></code></pre>
+<p>You can see the linear time code moving from the bottom left to top
+right corner of that plot (in black). Each of the other coloured lines
+corresponds to a different growth function.</p>
+<p>The idea behind GCA is that we can simulanteously regress differences
+between our conditions (here, Target) on each of these to see which (in
+combination, or independently) best captures the pattern of growth in
+our data. Importantly, because they are uncorrelated, they are sure to
+capture <em>distinct</em> variance in our data.</p>
+<p>Let’s fit our first GCA model, <strong>including <em>only</em> the
+linear time code for now</strong> (i.e., we temporarily want to ignore
+non-linear change over time):</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># sum-code and center our predictor:</span>
-<span class="va">response_time</span><span class="op">$</span><span class="va">TargetC</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">response_time</span><span class="op">$</span><span class="va">Target</span> <span class="op">==</span> <span class="st">'Animate'</span>, <span class="fl">.5</span>, <span class="op">-</span><span class="fl">.5</span><span class="op">)</span>
-<span class="va">response_time</span><span class="op">$</span><span class="va">TargetC</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">response_time</span><span class="op">$</span><span class="va">TargetC</span>, center<span class="op">=</span><span class="cn">TRUE</span>, scale<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># Construct model</span>
-<span class="va">model_time_sequence</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html" class="external-link">lmer</a></span><span class="op">(</span><span class="va">Elog</span> <span class="op">~</span> <span class="va">TargetC</span><span class="op">*</span><span class="op">(</span><span class="va">ot1</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">ot1</span> <span class="op">|</span> <span class="va">Trial</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">ot1</span> <span class="op">|</span> <span class="va">ParticipantName</span><span class="op">)</span>, 
-              data <span class="op">=</span> <span class="va">response_time</span>, REML <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="co"># cleanly show important parts of model (see `summary()` for more)</span>
-<span class="fu">broom.mixed</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">model_time_sequence</span>, effects <span class="op">=</span> <span class="st">"fixed"</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 4 × 5</span></span>
-<span class="co">##   effect term        estimate std.error statistic</span>
-<span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span> fixed  (Intercept)    0.740     0.142      5.21</span>
-<span class="co">## <span style="color: #BCBCBC;">2</span> fixed  TargetC        1.76      0.139     12.7 </span>
-<span class="co">## <span style="color: #BCBCBC;">3</span> fixed  ot1           -<span style="color: #BB0000;">3.00</span>      0.634     -<span style="color: #BB0000;">4.73</span></span>
-<span class="co">## <span style="color: #BCBCBC;">4</span> fixed  TargetC:ot1   -<span style="color: #BB0000;">0.995</span>     0.732     -<span style="color: #BB0000;">1.36</span></span></code></pre>
+<code class="sourceCode R"><span><span class="co"># sum-code and center our predictor:</span></span>
+<span><span class="va">response_time</span><span class="op">$</span><span class="va">TargetC</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">response_time</span><span class="op">$</span><span class="va">Target</span> <span class="op">==</span> <span class="st">'Animate'</span>, <span class="fl">.5</span>, <span class="op">-</span><span class="fl">.5</span><span class="op">)</span></span>
+<span><span class="va">response_time</span><span class="op">$</span><span class="va">TargetC</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">response_time</span><span class="op">$</span><span class="va">TargetC</span>, center<span class="op">=</span><span class="cn">TRUE</span>, scale<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Construct model</span></span>
+<span><span class="va">model_time_sequence</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html" class="external-link">lmer</a></span><span class="op">(</span><span class="va">Elog</span> <span class="op">~</span> <span class="va">TargetC</span><span class="op">*</span><span class="op">(</span><span class="va">ot1</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">ot1</span> <span class="op">|</span> <span class="va">Trial</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">ot1</span> <span class="op">|</span> <span class="va">ParticipantName</span><span class="op">)</span>, </span>
+<span>              data <span class="op">=</span> <span class="va">response_time</span>, REML <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># cleanly show important parts of model (see `summary()` for more)</span></span>
+<span><span class="fu">broom.mixed</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">model_time_sequence</span>, effects <span class="op">=</span> <span class="st">"fixed"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 4 × 5</span></span></span>
+<span><span class="co">##   effect term        estimate std.error statistic</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> fixed  (Intercept)    0.740     0.142      5.21</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> fixed  TargetC        1.76      0.139     12.7 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> fixed  ot1           -<span style="color: #BB0000;">3.00</span>      0.634     -<span style="color: #BB0000;">4.73</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> fixed  TargetC:ot1   -<span style="color: #BB0000;">0.995</span>     0.732     -<span style="color: #BB0000;">1.36</span></span></span></code></pre>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/add1.html" class="external-link">drop1</a></span><span class="op">(</span><span class="va">model_time_sequence</span>, <span class="op">~</span><span class="va">.</span>, test<span class="op">=</span><span class="st">"Chi"</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Single term deletions</span>
-<span class="co">## </span>
-<span class="co">## Model:</span>
-<span class="co">## Elog ~ TargetC * (ot1) + (1 + ot1 | Trial) + (1 + ot1 | ParticipantName)</span>
-<span class="co">##             npar   AIC     LRT   Pr(Chi)    </span>
-<span class="co">## &lt;none&gt;           28106                      </span>
-<span class="co">## TargetC        1 28123 19.4738  1.02e-05 ***</span>
-<span class="co">## ot1            1 28118 14.0063 0.0001822 ***</span>
-<span class="co">## TargetC:ot1    1 28105  1.6244 0.2024827    </span>
-<span class="co">## ---</span>
-<span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></code></pre>
-<p>eyetrackingR includes a <code>plot</code> method for <code>time_sequence_data</code> that can easily overlay the predictions of this model on the raw data:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/add1.html" class="external-link">drop1</a></span><span class="op">(</span><span class="va">model_time_sequence</span>, <span class="op">~</span><span class="va">.</span>, test<span class="op">=</span><span class="st">"Chi"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Single term deletions</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Model:</span></span>
+<span><span class="co">## Elog ~ TargetC * (ot1) + (1 + ot1 | Trial) + (1 + ot1 | ParticipantName)</span></span>
+<span><span class="co">##             npar   AIC     LRT   Pr(Chi)    </span></span>
+<span><span class="co">## &lt;none&gt;           28106                      </span></span>
+<span><span class="co">## TargetC        1 28123 19.4738  1.02e-05 ***</span></span>
+<span><span class="co">## ot1            1 28118 14.0063 0.0001822 ***</span></span>
+<span><span class="co">## TargetC:ot1    1 28105  1.6244 0.2024842    </span></span>
+<span><span class="co">## ---</span></span>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre>
+<p>eyetrackingR includes a <code>plot</code> method for
+<code>time_sequence_data</code> that can easily overlay the predictions
+of this model on the raw data:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">response_time</span>, predictor_column <span class="op">=</span> <span class="st">"Target"</span>, dv <span class="op">=</span> <span class="st">"Elog"</span>, model <span class="op">=</span> <span class="va">model_time_sequence</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_light</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">response_time</span>, predictor_column <span class="op">=</span> <span class="st">"Target"</span>, dv <span class="op">=</span> <span class="st">"Elog"</span>, model <span class="op">=</span> <span class="va">model_time_sequence</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_light</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="growth_curve_analysis_vignette_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
-<p>This model reveals two main effects of TargetC and ot1, respectively. These may seem OK at first, but they are actually not a great match to our data (as revealed by the plot of their predictions).</p>
+<p>This model reveals two main effects of TargetC and ot1, respectively.
+These may seem OK at first, but they are actually not a great match to
+our data (as revealed by the plot of their predictions).</p>
 <ul>
-<li>The main effect of TargetC says that, on average throughout each trial, participants looked more to the Animate target when it was named than when the Inanimate was named. This is accurate.</li>
-<li>The main effect of ot1 says that, as the trial progressed, participants tended to look away from the Animate over the course of each trial. This is also accurate.</li>
+<li>The main effect of TargetC says that, on average throughout each
+trial, participants looked more to the Animate target when it was named
+than when the Inanimate was named. This is accurate.</li>
+<li>The main effect of ot1 says that, as the trial progressed,
+participants tended to look away from the Animate over the course of
+each trial. This is also accurate.</li>
 </ul>
-<p>But what we are missing is a result that reflects that these differences between Target <em>emerged</em> after the start of the window.</p>
-<p>To remedy this issue, we can allow for non-linear change overtime by including a few higher-order orthogonal polynomials:</p>
+<p>But what we are missing is a result that reflects that these
+differences between Target <em>emerged</em> after the start of the
+window.</p>
+<p>To remedy this issue, we can allow for non-linear change overtime by
+including a few higher-order orthogonal polynomials:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model_time_sequence</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html" class="external-link">lmer</a></span><span class="op">(</span><span class="va">Elog</span> <span class="op">~</span> <span class="va">TargetC</span><span class="op">*</span><span class="op">(</span><span class="va">ot1</span> <span class="op">+</span> <span class="va">ot2</span> <span class="op">+</span> <span class="va">ot3</span> <span class="op">+</span> <span class="va">ot4</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">Trial</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">ParticipantName</span><span class="op">)</span>, 
-                            data <span class="op">=</span> <span class="va">response_time</span>, REML <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="co"># commented out because this many random slopes takes too long to fit for a vignette</span>
-<span class="co"># model_time_sequence &lt;- lmer(Elog ~ TargetC*(ot1 + ot2 + ot3 + ot4) + </span>
-<span class="co">#                               (1 + ot1 + ot2 + ot3 + ot4 | Trial) + (1 + ot1 + ot2 + ot3 + ot4 | ParticipantName), </span>
-<span class="co">#                             data = response_time, REML = FALSE)</span>
-
-<span class="co"># cleanly show important parts of model (see `summary()` for more)</span>
-<span class="fu">broom.mixed</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">model_time_sequence</span>, effects <span class="op">=</span> <span class="st">"fixed"</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 10 × 5</span></span>
-<span class="co">##    effect term        estimate std.error statistic</span>
-<span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;"> 1</span> fixed  (Intercept)    0.734     0.143      5.13</span>
-<span class="co">## <span style="color: #BCBCBC;"> 2</span> fixed  TargetC        1.76      0.138     12.7 </span>
-<span class="co">## <span style="color: #BCBCBC;"> 3</span> fixed  ot1           -<span style="color: #BB0000;">2.82</span>      0.193    -<span style="color: #BB0000;">14.6</span> </span>
-<span class="co">## <span style="color: #BCBCBC;"> 4</span> fixed  ot2            0.319     0.193      1.65</span>
-<span class="co">## <span style="color: #BCBCBC;"> 5</span> fixed  ot3           -<span style="color: #BB0000;">0.584</span>     0.193     -<span style="color: #BB0000;">3.03</span></span>
-<span class="co">## <span style="color: #BCBCBC;"> 6</span> fixed  ot4           -<span style="color: #BB0000;">0.325</span>     0.192     -<span style="color: #BB0000;">1.69</span></span>
-<span class="co">## <span style="color: #BCBCBC;"> 7</span> fixed  TargetC:ot1   -<span style="color: #BB0000;">0.790</span>     0.401     -<span style="color: #BB0000;">1.97</span></span>
-<span class="co">## <span style="color: #BCBCBC;"> 8</span> fixed  TargetC:ot2   -<span style="color: #BB0000;">1.74</span>      0.402     -<span style="color: #BB0000;">4.34</span></span>
-<span class="co">## <span style="color: #BCBCBC;"> 9</span> fixed  TargetC:ot3    4.22      0.401     10.5 </span>
-<span class="co">## <span style="color: #BCBCBC;">10</span> fixed  TargetC:ot4   -<span style="color: #BB0000;">1.82</span>      0.400     -<span style="color: #BB0000;">4.54</span></span></code></pre>
+<code class="sourceCode R"><span><span class="va">model_time_sequence</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html" class="external-link">lmer</a></span><span class="op">(</span><span class="va">Elog</span> <span class="op">~</span> <span class="va">TargetC</span><span class="op">*</span><span class="op">(</span><span class="va">ot1</span> <span class="op">+</span> <span class="va">ot2</span> <span class="op">+</span> <span class="va">ot3</span> <span class="op">+</span> <span class="va">ot4</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">Trial</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">ParticipantName</span><span class="op">)</span>, </span>
+<span>                            data <span class="op">=</span> <span class="va">response_time</span>, REML <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># commented out because this many random slopes takes too long to fit for a vignette</span></span>
+<span><span class="co"># model_time_sequence &lt;- lmer(Elog ~ TargetC*(ot1 + ot2 + ot3 + ot4) + </span></span>
+<span><span class="co">#                               (1 + ot1 + ot2 + ot3 + ot4 | Trial) + (1 + ot1 + ot2 + ot3 + ot4 | ParticipantName), </span></span>
+<span><span class="co">#                             data = response_time, REML = FALSE)</span></span>
+<span></span>
+<span><span class="co"># cleanly show important parts of model (see `summary()` for more)</span></span>
+<span><span class="fu">broom.mixed</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">model_time_sequence</span>, effects <span class="op">=</span> <span class="st">"fixed"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 10 × 5</span></span></span>
+<span><span class="co">##    effect term        estimate std.error statistic</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> fixed  (Intercept)    0.734     0.143      5.13</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> fixed  TargetC        1.76      0.138     12.7 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> fixed  ot1           -<span style="color: #BB0000;">2.82</span>      0.193    -<span style="color: #BB0000;">14.6</span> </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> fixed  ot2            0.319     0.193      1.65</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> fixed  ot3           -<span style="color: #BB0000;">0.584</span>     0.193     -<span style="color: #BB0000;">3.03</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> fixed  ot4           -<span style="color: #BB0000;">0.325</span>     0.192     -<span style="color: #BB0000;">1.69</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> fixed  TargetC:ot1   -<span style="color: #BB0000;">0.790</span>     0.401     -<span style="color: #BB0000;">1.97</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> fixed  TargetC:ot2   -<span style="color: #BB0000;">1.74</span>      0.402     -<span style="color: #BB0000;">4.34</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> fixed  TargetC:ot3    4.22      0.401     10.5 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> fixed  TargetC:ot4   -<span style="color: #BB0000;">1.82</span>      0.400     -<span style="color: #BB0000;">4.54</span></span></span></code></pre>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/add1.html" class="external-link">drop1</a></span><span class="op">(</span><span class="va">model_time_sequence</span>, <span class="op">~</span><span class="va">.</span>, test<span class="op">=</span><span class="st">"Chi"</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Single term deletions</span>
-<span class="co">## </span>
-<span class="co">## Model:</span>
-<span class="co">## Elog ~ TargetC * (ot1 + ot2 + ot3 + ot4) + (1 | Trial) + (1 | </span>
-<span class="co">##     ParticipantName)</span>
-<span class="co">##             npar   AIC     LRT   Pr(Chi)    </span>
-<span class="co">## &lt;none&gt;           28096                      </span>
-<span class="co">## TargetC        1 28114  19.327 1.101e-05 ***</span>
-<span class="co">## ot1            1 28305 210.511 &lt; 2.2e-16 ***</span>
-<span class="co">## ot2            1 28097   2.721  0.099027 .  </span>
-<span class="co">## ot3            1 28104   9.184  0.002442 ** </span>
-<span class="co">## ot4            1 28097   2.851  0.091310 .  </span>
-<span class="co">## TargetC:ot1    1 28098   3.870  0.049159 *  </span>
-<span class="co">## TargetC:ot2    1 28113  18.804 1.449e-05 ***</span>
-<span class="co">## TargetC:ot3    1 28204 109.693 &lt; 2.2e-16 ***</span>
-<span class="co">## TargetC:ot4    1 28115  20.595 5.674e-06 ***</span>
-<span class="co">## ---</span>
-<span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/add1.html" class="external-link">drop1</a></span><span class="op">(</span><span class="va">model_time_sequence</span>, <span class="op">~</span><span class="va">.</span>, test<span class="op">=</span><span class="st">"Chi"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Single term deletions</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Model:</span></span>
+<span><span class="co">## Elog ~ TargetC * (ot1 + ot2 + ot3 + ot4) + (1 | Trial) + (1 | </span></span>
+<span><span class="co">##     ParticipantName)</span></span>
+<span><span class="co">##             npar   AIC     LRT   Pr(Chi)    </span></span>
+<span><span class="co">## &lt;none&gt;           28096                      </span></span>
+<span><span class="co">## TargetC        1 28114  19.327 1.101e-05 ***</span></span>
+<span><span class="co">## ot1            1 28305 210.511 &lt; 2.2e-16 ***</span></span>
+<span><span class="co">## ot2            1 28097   2.721  0.099027 .  </span></span>
+<span><span class="co">## ot3            1 28104   9.184  0.002442 ** </span></span>
+<span><span class="co">## ot4            1 28097   2.851  0.091310 .  </span></span>
+<span><span class="co">## TargetC:ot1    1 28098   3.870  0.049159 *  </span></span>
+<span><span class="co">## TargetC:ot2    1 28113  18.804 1.449e-05 ***</span></span>
+<span><span class="co">## TargetC:ot3    1 28204 109.693 &lt; 2.2e-16 ***</span></span>
+<span><span class="co">## TargetC:ot4    1 28115  20.595 5.674e-06 ***</span></span>
+<span><span class="co">## ---</span></span>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">response_time</span>, predictor_column <span class="op">=</span> <span class="st">"Target"</span>, dv <span class="op">=</span> <span class="st">"Elog"</span>, model <span class="op">=</span> <span class="va">model_time_sequence</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_light</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">response_time</span>, predictor_column <span class="op">=</span> <span class="st">"Target"</span>, dv <span class="op">=</span> <span class="st">"Elog"</span>, model <span class="op">=</span> <span class="va">model_time_sequence</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_light</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="growth_curve_analysis_vignette_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
-<p>This model better captures our data because it shows critical interactions between Target and higher-order polynomials. These allow the model to capture the steep drop in the Inanimate condition as well as the bend that follows it.</p>
+<p>This model better captures our data because it shows critical
+interactions between Target and higher-order polynomials. These allow
+the model to capture the steep drop in the Inanimate condition as well
+as the bend that follows it.</p>
 </div>
 <div class="section level2">
 <h2 id="but-when-did-the-conditions-diverge">But <em>when</em> did the conditions diverge?<a class="anchor" aria-label="anchor" href="#but-when-did-the-conditions-diverge"></a>
 </h2>
-<p>GCA can tell you that your conditions/predictors had some predictive value (i.e., changed differently) over time. They can also tell you the form of that change by seeing the polynomials with which they reliably interacted. However, they can’t tell you at what time these predictors had an effect.</p>
-<p>In the case of ascertaining reaction times, one way to answer this question is by using <a href="onset_contingent_analysis_vignette.html">onset-contingent analyses</a>.</p>
-<p>For more general approaches to estimating time windows of divergence (estimating both the onset and offset of divergences), take a look at the <a href="divergence_vignette.html">divergence vignette</a>.</p>
+<p>GCA can tell you that your conditions/predictors had some predictive
+value (i.e., changed differently) over time. They can also tell you the
+form of that change by seeing the polynomials with which they reliably
+interacted. However, they can’t tell you at what time these predictors
+had an effect.</p>
+<p>In the case of ascertaining reaction times, one way to answer this
+question is by using <a href="onset_contingent_analysis_vignette.html">onset-contingent
+analyses</a>.</p>
+<p>For more general approaches to estimating time windows of divergence
+(estimating both the onset and offset of divergences), take a look at
+the <a href="divergence_vignette.html">divergence vignette</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<p>Mirman, D., Dixon, J., &amp; Magnuson, J. S. (2008). Statistical and computational models of the visual world paradigm: Growth curves and individual differences. Journal of Memory and Language, 59, 474–494. <a href="https://doi.org/10.1016/j.jml.2007.11.006" class="external-link uri">https://doi.org/10.1016/j.jml.2007.11.006</a>.</p>
+<p>Mirman, D., Dixon, J., &amp; Magnuson, J. S. (2008). Statistical and
+computational models of the visual world paradigm: Growth curves and
+individual differences. Journal of Memory and Language, 59, 474–494. <a href="https://doi.org/10.1016/j.jml.2007.11.006" class="external-link uri">https://doi.org/10.1016/j.jml.2007.11.006</a>.</p>
 </div>
   </div>
 
@@ -351,7 +426,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

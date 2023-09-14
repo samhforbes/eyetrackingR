@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">eyetrackingR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
       </span>
     </div>
 
@@ -43,7 +43,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -90,10 +90,12 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Performing an onset-contingent analysis using eyetrackingR</h1>
-                        <h4 data-toc-skip class="author">Samuel Forbes, Jacob Dink &amp; Brock Ferguson</h4>
+      <h1 data-toc-skip>Performing an onset-contingent analysis using
+eyetrackingR</h1>
+                        <h4 data-toc-skip class="author">Samuel Forbes,
+Jacob Dink &amp; Brock Ferguson</h4>
             
-            <h4 data-toc-skip class="date">2022-04-05</h4>
+            <h4 data-toc-skip class="date">2023-09-14</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/samhforbes/eyetrackingR/blob/HEAD/vignettes/onset_contingent_analysis_vignette.Rmd" class="external-link"><code>vignettes/onset_contingent_analysis_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>onset_contingent_analysis_vignette.Rmd</code></div>
@@ -103,158 +105,218 @@
     
     
 <blockquote>
-<p><strong>Our Experiment</strong>: Each eyetrackingR vignette uses the <em>eyetrackingR</em> package to analyze real data from a simple 2-alternative forced choice (2AFC) word recognition task administered to 19- and 24-month-olds. On each trial, infants were shown a picture of an animate object (e.g., a horse) and an inanimate object (e.g., a spoon). After inspecting the images, they disappeared and they heard a label referring to one of them (e.g., “The horse is nearby!”). Finally, the objects re-appeared on the screen and they were prompted to look at the target (e.g., “Look at the horse!”).</p>
+<p><strong>Our Experiment</strong>: Each eyetrackingR vignette uses the
+<em>eyetrackingR</em> package to analyze real data from a simple
+2-alternative forced choice (2AFC) word recognition task administered to
+19- and 24-month-olds. On each trial, infants were shown a picture of an
+animate object (e.g., a horse) and an inanimate object (e.g., a spoon).
+After inspecting the images, they disappeared and they heard a label
+referring to one of them (e.g., “The horse is nearby!”). Finally, the
+objects re-appeared on the screen and they were prompted to look at the
+target (e.g., “Look at the horse!”).</p>
 </blockquote>
 <div class="section level2">
 <h2 id="overview-of-this-vignette">Overview of this vignette<a class="anchor" aria-label="anchor" href="#overview-of-this-vignette"></a>
 </h2>
-<p>In this vignette, we want to examine how quickly participants’ looked to the referent AOI (e.g., the Animate, when the Animate was named; the Inanimate, when the Inanimate was named) – i.e., to calculate their reaction times.</p>
-<p>To do so, we can perform an onset-contingent looking analysis (e.g., Fernald et al., 2008), asking how quickly they <em>switched</em> from the AOI they were looking at from the onset of the trial when they happened to be looking at a non-target AOI. If participants were faster to switch from a distractor AOI to a target AOI than vice-verse, we can conclude that they were reliably identifying the target AOI.</p>
-<p>Moreover, we can ask if this effect of onset-AOI (switching to/from the target) interacts with another predictor. <em>A priori</em>, we suspect they will be slower to switch away from the Animate (i.e., when the Inanimate was named) than to switch to the Animate (i.e., when the Animate was named) because, all things equal, infants prefer to look at animate things.</p>
+<p>In this vignette, we want to examine how quickly participants’ looked
+to the referent AOI (e.g., the Animate, when the Animate was named; the
+Inanimate, when the Inanimate was named) – i.e., to calculate their
+reaction times.</p>
+<p>To do so, we can perform an onset-contingent looking analysis (e.g.,
+Fernald et al., 2008), asking how quickly they <em>switched</em> from
+the AOI they were looking at from the onset of the trial when they
+happened to be looking at a non-target AOI. If participants were faster
+to switch from a distractor AOI to a target AOI than vice-verse, we can
+conclude that they were reliably identifying the target AOI.</p>
+<p>Moreover, we can ask if this effect of onset-AOI (switching to/from
+the target) interacts with another predictor. <em>A priori</em>, we
+suspect they will be slower to switch away from the Animate (i.e., when
+the Inanimate was named) than to switch to the Animate (i.e., when the
+Animate was named) because, all things equal, infants prefer to look at
+animate things.</p>
 </div>
 <div class="section level2">
 <h2 id="prerequisites">Prerequisites<a class="anchor" aria-label="anchor" href="#prerequisites"></a>
 </h2>
-<p>Before performing this analysis, we’ll need to prepare and clean our dataset. Here we will to do this quickly and with few notes but, for more information, see the vignette on <a href="preparing_your_data_vignette.html">preparing your data</a>.</p>
+<p>Before performing this analysis, we’ll need to prepare and clean our
+dataset. Here we will to do this quickly and with few notes but, for
+more information, see the vignette on <a href="preparing_your_data_vignette.html">preparing your data</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="http://Matrix.R-forge.R-project.org/" class="external-link">"Matrix"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/lme4/lme4/" class="external-link">"lme4"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="http://www.eyetracking-r.com/" class="external-link">"eyetrackingR"</a></span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Loading required package: dplyr</span></code></pre>
-<pre><code><span class="co">## </span>
-<span class="co">## Attaching package: 'dplyr'</span></code></pre>
-<pre><code><span class="co">## The following objects are masked from 'package:stats':</span>
-<span class="co">## </span>
-<span class="co">##     filter, lag</span></code></pre>
-<pre><code><span class="co">## The following objects are masked from 'package:base':</span>
-<span class="co">## </span>
-<span class="co">##     intersect, setdiff, setequal, union</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://Matrix.R-forge.R-project.org" class="external-link">"Matrix"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/lme4/lme4/" class="external-link">"lme4"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="http://samforbes.me/eyetrackingR/" class="external-link">"eyetrackingR"</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Loading required package: dplyr</span></span></code></pre>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## Attaching package: 'dplyr'</span></span></code></pre>
+<pre><code><span><span class="co">## The following objects are masked from 'package:stats':</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     filter, lag</span></span></code></pre>
+<pre><code><span><span class="co">## The following objects are masked from 'package:base':</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     intersect, setdiff, setequal, union</span></span></code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"word_recognition"</span><span class="op">)</span>
-<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_eyetrackingr_data.html">make_eyetrackingr_data</a></span><span class="op">(</span><span class="va">word_recognition</span>, 
-                       participant_column <span class="op">=</span> <span class="st">"ParticipantName"</span>,
-                       trial_column <span class="op">=</span> <span class="st">"Trial"</span>,
-                       time_column <span class="op">=</span> <span class="st">"TimeFromTrialOnset"</span>,
-                       trackloss_column <span class="op">=</span> <span class="st">"TrackLoss"</span>,
-                       aoi_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Animate'</span>,<span class="st">'Inanimate'</span><span class="op">)</span>,
-                       treat_non_aoi_looks_as_missing <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span>
-
-<span class="co"># subset to response window post word-onset</span>
-<span class="va">response_window</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/subset_by_window.html">subset_by_window</a></span><span class="op">(</span><span class="va">data</span>, 
-                                    window_start_time <span class="op">=</span> <span class="fl">15500</span>, 
-                                    window_end_time <span class="op">=</span> <span class="fl">21000</span>, 
-                                    rezero <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Avg. window length in new data will be 5500</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"word_recognition"</span><span class="op">)</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_eyetrackingr_data.html">make_eyetrackingr_data</a></span><span class="op">(</span><span class="va">word_recognition</span>, </span>
+<span>                       participant_column <span class="op">=</span> <span class="st">"ParticipantName"</span>,</span>
+<span>                       trial_column <span class="op">=</span> <span class="st">"Trial"</span>,</span>
+<span>                       time_column <span class="op">=</span> <span class="st">"TimeFromTrialOnset"</span>,</span>
+<span>                       trackloss_column <span class="op">=</span> <span class="st">"TrackLoss"</span>,</span>
+<span>                       aoi_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Animate'</span>,<span class="st">'Inanimate'</span><span class="op">)</span>,</span>
+<span>                       treat_non_aoi_looks_as_missing <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># subset to response window post word-onset</span></span>
+<span><span class="va">response_window</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/subset_by_window.html">subset_by_window</a></span><span class="op">(</span><span class="va">data</span>, </span>
+<span>                                    window_start_time <span class="op">=</span> <span class="fl">15500</span>, </span>
+<span>                                    window_end_time <span class="op">=</span> <span class="fl">21000</span>, </span>
+<span>                                    rezero <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Avg. window length in new data will be 5500</span></span></code></pre>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># analyze amount of trackloss by subjects and trials</span>
-<span class="op">(</span><span class="va">trackloss</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trackloss_analysis.html">trackloss_analysis</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">response_window</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># remove trials with &gt; 25% of trackloss</span>
-<span class="va">response_window_clean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/clean_by_trackloss.html">clean_by_trackloss</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">response_window</span>, trial_prop_thresh <span class="op">=</span> <span class="fl">.25</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Performing Trackloss Analysis...</span></code></pre>
-<pre><code><span class="co">## Will exclude trials whose trackloss proportion is greater than : 0.25</span></code></pre>
-<pre><code><span class="co">##  ...removed  33  trials.</span></code></pre>
+<code class="sourceCode R"><span><span class="co"># analyze amount of trackloss by subjects and trials</span></span>
+<span><span class="op">(</span><span class="va">trackloss</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trackloss_analysis.html">trackloss_analysis</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">response_window</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># remove trials with &gt; 25% of trackloss</span></span>
+<span><span class="va">response_window_clean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/clean_by_trackloss.html">clean_by_trackloss</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">response_window</span>, trial_prop_thresh <span class="op">=</span> <span class="fl">.25</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Performing Trackloss Analysis...</span></span></code></pre>
+<pre><code><span><span class="co">## Will exclude trials whose trackloss proportion is greater than : 0.25</span></span></code></pre>
+<pre><code><span><span class="co">##  ...removed  33  trials.</span></span></code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># create Target condition column</span>
-<span class="va">response_window_clean</span><span class="op">$</span><span class="va">Target</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span>test <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">'(Spoon|Bottle)'</span>, <span class="va">response_window_clean</span><span class="op">$</span><span class="va">Trial</span><span class="op">)</span>, 
-                                       yes <span class="op">=</span> <span class="st">'Inanimate'</span>, 
-                                       no  <span class="op">=</span> <span class="st">'Animate'</span><span class="op">)</span> <span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># create Target condition column</span></span>
+<span><span class="va">response_window_clean</span><span class="op">$</span><span class="va">Target</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span>test <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">'(Spoon|Bottle)'</span>, <span class="va">response_window_clean</span><span class="op">$</span><span class="va">Trial</span><span class="op">)</span>, </span>
+<span>                                       yes <span class="op">=</span> <span class="st">'Inanimate'</span>, </span>
+<span>                                       no  <span class="op">=</span> <span class="st">'Animate'</span><span class="op">)</span> <span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="adding-new-columns">Adding new columns<a class="anchor" aria-label="anchor" href="#adding-new-columns"></a>
 </h2>
-<p>In order to perform this analysis, we need to add two new columns to our dataset to indicate the Target and Distractor AOIs <em>relative to the Target condition</em> for each trial.</p>
+<p>In order to perform this analysis, we need to add two new columns to
+our dataset to indicate the Target and Distractor AOIs <em>relative to
+the Target condition</em> for each trial.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># recode AOIs to target &amp; distractor</span>
-<span class="va">response_window_clean</span><span class="op">$</span><span class="va">TrialTarget</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span>test <span class="op">=</span> <span class="va">response_window_clean</span><span class="op">$</span><span class="va">Target</span> <span class="op">==</span> <span class="st">'Animate'</span>, 
-                                            yes <span class="op">=</span> <span class="va">response_window_clean</span><span class="op">$</span><span class="va">Animate</span>, 
-                                            no <span class="op">=</span> <span class="va">response_window_clean</span><span class="op">$</span><span class="va">Inanimate</span><span class="op">)</span>
-<span class="va">response_window_clean</span><span class="op">$</span><span class="va">TrialDistractor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span>test <span class="op">=</span> <span class="va">response_window_clean</span><span class="op">$</span><span class="va">Target</span> <span class="op">==</span> <span class="st">'Animate'</span>, 
-                                                yes <span class="op">=</span> <span class="va">response_window_clean</span><span class="op">$</span><span class="va">Inanimate</span>, 
-                                                no <span class="op">=</span> <span class="va">response_window_clean</span><span class="op">$</span><span class="va">Animate</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># recode AOIs to target &amp; distractor</span></span>
+<span><span class="va">response_window_clean</span><span class="op">$</span><span class="va">TrialTarget</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span>test <span class="op">=</span> <span class="va">response_window_clean</span><span class="op">$</span><span class="va">Target</span> <span class="op">==</span> <span class="st">'Animate'</span>, </span>
+<span>                                            yes <span class="op">=</span> <span class="va">response_window_clean</span><span class="op">$</span><span class="va">Animate</span>, </span>
+<span>                                            no <span class="op">=</span> <span class="va">response_window_clean</span><span class="op">$</span><span class="va">Inanimate</span><span class="op">)</span></span>
+<span><span class="va">response_window_clean</span><span class="op">$</span><span class="va">TrialDistractor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span>test <span class="op">=</span> <span class="va">response_window_clean</span><span class="op">$</span><span class="va">Target</span> <span class="op">==</span> <span class="st">'Animate'</span>, </span>
+<span>                                                yes <span class="op">=</span> <span class="va">response_window_clean</span><span class="op">$</span><span class="va">Inanimate</span>, </span>
+<span>                                                no <span class="op">=</span> <span class="va">response_window_clean</span><span class="op">$</span><span class="va">Animate</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="visualize-switches-from-an-onset-aoi-to-the-target-aoi">Visualize switches from an onset AOI to the target AOI<a class="anchor" aria-label="anchor" href="#visualize-switches-from-an-onset-aoi-to-the-target-aoi"></a>
 </h2>
-<p>Next, we can use <code>make_onset_data</code> to calculate whether, at each point in the trial, the participant has switched from their onset AOI. We can <code>plot</code> this new dataframe showing the proportion of participants who had switched from their onset AOI at each point (style adapted from Yurovsky &amp; Frank, 2015). The size of the gap between the solid line (switching from the non-Target) and the dashed line (switching from the Target) documents infants’ performance in identifying the target: Infants should switch more quickly and more frequently <em>to</em> the Target than <em>from</em> it:</p>
+<p>Next, we can use <code>make_onset_data</code> to calculate whether,
+at each point in the trial, the participant has switched from their
+onset AOI. We can <code>plot</code> this new dataframe showing the
+proportion of participants who had switched from their onset AOI at each
+point (style adapted from Yurovsky &amp; Frank, 2015). The size of the
+gap between the solid line (switching from the non-Target) and the
+dashed line (switching from the Target) documents infants’ performance
+in identifying the target: Infants should switch more quickly and more
+frequently <em>to</em> the Target than <em>from</em> it:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">onsets</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_onset_data.html">make_onset_data</a></span><span class="op">(</span><span class="va">response_window_clean</span>, onset_time <span class="op">=</span> <span class="fl">15500</span>, target_aoi<span class="op">=</span><span class="st">'TrialTarget'</span><span class="op">)</span>
-<span class="co"># participants' ability to orient to the trial target overall:</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">onsets</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.text<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">onsets</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_onset_data.html">make_onset_data</a></span><span class="op">(</span><span class="va">response_window_clean</span>, onset_time <span class="op">=</span> <span class="fl">15500</span>, target_aoi<span class="op">=</span><span class="st">'TrialTarget'</span><span class="op">)</span></span>
+<span><span class="co"># participants' ability to orient to the trial target overall:</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">onsets</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.text<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="onset_contingent_analysis_vignette_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
-<p>If we specify a predictor for this plot, we can examine visually whether infants’ performance in identifying the target varied by this predictor. Here, we want to know whether they more reliably switched to the target when the the Target was Animate versus Inanimate:</p>
+<p>If we specify a predictor for this plot, we can examine visually
+whether infants’ performance in identifying the target varied by this
+predictor. Here, we want to know whether they more reliably switched to
+the target when the the Target was Animate versus Inanimate:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># participants' ability to orient to the trial target, split by which target:</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">onsets</span>, predictor_columns <span class="op">=</span> <span class="st">"Target"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.text<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">6</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># participants' ability to orient to the trial target, split by which target:</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">onsets</span>, predictor_columns <span class="op">=</span> <span class="st">"Target"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.text<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">6</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="onset_contingent_analysis_vignette_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
-<p>Infants were definitely more consistent and faster at switching <em>to</em> the Animate when it was named than away from it when the Inanimate was named, as expected.</p>
-<p>Finally, we can ask whether infants with higher vocabularies outperformed infants with lower vocabularies, as indicated by their MCDI scores (note, for visualizing, the <code>plot</code> method performs a median split):</p>
+<p>Infants were definitely more consistent and faster at switching
+<em>to</em> the Animate when it was named than away from it when the
+Inanimate was named, as expected.</p>
+<p>Finally, we can ask whether infants with higher vocabularies
+outperformed infants with lower vocabularies, as indicated by their MCDI
+scores (note, for visualizing, the <code>plot</code> method performs a
+median split):</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># we can also visualize numeric predictors:</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">onsets</span>, predictor_columns <span class="op">=</span> <span class="st">"MCDI_Total"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.text<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">6</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Column 'MCDI_Total' is numeric, performing median split for visualization.</span></code></pre>
+<code class="sourceCode R"><span><span class="co"># we can also visualize numeric predictors:</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">onsets</span>, predictor_columns <span class="op">=</span> <span class="st">"MCDI_Total"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.text<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">6</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Column 'MCDI_Total' is numeric, performing median split for visualization.</span></span></code></pre>
 <p><img src="onset_contingent_analysis_vignette_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
-<p>As one would expect, infants with larger vocabularies were faster (and more consistent) at identifying the Target AOI.</p>
+<p>As one would expect, infants with larger vocabularies were faster
+(and more consistent) at identifying the Target AOI.</p>
 </div>
 <div class="section level2">
 <h2 id="analyze-onset-contingent-switch-times">Analyze onset-contingent switch times<a class="anchor" aria-label="anchor" href="#analyze-onset-contingent-switch-times"></a>
 </h2>
-<p>In order to analyze these switch times, we can calculate the switch times for target and non-target onset trials using <code>make_switch_data</code>.</p>
-<p>We can then use a linear mixed-effects model to test three hypotheses:</p>
+<p>In order to analyze these switch times, we can calculate the switch
+times for target and non-target onset trials using
+<code>make_switch_data</code>.</p>
+<p>We can then use a linear mixed-effects model to test three
+hypotheses:</p>
 <ol style="list-style-type: decimal">
-<li>That infants were faster/slower at switching to the target than away from the target (main effect of FirstAOI)</li>
-<li>That infants were faster/slower to switch to <em>or</em> from the target when it was Animate or Inanimate (main effect of Target).</li>
-<li>That infants were faster/slower at switching to the target when it was Animate or Inanimate (interaction between FirstAOI:Target)</li>
+<li>That infants were faster/slower at switching to the target than away
+from the target (main effect of FirstAOI)</li>
+<li>That infants were faster/slower to switch to <em>or</em> from the
+target when it was Animate or Inanimate (main effect of Target).</li>
+<li>That infants were faster/slower at switching to the target when it
+was Animate or Inanimate (interaction between FirstAOI:Target)</li>
 </ol>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">onset_switches</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_switch_data.html">make_switch_data</a></span><span class="op">(</span><span class="va">onsets</span>, predictor_columns <span class="op">=</span> <span class="st">"Target"</span><span class="op">)</span>
-
-<span class="co"># visualize subject's switch times</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">onset_switches</span>, predictor_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Target"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">onset_switches</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_switch_data.html">make_switch_data</a></span><span class="op">(</span><span class="va">onsets</span>, predictor_columns <span class="op">=</span> <span class="st">"Target"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># visualize subject's switch times</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">onset_switches</span>, predictor_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Target"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="onset_contingent_analysis_vignette_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># center predictor:</span>
-<span class="va">onset_switches</span><span class="op">$</span><span class="va">FirstAOIC</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">onset_switches</span><span class="op">$</span><span class="va">FirstAOI</span> <span class="op">==</span> <span class="st">'TrialTarget'</span>, <span class="fl">.5</span>, <span class="op">-</span><span class="fl">.5</span><span class="op">)</span>
-<span class="va">onset_switches</span><span class="op">$</span><span class="va">FirstAOIC</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">onset_switches</span><span class="op">$</span><span class="va">FirstAOIC</span>, center<span class="op">=</span><span class="cn">TRUE</span>, scale<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span> 
-<span class="va">onset_switches</span><span class="op">$</span><span class="va">TargetC</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">onset_switches</span><span class="op">$</span><span class="va">Target</span> <span class="op">==</span> <span class="st">'Animate'</span>, <span class="fl">.5</span>, <span class="op">-</span><span class="fl">.5</span><span class="op">)</span>
-<span class="va">onset_switches</span><span class="op">$</span><span class="va">TargetC</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">onset_switches</span><span class="op">$</span><span class="va">TargetC</span>, center<span class="op">=</span><span class="cn">TRUE</span>, scale<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span> 
-
-<span class="co"># build model:</span>
-<span class="va">model_switches</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html" class="external-link">lmer</a></span><span class="op">(</span><span class="va">FirstSwitch</span> <span class="op">~</span> <span class="va">FirstAOIC</span><span class="op">*</span><span class="va">TargetC</span> <span class="op">+</span> 
-                <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">Trial</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">ParticipantName</span><span class="op">)</span>, data<span class="op">=</span><span class="va">onset_switches</span>, REML<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>
-<span class="co"># cleanly show important parts of model (see `summary()` for more)</span>
-<span class="fu">broom.mixed</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">model_switches</span>, effects<span class="op">=</span><span class="st">"fixed"</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 4 × 5</span></span>
-<span class="co">##   effect term              estimate std.error statistic</span>
-<span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span> fixed  (Intercept)        <span style="text-decoration: underline;">17</span>017.       152.   112.   </span>
-<span class="co">## <span style="color: #BCBCBC;">2</span> fixed  FirstAOIC           <span style="text-decoration: underline;">1</span>720.       239.     7.21 </span>
-<span class="co">## <span style="color: #BCBCBC;">3</span> fixed  TargetC               61.0      251.     0.243</span>
-<span class="co">## <span style="color: #BCBCBC;">4</span> fixed  FirstAOIC:TargetC   <span style="text-decoration: underline;">2</span>062.       520.     3.96</span></code></pre>
+<code class="sourceCode R"><span><span class="co"># center predictor:</span></span>
+<span><span class="va">onset_switches</span><span class="op">$</span><span class="va">FirstAOIC</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">onset_switches</span><span class="op">$</span><span class="va">FirstAOI</span> <span class="op">==</span> <span class="st">'TrialTarget'</span>, <span class="fl">.5</span>, <span class="op">-</span><span class="fl">.5</span><span class="op">)</span></span>
+<span><span class="va">onset_switches</span><span class="op">$</span><span class="va">FirstAOIC</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">onset_switches</span><span class="op">$</span><span class="va">FirstAOIC</span>, center<span class="op">=</span><span class="cn">TRUE</span>, scale<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span> </span>
+<span><span class="va">onset_switches</span><span class="op">$</span><span class="va">TargetC</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">onset_switches</span><span class="op">$</span><span class="va">Target</span> <span class="op">==</span> <span class="st">'Animate'</span>, <span class="fl">.5</span>, <span class="op">-</span><span class="fl">.5</span><span class="op">)</span></span>
+<span><span class="va">onset_switches</span><span class="op">$</span><span class="va">TargetC</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">onset_switches</span><span class="op">$</span><span class="va">TargetC</span>, center<span class="op">=</span><span class="cn">TRUE</span>, scale<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co"># build model:</span></span>
+<span><span class="va">model_switches</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html" class="external-link">lmer</a></span><span class="op">(</span><span class="va">FirstSwitch</span> <span class="op">~</span> <span class="va">FirstAOIC</span><span class="op">*</span><span class="va">TargetC</span> <span class="op">+</span> </span>
+<span>                <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">Trial</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">ParticipantName</span><span class="op">)</span>, data<span class="op">=</span><span class="va">onset_switches</span>, REML<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co"># cleanly show important parts of model (see `summary()` for more)</span></span>
+<span><span class="fu">broom.mixed</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">model_switches</span>, effects<span class="op">=</span><span class="st">"fixed"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 4 × 5</span></span></span>
+<span><span class="co">##   effect term              estimate std.error statistic</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> fixed  (Intercept)        <span style="text-decoration: underline;">17</span>017.       152.   112.   </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> fixed  FirstAOIC           <span style="text-decoration: underline;">1</span>720.       239.     7.21 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> fixed  TargetC               61.0      251.     0.243</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> fixed  FirstAOIC:TargetC   <span style="text-decoration: underline;">2</span>062.       520.     3.96</span></span></code></pre>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/add1.html" class="external-link">drop1</a></span><span class="op">(</span><span class="va">model_switches</span>,<span class="op">~</span><span class="va">.</span>,test<span class="op">=</span><span class="st">"Chi"</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## boundary (singular) fit: see ?isSingular</span></code></pre>
-<pre><code><span class="co">## Single term deletions</span>
-<span class="co">## </span>
-<span class="co">## Model:</span>
-<span class="co">## FirstSwitch ~ FirstAOIC * TargetC + (1 | Trial) + (1 | ParticipantName)</span>
-<span class="co">##                   npar    AIC    LRT   Pr(Chi)    </span>
-<span class="co">## &lt;none&gt;                 1752.0                     </span>
-<span class="co">## FirstAOIC            1 1789.4 39.391 3.469e-10 ***</span>
-<span class="co">## TargetC              1 1750.1  0.059 0.8084704    </span>
-<span class="co">## FirstAOIC:TargetC    1 1763.2 13.230 0.0002755 ***</span>
-<span class="co">## ---</span>
-<span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></code></pre>
-<p>The main effect of FirstAOIC reveals that participants were more likely to switch to the target than away from it, overall, which suggests overall they could identify the target referent of these words. The interaction here with TargetC, however, reveals that infants were faster to switch to the Animate when it was named than away from the Animate when the Inanimate was named.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/add1.html" class="external-link">drop1</a></span><span class="op">(</span><span class="va">model_switches</span>,<span class="op">~</span><span class="va">.</span>,test<span class="op">=</span><span class="st">"Chi"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## boundary (singular) fit: see help('isSingular')</span></span></code></pre>
+<pre><code><span><span class="co">## Single term deletions</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Model:</span></span>
+<span><span class="co">## FirstSwitch ~ FirstAOIC * TargetC + (1 | Trial) + (1 | ParticipantName)</span></span>
+<span><span class="co">##                   npar    AIC    LRT   Pr(Chi)    </span></span>
+<span><span class="co">## &lt;none&gt;                 1752.0                     </span></span>
+<span><span class="co">## FirstAOIC            1 1789.4 39.391 3.469e-10 ***</span></span>
+<span><span class="co">## TargetC              1 1750.1  0.059 0.8084704    </span></span>
+<span><span class="co">## FirstAOIC:TargetC    1 1763.2 13.230 0.0002755 ***</span></span>
+<span><span class="co">## ---</span></span>
+<span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre>
+<p>The main effect of FirstAOIC reveals that participants were more
+likely to switch to the target than away from it, overall, which
+suggests overall they could identify the target referent of these words.
+The interaction here with TargetC, however, reveals that infants were
+faster to switch to the Animate when it was named than away from the
+Animate when the Inanimate was named.</p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<p>Fernald, A., Zangl, R., Portillo, A. L., &amp; Marchman, V. A. (2008). Looking while listening: Using eye movements to monitor spoken language comprehension by infants and young children. In I. A. Sekerina, E. M. Fernández, &amp; H. Clahsen (Eds.), Developmental Psycholinguistics: On-line methods in children’s language processing (pp. 97–135). Amsterdam: John Benjamins.</p>
-<p>Yurovsky, D., &amp; Frank, M. C. (2015). Beyond Naïve Cue Combination: Salience and Social Cues in Early Word Learning. Developmental Science, 1–38.</p>
+<p>Fernald, A., Zangl, R., Portillo, A. L., &amp; Marchman, V. A.
+(2008). Looking while listening: Using eye movements to monitor spoken
+language comprehension by infants and young children. In I. A. Sekerina,
+E. M. Fernández, &amp; H. Clahsen (Eds.), Developmental
+Psycholinguistics: On-line methods in children’s language processing
+(pp. 97–135). Amsterdam: John Benjamins.</p>
+<p>Yurovsky, D., &amp; Frank, M. C. (2015). Beyond Naïve Cue
+Combination: Salience and Social Cues in Early Word Learning.
+Developmental Science, 1–38.</p>
 </div>
   </div>
 
@@ -275,7 +337,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

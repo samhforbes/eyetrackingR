@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">eyetrackingR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
       </span>
     </div>
 
@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -69,6 +69,70 @@
       <small>Source: <a href="https://github.com/samhforbes/eyetrackingR/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.1" id="eyetrackingr-021">eyetrackingR 0.2.1<a class="anchor" aria-label="anchor" href="#eyetrackingr-021"></a></h2>
+<ul><li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
+<li>Fixed issue with breaking change to paired t test</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.0" id="eyetrackingr-020">eyetrackingR 0.2.0<small>2021-09-27</small><a class="anchor" aria-label="anchor" href="#eyetrackingr-020"></a></h2>
+<ul><li>Repairing for resubmission to CRAN</li>
+<li>Adding compatibility with new versions of dplyr, tidyr and ggplot2</li>
+<li>Inbuilt support for binomial, glmmPQL and glmmTMB models</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.1.8" id="eyetrackingr-018">eyetrackingR 0.1.8:<small>2018-12-03</small><a class="anchor" aria-label="anchor" href="#eyetrackingr-018"></a></h2>
+<ul><li>Fixes a bug in make_onset_data.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.1.7" id="eyetrackingr-017">eyetrackingR 0.1.7:<small>2018-02-14</small><a class="anchor" aria-label="anchor" href="#eyetrackingr-017"></a></h2>
+<ul><li>Compatible with dplyr &gt; 0.5.0.<br></li>
+<li>Fixes issue described in <a href="https://github.com/jwdink/eyetrackingR/issues/57" class="external-link uri">https://github.com/jwdink/eyetrackingR/issues/57</a>
+</li>
+<li>Fixes bug in add_aoi when only one AOI is added.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.1.6" id="eyetrackingr-016">eyetrackingR 0.1.6:<small>2016-03-17</small><a class="anchor" aria-label="anchor" href="#eyetrackingr-016"></a></h2>
+<ul><li>Allows for treatment-coded variables in <code>lm</code> or <code>lmer</code> time-bin or cluster analysis, via the “treatment_level” argument.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.1.5" id="eyetrackingr-015">eyetrackingR 0.1.5:<small>2016-03-06</small><a class="anchor" aria-label="anchor" href="#eyetrackingr-015"></a></h2>
+<ul><li>Fixes compatibility issue with latest version of <code>lme4</code> package.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.1.4" id="eyetrackingr-014">eyetrackingR 0.1.4:<small>2016-01-26</small><a class="anchor" aria-label="anchor" href="#eyetrackingr-014"></a></h2>
+<ul><li>A variety of important bug-fixes for onset-contingent analysis. The rest of the package is unchanged.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.1.3" id="eyetrackingr-013">eyetrackingR 0.1.3:<small>2016-01-09</small><a class="anchor" aria-label="anchor" href="#eyetrackingr-013"></a></h2>
+<ul><li>The <code>analyze_time_bins</code> and therefore cluster-analyses have been re-written internally. Full support for (g)lm, (g)lmer, wilcox. Support for interaction terms/predictors. Experimental support for using boot-splines within cluster analysis.</li>
+<li>P-value adjustment for multiple comparisons is now supported in <code>analyze_time_bins</code>
+</li>
+<li>Easier to use AOI as a predictor/covariate in <code>analyze_time_bins</code> and cluster analyses</li>
+<li>The functions <code>make_boot_splines_data</code> and <code>analyze_boot_splines</code> are now deprecated. To perform this type of analysis, use <code>test="boot_splines"</code> in <code>analyze_time_bins</code>.</li>
+<li>Warnings and errors are now given in the returned dataframe for <code>analyze_time_bins</code>.</li>
+<li>Fixed plotting methods for time-cluster data</li>
+<li>The <code>analyze_time_clusters</code> function now checks that the extra arguments passed to it are the same as the arguments passed</li>
+<li>Fixed small bug in make_onset_data</li>
+<li>Added <code>simulate_eyetrackingr_data</code> function to generate fake data for simulations.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.1.1" id="eyetrackingr-011">eyetrackingR 0.1.1:<small>2015-11-16</small><a class="anchor" aria-label="anchor" href="#eyetrackingr-011"></a></h2>
+<ul><li>
+<strong>Important</strong> bug-fix in <code>clean_by_trackloss</code>. Previously did not work for certain column names.</li>
+<li>
+<strong>Important</strong> bug-fix in <code>make_eyetrackingr_data</code>. Previously did not work correctly with <code>treat_non_aoi_as_missing = TRUE</code>.</li>
+<li>
+<strong>Important</strong> bug-fix in <code>analyze_time_clusters</code>: previously did not compute permutation-distribution correctly.</li>
+<li>Can specify any arbitrary dependent-variable for <code>make_time_window_data</code> or <code>make_time_sequence_data</code> to summarize. This DV can then be plotted and used in downstream functions (like <code>analyze_time_bins</code> or <code>make_time_cluster_data</code>)</li>
+<li>Bug-fix in error/warning reporting in <code>analyze_time_bins</code> and functions that call this (e.g <code>make_time_cluster_data</code>).</li>
+<li>Compatible with ggplot2 2.0</li>
+<li>Small bug fix in cluster analyses functions related to the dots (…) arguments</li>
+<li>Added support for parallelization in <code>analyze_time_clusters</code>, allowing the user to take advantage of multiple cores to speed up this relatively slow function.</li>
+<li>Added <code>get_time_clusters</code> for getting information about clusters in a data.frame (rather than a printed summary– better for programming).</li>
+<li>Small bug-fixes in make-boot-splines.</li>
+<li>Changed how cluster-summaries are displayed</li>
+</ul></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -83,7 +147,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

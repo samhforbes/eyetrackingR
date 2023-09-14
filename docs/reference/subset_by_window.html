@@ -20,7 +20,7 @@ window-- see 'Details' below."><!-- mathjax --><script src="https://cdnjs.cloudf
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">eyetrackingR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
       </span>
     </div>
 
@@ -29,7 +29,7 @@ window-- see 'Details' below."><!-- mathjax --><script src="https://cdnjs.cloudf
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -81,55 +81,78 @@ window-- see 'Details' below.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">subset_by_window</span><span class="op">(</span>
-  <span class="va">data</span>,
-  rezero <span class="op">=</span> <span class="cn">TRUE</span>,
-  remove <span class="op">=</span> <span class="cn">TRUE</span>,
-  window_start_msg <span class="op">=</span> <span class="cn">NULL</span>,
-  window_end_msg <span class="op">=</span> <span class="cn">NULL</span>,
-  msg_col <span class="op">=</span> <span class="cn">NULL</span>,
-  window_start_col <span class="op">=</span> <span class="cn">NULL</span>,
-  window_end_col <span class="op">=</span> <span class="cn">NULL</span>,
-  window_start_time <span class="op">=</span> <span class="cn">NULL</span>,
-  window_end_time <span class="op">=</span> <span class="cn">NULL</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">subset_by_window</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  rezero <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  remove <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  window_start_msg <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  window_end_msg <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  msg_col <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  window_start_col <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  window_end_col <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  window_start_time <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  window_end_time <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>Your original dataset</p></dd>
+
+
 <dt>rezero</dt>
 <dd><p>Should the beginning of the window be considered the zero point of the timestamp?
 Default TRUE</p></dd>
+
+
 <dt>remove</dt>
 <dd><p>Should everything before the beginning and after the end of the window be removed? 
 Default TRUE. If set to FALSE and <code>rezero</code> is set to FALSE, an error is thrown (since in this case,
 the function would not do anything).</p></dd>
+
+
 <dt>window_start_msg</dt>
 <dd><p>For method (1). A message that is present only in the row whose time corresponds 
 to the trial start time. Common for eyetrackers that send a message at trial/stimuli start.</p></dd>
+
+
 <dt>window_end_msg</dt>
 <dd><p>For method (1). A message that is present only in the row whose time corresponds 
 to the trial end time. Common for eyetrackers that send a message at trial-end/keypress/lookaway/etc.</p></dd>
+
+
 <dt>msg_col</dt>
 <dd><p>For method (1). If you are indicating the trial start/end with a message column,
 this is the name of that column.</p></dd>
+
+
 <dt>window_start_col</dt>
 <dd><p>For method (2). A column that gives the start time for each trial.</p></dd>
+
+
 <dt>window_end_col</dt>
 <dd><p>For method (2). A column that gives the end time for each trial.</p></dd>
+
+
 <dt>window_start_time</dt>
 <dd><p>For method (3). Number indicating a start time that applies to all trials.</p></dd>
+
+
 <dt>window_end_time</dt>
 <dd><p>For method (3). Number indicating an end time that applies to all trials.</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p>Suppress messages? Default FALSE</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Subsetted data</p>
+    
+
+<p>Subsetted data</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -152,36 +175,36 @@ portion).</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"word_recognition"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="make_eyetrackingr_data.html">make_eyetrackingr_data</a></span><span class="op">(</span><span class="va">word_recognition</span>, </span>
-<span class="r-in">                               participant_column <span class="op">=</span> <span class="st">"ParticipantName"</span>,</span>
-<span class="r-in">                               trial_column <span class="op">=</span> <span class="st">"Trial"</span>,</span>
-<span class="r-in">                               time_column <span class="op">=</span> <span class="st">"TimeFromTrialOnset"</span>,</span>
-<span class="r-in">                               trackloss_column <span class="op">=</span> <span class="st">"TrackLoss"</span>,</span>
-<span class="r-in">                               aoi_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Animate'</span>,<span class="st">'Inanimate'</span><span class="op">)</span>,</span>
-<span class="r-in">                               treat_non_aoi_looks_as_missing <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># zoom in to 15500-21000ms</span></span>
-<span class="r-in"><span class="va">response_window</span> <span class="op">&lt;-</span> <span class="fu">subset_by_window</span><span class="op">(</span><span class="va">data</span>,</span>
-<span class="r-in">                                    window_start_time <span class="op">=</span> <span class="fl">15500</span>,</span>
-<span class="r-in">                                    window_end_time <span class="op">=</span> <span class="fl">21000</span>, rezero <span class="op">=</span> <span class="cn">FALSE</span>, remove <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"word_recognition"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="make_eyetrackingr_data.html">make_eyetrackingr_data</a></span><span class="op">(</span><span class="va">word_recognition</span>, </span></span>
+<span class="r-in"><span>                               participant_column <span class="op">=</span> <span class="st">"ParticipantName"</span>,</span></span>
+<span class="r-in"><span>                               trial_column <span class="op">=</span> <span class="st">"Trial"</span>,</span></span>
+<span class="r-in"><span>                               time_column <span class="op">=</span> <span class="st">"TimeFromTrialOnset"</span>,</span></span>
+<span class="r-in"><span>                               trackloss_column <span class="op">=</span> <span class="st">"TrackLoss"</span>,</span></span>
+<span class="r-in"><span>                               aoi_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Animate'</span>,<span class="st">'Inanimate'</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                               treat_non_aoi_looks_as_missing <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># zoom in to 15500-21000ms</span></span></span>
+<span class="r-in"><span><span class="va">response_window</span> <span class="op">&lt;-</span> <span class="fu">subset_by_window</span><span class="op">(</span><span class="va">data</span>,</span></span>
+<span class="r-in"><span>                                    window_start_time <span class="op">=</span> <span class="fl">15500</span>,</span></span>
+<span class="r-in"><span>                                    window_end_time <span class="op">=</span> <span class="fl">21000</span>, rezero <span class="op">=</span> <span class="cn">FALSE</span>, remove <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Avg. window length in new data will be 5500</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># zoom in to 15500-21000ms and re-zero so timestamps start at 0</span></span>
-<span class="r-in"><span class="va">response_window</span> <span class="op">&lt;-</span> <span class="fu">subset_by_window</span><span class="op">(</span><span class="va">data</span>,</span>
-<span class="r-in">                                    window_start_time <span class="op">=</span> <span class="fl">15500</span>, </span>
-<span class="r-in">                                    window_end_time <span class="op">=</span> <span class="fl">21000</span>, </span>
-<span class="r-in">                                    rezero <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span class="r-in">                                    remove <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># zoom in to 15500-21000ms and re-zero so timestamps start at 0</span></span></span>
+<span class="r-in"><span><span class="va">response_window</span> <span class="op">&lt;-</span> <span class="fu">subset_by_window</span><span class="op">(</span><span class="va">data</span>,</span></span>
+<span class="r-in"><span>                                    window_start_time <span class="op">=</span> <span class="fl">15500</span>, </span></span>
+<span class="r-in"><span>                                    window_end_time <span class="op">=</span> <span class="fl">21000</span>, </span></span>
+<span class="r-in"><span>                                    rezero <span class="op">=</span> <span class="cn">TRUE</span>, </span></span>
+<span class="r-in"><span>                                    remove <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Avg. window length in new data will be 5500</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># keep all data, but re-zero it</span></span>
-<span class="r-in"><span class="va">response_window</span> <span class="op">&lt;-</span> <span class="fu">subset_by_window</span><span class="op">(</span><span class="va">data</span>,</span>
-<span class="r-in">                                    window_start_time <span class="op">=</span> <span class="fl">0</span>, </span>
-<span class="r-in">                                    rezero <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span class="r-in">                                    remove <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># keep all data, but re-zero it</span></span></span>
+<span class="r-in"><span><span class="va">response_window</span> <span class="op">&lt;-</span> <span class="fu">subset_by_window</span><span class="op">(</span><span class="va">data</span>,</span></span>
+<span class="r-in"><span>                                    window_start_time <span class="op">=</span> <span class="fl">0</span>, </span></span>
+<span class="r-in"><span>                                    rezero <span class="op">=</span> <span class="cn">TRUE</span>, </span></span>
+<span class="r-in"><span>                                    remove <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -196,7 +219,7 @@ portion).</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

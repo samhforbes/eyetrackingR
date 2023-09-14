@@ -19,7 +19,7 @@ simulations."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/lib
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">eyetrackingR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
       </span>
     </div>
 
@@ -28,7 +28,7 @@ simulations."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/lib
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -79,42 +79,57 @@ simulations.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">simulate_eyetrackingr_data</span><span class="op">(</span>
-  num_participants <span class="op">=</span> <span class="fl">16</span>,
-  num_items_per_condition <span class="op">=</span> <span class="fl">6</span>,
-  trial_length <span class="op">=</span> <span class="fl">5000</span>,
-  pref <span class="op">=</span> <span class="fl">0.5</span>,
-  pref_window <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">trial_length</span><span class="op">)</span>,
-  noisy_window <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">simulate_eyetrackingr_data</span><span class="op">(</span></span>
+<span>  num_participants <span class="op">=</span> <span class="fl">16</span>,</span>
+<span>  num_items_per_condition <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>  trial_length <span class="op">=</span> <span class="fl">5000</span>,</span>
+<span>  pref <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  pref_window <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">trial_length</span><span class="op">)</span>,</span>
+<span>  noisy_window <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>num_participants</dt>
 <dd><p>Number of participants</p></dd>
+
+
 <dt>num_items_per_condition</dt>
 <dd><p>Number of trials per-subject per-condition.</p></dd>
+
+
 <dt>trial_length</dt>
 <dd><p>How long is the trial (in ms)?</p></dd>
+
+
 <dt>pref</dt>
 <dd><p>Their preference between the two AOIs in the "high" condition, 
 where 1 is 100<!-- % preference for AOI1, and 0 is 100% preference for AOI2. Default is .5 (equal  -->
 preference). In the "low" condition, their preference between the two AOIs is equal, so default
 is no effect of condition.</p></dd>
+
+
 <dt>pref_window</dt>
 <dd><p>Vector of length two, specifying start and end of time-window in
 which participants expressed the preference specified in <code>pref</code>. Default is the entire trial</p></dd>
+
+
 <dt>noisy_window</dt>
 <dd><p>Vector of length two, specifying start and end of time-window in
 which there was substantial trackloss during the trial.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Ignored</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Dataframe with eye-tracking data</p>
+    
+
+<p>Dataframe with eye-tracking data</p>
     </div>
 
   </div>
@@ -129,7 +144,7 @@ which there was substantial trackloss during the trial.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

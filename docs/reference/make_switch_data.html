@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">eyetrackingR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
       </span>
     </div>
 
@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -75,58 +75,65 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">make_switch_data</span><span class="op">(</span><span class="va">data</span>, <span class="va">predictor_columns</span>, <span class="va">summarize_by</span><span class="op">)</span>
-
-<span class="co"># S3 method for onset_data</span>
-<span class="fu">make_switch_data</span><span class="op">(</span><span class="va">data</span>, predictor_columns <span class="op">=</span> <span class="cn">NULL</span>, summarize_by <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">make_switch_data</span><span class="op">(</span><span class="va">data</span>, <span class="va">predictor_columns</span>, <span class="va">summarize_by</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for onset_data</span></span>
+<span><span class="fu">make_switch_data</span><span class="op">(</span><span class="va">data</span>, predictor_columns <span class="op">=</span> <span class="cn">NULL</span>, summarize_by <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>The output of <code>make_onset_data</code></p></dd>
+
+
 <dt>predictor_columns</dt>
 <dd><p>Variables/covariates of interest when analyzing time-to-switch</p></dd>
+
+
 <dt>summarize_by</dt>
 <dd><p>Should the data be summarized along, e.g., participants, items, etc.? 
 If so, give column name(s) here. If left blank, will leave trials distinct. The former is 
 needed for more traditional analyses (t.tests, ANOVAs), while the latter is preferable for 
 mixed-effects models (lmer)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A dataframe indicating initial AOI and time-to-switch from that AOI for each
+    
+
+<p>A dataframe indicating initial AOI and time-to-switch from that AOI for each
   trial/subject/item/etc.</p>
     </div>
     <div id="methods-by-class-">
     <h2>Methods (by class)</h2>
     
-<ul><li><p><code>onset_data</code>:</p></li>
+<ul><li><p><code>make_switch_data(onset_data)</code>:</p></li>
 </ul></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">word_recognition</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="make_eyetrackingr_data.html">make_eyetrackingr_data</a></span><span class="op">(</span><span class="va">word_recognition</span>, </span>
-<span class="r-in">                               participant_column <span class="op">=</span> <span class="st">"ParticipantName"</span>,</span>
-<span class="r-in">                               trial_column <span class="op">=</span> <span class="st">"Trial"</span>,</span>
-<span class="r-in">                               time_column <span class="op">=</span> <span class="st">"TimeFromTrialOnset"</span>,</span>
-<span class="r-in">                               trackloss_column <span class="op">=</span> <span class="st">"TrackLoss"</span>,</span>
-<span class="r-in">                               aoi_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Animate'</span>,<span class="st">'Inanimate'</span><span class="op">)</span>,</span>
-<span class="r-in">                               treat_non_aoi_looks_as_missing <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">response_window</span> <span class="op">&lt;-</span> <span class="fu"><a href="subset_by_window.html">subset_by_window</a></span><span class="op">(</span><span class="va">data</span>, window_start_time <span class="op">=</span> <span class="fl">15500</span>, window_end_time <span class="op">=</span> <span class="fl">21000</span>, </span>
-<span class="r-in">                                    rezero <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">inanimate_trials</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">response_window</span>, <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">'(Spoon|Bottle)'</span>, <span class="va">Trial</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">onsets</span> <span class="op">&lt;-</span> <span class="fu"><a href="make_onset_data.html">make_onset_data</a></span><span class="op">(</span><span class="va">inanimate_trials</span>, onset_time <span class="op">=</span> <span class="fl">15500</span>, </span>
-<span class="r-in">                          fixation_window_length <span class="op">=</span> <span class="fl">100</span>, target_aoi<span class="op">=</span><span class="st">'Inanimate'</span><span class="op">)</span></span>
-<span class="r-in">                          </span>
-<span class="r-in"><span class="va">df_switch</span> <span class="op">&lt;-</span> <span class="fu">make_switch_data</span><span class="op">(</span><span class="va">onsets</span>, predictor_columns <span class="op">=</span> <span class="st">"MCDI_Total"</span>, </span>
-<span class="r-in">             summarize_by <span class="op">=</span> <span class="st">"ParticipantName"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">df_switch</span>, <span class="st">"MCDI_Total"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in">                          </span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">word_recognition</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="make_eyetrackingr_data.html">make_eyetrackingr_data</a></span><span class="op">(</span><span class="va">word_recognition</span>, </span></span>
+<span class="r-in"><span>                               participant_column <span class="op">=</span> <span class="st">"ParticipantName"</span>,</span></span>
+<span class="r-in"><span>                               trial_column <span class="op">=</span> <span class="st">"Trial"</span>,</span></span>
+<span class="r-in"><span>                               time_column <span class="op">=</span> <span class="st">"TimeFromTrialOnset"</span>,</span></span>
+<span class="r-in"><span>                               trackloss_column <span class="op">=</span> <span class="st">"TrackLoss"</span>,</span></span>
+<span class="r-in"><span>                               aoi_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Animate'</span>,<span class="st">'Inanimate'</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                               treat_non_aoi_looks_as_missing <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">response_window</span> <span class="op">&lt;-</span> <span class="fu"><a href="subset_by_window.html">subset_by_window</a></span><span class="op">(</span><span class="va">data</span>, window_start_time <span class="op">=</span> <span class="fl">15500</span>, window_end_time <span class="op">=</span> <span class="fl">21000</span>, </span></span>
+<span class="r-in"><span>                                    rezero <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">inanimate_trials</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">response_window</span>, <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">'(Spoon|Bottle)'</span>, <span class="va">Trial</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">onsets</span> <span class="op">&lt;-</span> <span class="fu"><a href="make_onset_data.html">make_onset_data</a></span><span class="op">(</span><span class="va">inanimate_trials</span>, onset_time <span class="op">=</span> <span class="fl">15500</span>, </span></span>
+<span class="r-in"><span>                          fixation_window_length <span class="op">=</span> <span class="fl">100</span>, target_aoi<span class="op">=</span><span class="st">'Inanimate'</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                          </span></span>
+<span class="r-in"><span><span class="va">df_switch</span> <span class="op">&lt;-</span> <span class="fu">make_switch_data</span><span class="op">(</span><span class="va">onsets</span>, predictor_columns <span class="op">=</span> <span class="st">"MCDI_Total"</span>, </span></span>
+<span class="r-in"><span>             summarize_by <span class="op">=</span> <span class="st">"ParticipantName"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">df_switch</span>, <span class="st">"MCDI_Total"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span>                          </span></span>
 </code></pre></div>
     </div>
   </div>
@@ -141,7 +148,7 @@ mixed-effects models (lmer)</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

@@ -20,7 +20,7 @@ shuffling/resampling the data and extracting the largest cluster from each resam
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">eyetrackingR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
       </span>
     </div>
 
@@ -29,7 +29,7 @@ shuffling/resampling the data and extracting the largest cluster from each resam
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -81,38 +81,48 @@ shuffling/resampling the data and extracting the largest cluster from each resam
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">analyze_time_clusters</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for time_cluster_data</span>
-<span class="fu">analyze_time_clusters</span><span class="op">(</span>
-  <span class="va">data</span>,
-  <span class="va">within_subj</span>,
-  samples <span class="op">=</span> <span class="fl">2000</span>,
-  formula <span class="op">=</span> <span class="cn">NULL</span>,
-  shuffle_by <span class="op">=</span> <span class="cn">NULL</span>,
-  parallel <span class="op">=</span> <span class="cn">FALSE</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">analyze_time_clusters</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for time_cluster_data</span></span>
+<span><span class="fu">analyze_time_clusters</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">within_subj</span>,</span>
+<span>  samples <span class="op">=</span> <span class="fl">2000</span>,</span>
+<span>  formula <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  shuffle_by <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  parallel <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>The output of the <code>make_time_cluster_data</code> function</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Other args for to selected 'test' function; should be identical to those passed to
 <code>make_time_cluster_data</code> function</p></dd>
+
+
 <dt>within_subj</dt>
 <dd><p>Logical indicating whether to perform within-subjects bootstrap resampling.</p></dd>
+
+
 <dt>samples</dt>
 <dd><p>How many iterations should be performed in the bootstrap resampling procedure?</p></dd>
+
+
 <dt>formula</dt>
 <dd><p>Formula for test. Should be identical to that passed to make_time_cluster_data fxn (if
 arg ignored there, can be ignored here)</p></dd>
+
+
 <dt>shuffle_by</dt>
 <dd><p>Along which attribute should the data be resampled? Default is the predictor
-column. But if the predictor_column is numeric *and* within-subjects, then observations with the 
+column. But if the predictor_column is numeric *and* within-subjects, then observations with the
 same predictor value could nevertheless correspond to distinct conditions/categories that
 should be shuffled separately. For example, when using vocabulary scores to predict looking
 behavior, a participant might get identical vocab scores for verbs and nouns; these are
@@ -120,53 +130,60 @@ nevertheless distinct categories that should be re-assigned separately when
 bootstrap-resampling data. The 'shuffle_by' argument allows you to specify a column which
 indicates these kinds of distinct categories that should be resampled separately--
 but it's only needed if you've specified a numeric *and* within-subjects predictor column.</p></dd>
+
+
 <dt>parallel</dt>
 <dd><p>Use foreach for speed boost? By default off. May not work on Windows.</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p>Display progress bar/messages? No progress bar when parallel=TRUE.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A cluster-analysis object, which can be plotted and summarized to examine which temporal periods
+    
+
+<p>A cluster-analysis object, which can be plotted and summarized to examine which temporal periods
   show a significant effect of the predictor variable</p>
     </div>
     <div id="methods-by-class-">
     <h2>Methods (by class)</h2>
     
-<ul><li><p><code>time_cluster_data</code>:</p></li>
+<ul><li><p><code>analyze_time_clusters(time_cluster_data)</code>:</p></li>
 </ul></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">word_recognition</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="make_eyetrackingr_data.html">make_eyetrackingr_data</a></span><span class="op">(</span><span class="va">word_recognition</span>, </span>
-<span class="r-in">                               participant_column <span class="op">=</span> <span class="st">"ParticipantName"</span>,</span>
-<span class="r-in">                               trial_column <span class="op">=</span> <span class="st">"Trial"</span>,</span>
-<span class="r-in">                               time_column <span class="op">=</span> <span class="st">"TimeFromTrialOnset"</span>,</span>
-<span class="r-in">                               trackloss_column <span class="op">=</span> <span class="st">"TrackLoss"</span>,</span>
-<span class="r-in">                               aoi_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Animate'</span>,<span class="st">'Inanimate'</span><span class="op">)</span>,</span>
-<span class="r-in">                               treat_non_aoi_looks_as_missing <span class="op">=</span> <span class="cn">TRUE</span> <span class="op">)</span></span>
-<span class="r-in"><span class="va">response_window</span> <span class="op">&lt;-</span> <span class="fu"><a href="subset_by_window.html">subset_by_window</a></span><span class="op">(</span><span class="va">data</span>, window_start_time <span class="op">=</span> <span class="fl">15500</span>, window_end_time <span class="op">=</span> <span class="fl">21000</span>, </span>
-<span class="r-in">                                    rezero <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">response_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="make_time_sequence_data.html">make_time_sequence_data</a></span><span class="op">(</span><span class="va">response_window</span>, time_bin_size <span class="op">=</span> <span class="fl">500</span>, aois <span class="op">=</span> <span class="st">"Animate"</span>, </span>
-<span class="r-in">                                         predictor_columns <span class="op">=</span> <span class="st">"Sex"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">time_cluster_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="make_time_cluster_data.html">make_time_cluster_data</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">response_time</span>, predictor_column <span class="op">=</span> <span class="st">"SexM"</span>, </span>
-<span class="r-in">                         aoi <span class="op">=</span> <span class="st">"Animate"</span>, test <span class="op">=</span> <span class="st">"lmer"</span>, </span>
-<span class="r-in">                         threshold <span class="op">=</span> <span class="fl">1.5</span>, </span>
-<span class="r-in">                         formula <span class="op">=</span> <span class="va">LogitAdjusted</span> <span class="op">~</span> <span class="va">Sex</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">Trial</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">ParticipantName</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">time_cluster_data</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">time_cluster_data</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># analyze time clusters in a non-parametric analysis</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">tc_analysis</span> <span class="op">&lt;-</span> <span class="fu">analyze_time_clusters</span><span class="op">(</span><span class="va">time_cluster_data</span>, within_subj <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span class="r-in">                                     samples <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">tc_analysis</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">tc_analysis</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in">  </span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">word_recognition</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="make_eyetrackingr_data.html">make_eyetrackingr_data</a></span><span class="op">(</span><span class="va">word_recognition</span>,</span></span>
+<span class="r-in"><span>                               participant_column <span class="op">=</span> <span class="st">"ParticipantName"</span>,</span></span>
+<span class="r-in"><span>                               trial_column <span class="op">=</span> <span class="st">"Trial"</span>,</span></span>
+<span class="r-in"><span>                               time_column <span class="op">=</span> <span class="st">"TimeFromTrialOnset"</span>,</span></span>
+<span class="r-in"><span>                               trackloss_column <span class="op">=</span> <span class="st">"TrackLoss"</span>,</span></span>
+<span class="r-in"><span>                               aoi_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Animate'</span>,<span class="st">'Inanimate'</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                               treat_non_aoi_looks_as_missing <span class="op">=</span> <span class="cn">TRUE</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">response_window</span> <span class="op">&lt;-</span> <span class="fu"><a href="subset_by_window.html">subset_by_window</a></span><span class="op">(</span><span class="va">data</span>, window_start_time <span class="op">=</span> <span class="fl">15500</span>, window_end_time <span class="op">=</span> <span class="fl">21000</span>,</span></span>
+<span class="r-in"><span>                                    rezero <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">response_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="make_time_sequence_data.html">make_time_sequence_data</a></span><span class="op">(</span><span class="va">response_window</span>, time_bin_size <span class="op">=</span> <span class="fl">500</span>, aois <span class="op">=</span> <span class="st">"Animate"</span>,</span></span>
+<span class="r-in"><span>                                         predictor_columns <span class="op">=</span> <span class="st">"Sex"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">time_cluster_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="make_time_cluster_data.html">make_time_cluster_data</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">response_time</span>, predictor_column <span class="op">=</span> <span class="st">"SexM"</span>,</span></span>
+<span class="r-in"><span>                         aoi <span class="op">=</span> <span class="st">"Animate"</span>, test <span class="op">=</span> <span class="st">"lmer"</span>,</span></span>
+<span class="r-in"><span>                         threshold <span class="op">=</span> <span class="fl">1.5</span>,</span></span>
+<span class="r-in"><span>                         formula <span class="op">=</span> <span class="va">LogitAdjusted</span> <span class="op">~</span> <span class="va">Sex</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">Trial</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">ParticipantName</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">time_cluster_data</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">time_cluster_data</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># analyze time clusters in a non-parametric analysis</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">tc_analysis</span> <span class="op">&lt;-</span> <span class="fu">analyze_time_clusters</span><span class="op">(</span><span class="va">time_cluster_data</span>, within_subj <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>                                     samples <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">tc_analysis</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">tc_analysis</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -181,7 +198,7 @@ but it's only needed if you've specified a numeric *and* within-subjects predict
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
