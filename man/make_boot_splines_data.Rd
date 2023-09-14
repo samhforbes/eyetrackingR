@@ -64,9 +64,9 @@ Limited to statistical test between two conditions.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{time_sequence_data}: 
-}}
+\item \code{make_boot_splines_data(time_sequence_data)}: 
 
+}}
 \examples{
 \dontrun{
 data(word_recognition)

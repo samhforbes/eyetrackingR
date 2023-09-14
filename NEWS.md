@@ -1,28 +1,31 @@
-# eyetrackingR 
+# eyetrackingR 0.2.1
 
-Changes in 0.2.0
+* Added a `NEWS.md` file to track changes to the package.
+* Fixed issue with breaking change to paired t test
+
+# eyetrackingR 0.2.0
 * Repairing for resubmission to CRAN
 * Adding compatibility with new versions of dplyr, tidyr and ggplot2
 * Inbuilt support for binomial, glmmPQL and glmmTMB models
 
-Changes in 0.1.8:
+# eyetrackingR 0.1.8:
 * Fixes a bug in make_onset_data.
 
-Changes in 0.1.7:
+# eyetrackingR 0.1.7:
 * Compatible with dplyr > 0.5.0.  
 * Fixes issue described in https://github.com/jwdink/eyetrackingR/issues/57 
 * Fixes bug in add_aoi when only one AOI is added.  
 
-Changes in 0.1.6:
+# eyetrackingR 0.1.6:
 * Allows for treatment-coded variables in `lm` or `lmer` time-bin or cluster analysis, via the "treatment_level" argument.
 
-Changes in 0.1.5:
+# eyetrackingR 0.1.5:
 * Fixes compatibility issue with latest version of `lme4` package.
 
-Changes in 0.1.4:
+# eyetrackingR 0.1.4:
 * A variety of important bug-fixes for onset-contingent analysis. The rest of the package is unchanged.
 
-Changes in 0.1.3:
+# eyetrackingR 0.1.3:
 
 * The `analyze_time_bins` and therefore cluster-analyses have been re-written internally. Full support for (g)lm, (g)lmer, wilcox. Support for interaction terms/predictors. Experimental support for using boot-splines within cluster analysis.
 * P-value adjustment for multiple comparisons is now supported in `analyze_time_bins`
@@ -34,7 +37,7 @@ Changes in 0.1.3:
 * Fixed small bug in make_onset_data
 * Added `simulate_eyetrackingr_data` function to generate fake data for simulations.
 
-Changes in 0.1.1:
+# eyetrackingR 0.1.1:
 
 * **Important** bug-fix in `clean_by_trackloss`. Previously did not work for certain column names.
 * **Important** bug-fix in `make_eyetrackingr_data`. Previously did not work correctly with `treat_non_aoi_as_missing = TRUE`.

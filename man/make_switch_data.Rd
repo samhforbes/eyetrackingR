@@ -28,9 +28,9 @@ Take trials split by initial-AOI, and determine how quickly participants switch 
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{onset_data}: 
-}}
+\item \code{make_switch_data(onset_data)}: 
 
+}}
 \examples{
 \dontrun{
 data(word_recognition)

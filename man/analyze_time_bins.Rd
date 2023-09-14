@@ -74,9 +74,9 @@ estimates vary over time. P-values can be adjusted for multiple comparisons with
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{time_sequence_data}: 
-}}
+\item \code{analyze_time_bins(time_sequence_data)}: 
 
+}}
 \examples{
 \dontrun{
 data(word_recognition)

@@ -17,7 +17,7 @@
 #'  \item \code{Weights} - These attempt to further correct the Elog transformation, since the
 #'  variance of the logit depends on the mean. They can be used in a mixed effects model by setting
 #'  the \code{weights=Weights} in \code{lmer} (note that this is the reciprocal of the
-#' weights calculated in \href{http://talklab.psy.gla.ac.uk/tvw/elogit-wt.html}{this empirical logit
+#' weights calculated in \href{https://talklab.psy.gla.ac.uk/tvw/elogit-wt.html}{this empirical logit
 #' walkthrough}, so you do *not* set \code{weights = 1/Weights} as done there.)
 #'  \item \code{ArcSin} - The arcsine-root transformation of the raw proportions, defined as
 #' \code{asin(sqrt(Prop))}
@@ -409,11 +409,30 @@ analyze_time_bins.time_sequence_data <- function(data,
 
     # Run models:
     na_action <- ifelse(identical(paired,TRUE), 'na.pass', unlist(options("na.action")))
+
+    if(identical(paired, TRUE) & test == 't.test'){
+      # formula <- as.formula(paste("Prop ~", predictor_column))
+      # dv <- "Prop"
+      lllev = unique(data[[predictor_column]])
+      formula = as.formula(paste('Pair(',dv,'[',predictor_column, '== \"',lllev[[1]],'\"] ,', dv,'[',predictor_column,' == \"',lllev[[2]],'\"]) ~ 1', sep = ''))
+
+      df_models <- data %>%
+        group_by(Time) %>%
+        do(the_test(formula = formula, data = ., na.action = na_action)) %>%
+        as.data.frame()
+    }else{
+      #patch for paired = F which is still not allowed in formula syntax
+      dotty <- list(...)
+      if(paired %in% dotty){
+        dotty$paired = NULL
+      }
+    # cat('FALSE') #test this here
+    # cat('args are ', dotty)
     df_models <- data %>%
       group_by(Time) %>%
-      do(the_test(formula = formula, data = ., na.action = na_action, ... = ...)) %>%
+      do(the_test(formula = formula, data = ., na.action = na_action, ... = dotty)) %>%
       as.data.frame()
-
+      }
     # Warn about warnings
     warn_cols <- grep("WarningMsg", colnames(df_models))
     if ( length(warn_cols)>0 ) {

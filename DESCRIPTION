@@ -1,6 +1,6 @@
 Package: eyetrackingR
 Type: Package
-Version: 0.2.0
+Version: 0.2.1
 Title: Eye-Tracking Data Analysis
 Authors@R: c(
     person("Samuel", "Forbes", email = "samuel.h.forbes@gmail.com", role = c("aut", "cre")),
@@ -43,4 +43,4 @@ Suggests:
     doMC,
     foreach
 VignetteBuilder: knitr
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3

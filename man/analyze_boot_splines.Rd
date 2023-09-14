@@ -25,9 +25,9 @@ from \code{boot_splines_data}. Confidence intervals are derived from the alpha a
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{boot_splines_data}: 
-}}
+\item \code{analyze_boot_splines(boot_splines_data)}: 
 
+}}
 \examples{
 \dontrun{
 data(word_recognition)

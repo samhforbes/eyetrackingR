@@ -23,8 +23,8 @@ Get information about the clusters in a cluster-analysis
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{time_cluster_data}: Get time clusters dataframe
+\item \code{get_time_clusters(time_cluster_data)}: Get time clusters dataframe
 
-\item \code{cluster_analysis}: Get time clusters dataframe
+\item \code{get_time_clusters(cluster_analysis)}: Get time clusters dataframe
+
 }}
-

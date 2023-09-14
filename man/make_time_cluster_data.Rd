@@ -26,14 +26,14 @@ var.equal, etc.)}
 
 \item{predictor_column}{The column name containing the variable whose test statistic you are interested in.}
 
-\item{aoi}{Which AOI should be analyzed? If not specified (and dataframe has multiple AOIs), 
-then AOI should be a predictor/covariate in your model (so `formula` needs 
+\item{aoi}{Which AOI should be analyzed? If not specified (and dataframe has multiple AOIs),
+then AOI should be a predictor/covariate in your model (so `formula` needs
 to be specified).}
 
 \item{test}{What type of test should be performed in each time bin? Supports
 \code{t.test}, \code{(g)lm}, or \code{(g)lmer}. Also includes experimental support for
-the "bootstrapped-splines" test (see \code{?make_boot_splines_data} and 
-\href{http://www.eyetracking-r.com/vignettes/divergence}{the divergence vignette} 
+the "bootstrapped-splines" test (see \code{?make_boot_splines_data} and
+\href{http://www.eyetracking-r.com/vignettes/divergence}{the divergence vignette}
 for more info). Does not support \code{wilcox.test}.}
 
 \item{threshold}{Time-bins with test-statistics greater than this amount will be grouped into clusters.}
@@ -41,12 +41,12 @@ for more info). Does not support \code{wilcox.test}.}
 \item{formula}{What formula should be used for test? Optional (for all but \code{(g)lmer}), if unset
 uses \code{Prop ~ [predictor_column]}}
 
-\item{treatment_level}{If your predictor is a factor, regression functions like `lm` and `lmer` by default will 
-treatment-code it. One option is to sum-code this predictor yourself before entering it 
-into this function. Another is to use the `treatment_level` argument, which specifies the 
-level of the predictor. For example, you are testing a model where `Target` is a predictor, 
-which has two levels, 'Animate' and 'Inanimate'. R will code 'Animate' as the reference 
-level, and code 'Inanimate' as the treatment level. You'd therefore want to set 
+\item{treatment_level}{If your predictor is a factor, regression functions like `lm` and `lmer` by default will
+treatment-code it. One option is to sum-code this predictor yourself before entering it
+into this function. Another is to use the `treatment_level` argument, which specifies the
+level of the predictor. For example, you are testing a model where `Target` is a predictor,
+which has two levels, 'Animate' and 'Inanimate'. R will code 'Animate' as the reference
+level, and code 'Inanimate' as the treatment level. You'd therefore want to set
 `treatment_level = Inanimate`.}
 }
 \value{
@@ -58,37 +58,37 @@ Takes data that has been summarized into time-bins by \code{make_time_sequence_d
 bins that pass some test-statistic threshold, and assigns these adjacent bins into groups (clusters).
 Output is ready for a cluster permutation-based analyses (Maris & Oostenveld, 2007). Supports \code{t.test},
 \code{wilcox.test}, \code{(g)lm}, and \code{(g)lmer}. Also includes support for
-the "bootstrapped-splines" test (see \code{?make_boot_splines_data} and 
-\href{http://www.eyetracking-r.com/vignettes/divergence}{the divergence vignette} for more info). 
+the "bootstrapped-splines" test (see \code{?make_boot_splines_data} and
+\href{http://www.eyetracking-r.com/vignettes/divergence}{the divergence vignette} for more info).
 By default, this function uses 'proportion-looking' (\code{Prop}) as the DV, which can be changed
 by manually specifying the formula.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{time_sequence_data}: Make data for time cluster analysis
-}}
+\item \code{make_time_cluster_data(time_sequence_data)}: Make data for time cluster analysis
 
+}}
 \examples{
 \dontrun{
 data(word_recognition)
-data <- make_eyetrackingr_data(word_recognition, 
+data <- make_eyetrackingr_data(word_recognition,
                                participant_column = "ParticipantName",
                                trial_column = "Trial",
                                time_column = "TimeFromTrialOnset",
                                trackloss_column = "TrackLoss",
                                aoi_columns = c('Animate','Inanimate'),
                                treat_non_aoi_looks_as_missing = TRUE )
-response_window <- subset_by_window(data, window_start_time = 15500, window_end_time = 21000, 
+response_window <- subset_by_window(data, window_start_time = 15500, window_end_time = 21000,
                                     rezero = FALSE)
 
 # identify clusters in the sequence data using a t-test with
 # threshold t-value of 2
 
 # (note: t-tests require a summarized dataset)
-response_time <- make_time_sequence_data(response_window, time_bin_size = 500, aois = "Animate", 
+response_time <- make_time_sequence_data(response_window, time_bin_size = 500, aois = "Animate",
                                          predictor_columns = "Sex",
                                          summarize_by = "ParticipantName")
-                                         
+
 time_cluster_data <- make_time_cluster_data(data = response_time,
                                             predictor_column = "Sex",
                                             aoi = "Animate",
@@ -100,9 +100,9 @@ time_cluster_data <- make_time_cluster_data(data = response_time,
 # model with a threshold t-value of 1.5.
 
 # random-effects models don't require us to summarize
-response_time <- make_time_sequence_data(response_window, time_bin_size = 500, aois = "Animate", 
+response_time <- make_time_sequence_data(response_window, time_bin_size = 500, aois = "Animate",
                                          predictor_columns = "Sex")
-   
+
 # but they do require a formula to be specified
 time_cluster_data <- make_time_cluster_data(data = response_time,
                            predictor_column = "SexM",
@@ -112,5 +112,5 @@ time_cluster_data <- make_time_cluster_data(data = response_time,
                            formula = LogitAdjusted ~ Sex + (1|Trial) + (1|ParticipantName)
 )
 }
-  
+
 }

@@ -200,7 +200,7 @@ We can then look for initial clusters:
 
 ```{r, warning=FALSE}
 df_timeclust <- make_time_cluster_data(response_time, 
-                                      test= "t.test", paired=TRUE,
+                                      test= "t.test", paired=T,
                                       predictor_column = "Target", 
                                       threshold = threshold_t) 
 plot(df_timeclust) +  ylab("T-Statistic") + theme_light()
