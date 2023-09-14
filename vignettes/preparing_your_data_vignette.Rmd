@@ -4,7 +4,7 @@ author: "Samuel Forbes, Jacob Dink & Brock Ferguson"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Preparing your data for eyetrackingR}
+  %\VignetteIndexEntry{Preparing your data for use with eyetrackingR}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 

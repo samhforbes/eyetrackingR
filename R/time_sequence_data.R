@@ -422,15 +422,15 @@ analyze_time_bins.time_sequence_data <- function(data,
         as.data.frame()
     }else{
       #patch for paired = F which is still not allowed in formula syntax
-      dotty <- list(...)
-      if(paired %in% dotty){
-        dotty$paired = NULL
-      }
+      # dotty <- list(...)
+      # if(paired == F){
+      #   dotty$paired = NULL
+      # }
     # cat('FALSE') #test this here
     # cat('args are ', dotty)
     df_models <- data %>%
       group_by(Time) %>%
-      do(the_test(formula = formula, data = ., na.action = na_action, ... = dotty)) %>%
+      do(the_test(formula = formula, data = ., na.action = na_action, ... = ...)) %>%
       as.data.frame()
       }
     # Warn about warnings
