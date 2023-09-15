@@ -6,15 +6,6 @@ filter.eyetrackingR_df <- function(.data, ...) reclass(.data, NextMethod())
 #' @export
 #' @method filter_ eyetrackingR_df
 filter_.eyetrackingR_df <- function(.data, ...) reclass(.data, NextMethod())
-#' @export
-#' @method filter_at eyetrackingR_df
-filter_at.eyetrackingR_df <- function(.data, ...) reclass(.data, NextMethod())
-#' @export
-#' @method filter_all eyetrackingR_df
-filter_all.eyetrackingR_df <- function(.data, ...) reclass(.data, NextMethod())
-#' @export
-#' @method filter_if eyetrackingR_df
-filter_if.eyetrackingR_df <- function(.data, ...) reclass(.data, NextMethod())
 
 # mutate
 #' @export
@@ -23,15 +14,7 @@ mutate.eyetrackingR_df <- function(.data, ...) reclass(.data, NextMethod())
 #' @export
 #' @method mutate_ eyetrackingR_df
 mutate_.eyetrackingR_df <- function(.data, ...) reclass(.data, NextMethod())
-#' @export
-#' @method mutate_at eyetrackingR_df
-mutate_at.eyetrackingR_df <- function(.data, ...) reclass(.data, NextMethod())
-#' @export
-#' @method mutate_all eyetrackingR_df
-mutate_all.eyetrackingR_df <- function(.data, ...) reclass(.data, NextMethod())
-#' @export
-#' @method mutate_if eyetrackingR_df
-mutate_if.eyetrackingR_df <- function(.data, ...) reclass(.data, NextMethod())
+
 
 # arrange
 #' @export
@@ -40,15 +23,7 @@ arrange.eyetrackingR_df <- function(.data, ...) reclass(.data, NextMethod())
 #' @export
 #' @method arrange_ eyetrackingR_df
 arrange_.eyetrackingR_df <- function(.data, ...) reclass(.data, NextMethod())
-#' @export
-#' @method arrange_at eyetrackingR_df
-arrange_at.eyetrackingR_df <- function(.data, ...) reclass(.data, NextMethod())
-#' @export
-#' @method arrange_all eyetrackingR_df
-arrange_all.eyetrackingR_df <- function(.data, ...) reclass(.data, NextMethod())
-#' @export
-#' @method arrange_if eyetrackingR_df
-arrange_if.eyetrackingR_df <- function(.data, ...) reclass(.data, NextMethod())
+
 
 # group_by
 #' @export
@@ -57,15 +32,7 @@ group_by.eyetrackingR_df <- function(.data, ...) reclass(.data, NextMethod())
 #' @export
 #' @method group_by_ eyetrackingR_df
 group_by_.eyetrackingR_df <- function(.data, ...) reclass(.data, NextMethod())
-#' @export
-#' @method group_by_at eyetrackingR_df
-group_by_at.eyetrackingR_df <- function(.data, ...) reclass(.data, NextMethod())
-#' @export
-#' @method group_by_if eyetrackingR_df
-group_by_if.eyetrackingR_df <- function(.data, ...) reclass(.data, NextMethod())
-#' @export
-#' @method group_by_all eyetrackingR_df
-group_by_all.eyetrackingR_df <- function(.data, ...) reclass(.data, NextMethod())
+
 
 
 # joins

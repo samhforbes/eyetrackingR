@@ -2,9 +2,12 @@
 % Please edit documentation in R/helpers.R
 \name{reclass}
 \alias{reclass}
+\alias{reclass.eyetrackingR_df}
 \title{Add the original class/attributes back onto result (usually of dplyr operation)}
 \usage{
 reclass(x, result, ...)
+
+\method{reclass}{eyetrackingR_df}(x, result, ...)
 }
 \arguments{
 \item{x}{The original object, class inforamation you want to restore.}
@@ -15,7 +18,14 @@ reclass(x, result, ...)
 }
 \value{
 The \code{result}, now with class/attribute information restored.
+
+The \code{result}, now with class/attribute information restored.
 }
 \description{
 Add the original class/attributes back onto result (usually of dplyr operation)
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{reclass(eyetrackingR_df)}: Add the original class/attributes back onto result (usually of dplyr operation)
+
+}}

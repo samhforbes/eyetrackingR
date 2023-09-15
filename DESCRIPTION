@@ -16,11 +16,12 @@ Description: Addresses tasks along the pipeline from raw
     Barr (2008) <doi:10.1016/j.jml.2007.09.002>.
 URL: http://samforbes.me/eyetrackingR/
 BugReports: https://github.com/samhforbes/eyetrackingR/issues
-Date: 2021-09-24
+Date: 2023-09-15
 Depends: 
     R (>= 3.2.0),
     dplyr (>= 0.7.4)
 License: MIT + file LICENSE
+Encoding: UTF-8
 LazyData: true
 Imports: 
     broom (>= 0.3.7),

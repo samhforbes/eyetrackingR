@@ -21,8 +21,8 @@ simulate_eyetrackingr_data(
 
 \item{trial_length}{How long is the trial (in ms)?}
 
-\item{pref}{Their preference between the two AOIs in the "high" condition, 
-where 1 is 100% preference for AOI1, and 0 is 100% preference for AOI2. Default is .5 (equal 
+\item{pref}{Their preference between the two AOIs in the "high" condition,
+where 1 is 100% preference for AOI1, and 0 is 100% preference for AOI2. Default is .5 (equal
 preference). In the "low" condition, their preference between the two AOIs is equal, so default
 is no effect of condition.}
 
@@ -39,6 +39,6 @@ Dataframe with eye-tracking data
 }
 \description{
 This function creates an eyetrackingR dataset (i.e., already run through make_eyetrackingr_data).
-This can be helpful for examining the false-alarm and sensitivity of analysis-techniques via 
+This can be helpful for examining the false-alarm and sensitivity of analysis-techniques via
 simulations.
 }
