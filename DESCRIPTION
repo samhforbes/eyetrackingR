@@ -1,6 +1,6 @@
 Package: eyetrackingR
 Type: Package
-Version: 0.2.1
+Version: 0.2.2
 Title: Eye-Tracking Data Analysis
 Authors@R: c(
     person("Samuel", "Forbes", email = "samuel.h.forbes@gmail.com", role = c("aut", "cre")),
@@ -16,7 +16,7 @@ Description: Addresses tasks along the pipeline from raw
     Barr (2008) <doi:10.1016/j.jml.2007.09.002>.
 URL: http://samforbes.me/eyetrackingR/
 BugReports: https://github.com/samhforbes/eyetrackingR/issues
-Date: 2023-09-15
+Date: 2025-07-02
 Depends: 
     R (>= 3.2.0),
     dplyr (>= 0.7.4)
@@ -44,4 +44,4 @@ Suggests:
     doMC,
     foreach
 VignetteBuilder: knitr
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2

@@ -10,7 +10,7 @@ reclass(x, result, ...)
 \method{reclass}{eyetrackingR_df}(x, result, ...)
 }
 \arguments{
-\item{x}{The original object, class inforamation you want to restore.}
+\item{x}{The original object, class information you want to restore.}
 
 \item{result}{Some transformation of \code{x}, which may have removed its class/attributes.}
 

@@ -50,8 +50,7 @@ use 0.5).
  \item \code{Weights} - These attempt to further correct the Elog transformation, since the
  variance of the logit depends on the mean. They can be used in a mixed effects model by setting
  the \code{weights=Weights} in \code{lmer} (note that this is the reciprocal of the
-weights calculated in \href{https://talklab.psy.gla.ac.uk/tvw/elogit-wt.html}{this empirical logit
-walkthrough}, so you do *not* set \code{weights = 1/Weights} as done there.)
+weights calculated in Mirman's walkthrough, so you do *not* set \code{weights = 1/Weights} as done there.)
  \item \code{ArcSin} - The arcsine-root transformation of the raw proportions, defined as
 \code{asin(sqrt(Prop))}
 }

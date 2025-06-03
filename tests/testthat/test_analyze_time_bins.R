@@ -61,8 +61,8 @@ tb_within_check <- dget(file = "tb_output_within_subj.txt")
 test_that(desc = "The function analyze_time_bins has eyetrackingR attributes (within)", code = {
   expect_true( all(c("bin_analysis", "data.frame") %in% class(tb_within)) )
   expect_false( is.null( attr(tb_within,"eyetrackingR") ) )
-  expect_equal(length(which(is.na(tb_within_check$PositiveRuns))), 38)
-  expect_equal(length(which(is.na(tb_within_check$NegativeRuns))), 55)
+  expect_equal(length(which(is.na(tb_within$PositiveRuns))), 38)
+  expect_equal(length(which(is.na(tb_within$NegativeRuns))), 55)
 })
 
 test_that(desc = "The function analyze_time_bins has correct data (within)", code = {

@@ -211,7 +211,7 @@ The above tells us there are two potential clusters. As described in the procedu
 
 ```{r, warning=FALSE}
 clust_analysis <- analyze_time_clusters(df_timeclust, within_subj=TRUE, paired=TRUE,quiet = TRUE,
-                                        samples=150) # in practice, you should use a lot more
+                                        samples=150) # in practice, you should use a lot more - around 1000
 plot(clust_analysis) + theme_light()
 ```
 
