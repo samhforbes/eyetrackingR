@@ -190,12 +190,20 @@ analyze_time_clusters.time_cluster_data <-function(data,
       df_resampled$Cluster <- NULL
       attr(df_resampled, "eyetrackingR")$clusters <- NULL
       attr(df_resampled, "eyetrackingR")$time_bin_summary <- NULL
+      test = attr(df_resampled, "eyetrackingR")$test
+      if(test == 't.test'){
+        #message('within subjects, cleaning up formula...')
+        formula = NULL
+      }else{
+        formula = formula
+      }
       the_args = list(
         data = df_resampled,
         predictor_column = attrs$predictor_column,
         test = attrs$test,
         threshold = attrs$threshold,
-        formula = formula,
+
+          formula = formula,
         treatment_level = attrs$treatment_level
       )
       if (attrs$test=="boot_splines") {
