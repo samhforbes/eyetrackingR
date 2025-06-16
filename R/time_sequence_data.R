@@ -691,9 +691,10 @@ plot.time_sequence_data <- function(x, predictor_column = NULL, dv='Prop', model
       }
     }else{
       if('glmmTMB' %in% class(model)){
-        if(model$modelInfo$family$family == 'binomial' ){
-          if(dv != 'Prop'){stop('Can only plot binomial against raw Prop. Try another method if this doesnt work for you')}
-          x$.Predicted = predict(model, x, type = 'response')
+        if(model$modelInfo$family$family == 'binomial' |
+           model$modelInfo$family$family == 'betabinomial'){
+          if(dv != 'Prop'){stop('Can only plot (beta)binomial against raw Prop. Try another method if this doesnt work for you')}
+          x$.Predicted = predict(model, type = 'response')
         }else {
           formula_as_character <- Reduce(paste, deparse(formula(model)))
           if (!grepl(dv, formula_as_character, fixed = TRUE)) {
