@@ -1,5 +1,8 @@
-# eyetrackingR 0.2.1
+# eyetrackingR 0.2.2
+* Added plotting support for glmmTMB betabinomial models
+* Fixes compatibility with latest changes to how formulas are read
 
+# eyetrackingR 0.2.1
 * Added a `NEWS.md` file to track changes to the package.
 * Fixed issue with breaking change to paired t test
 
