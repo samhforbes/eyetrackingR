@@ -210,8 +210,6 @@ Here we do see an effect of MCDI_Total (the participants' productive vocabulary)
 
 ### Additional information
 
-For more of a basic introduction to linear mixed-effects models, covering topics like p-values, confidence intervals, estimates, interpreting random effects, and logistic regression, see [this tutorial](http://brockferguson.com/tutorials/R-gca-workshop/tutorial3-generalized-linear-models.html).
-
 For more information on the empirical-logit transformation, see Barr (2008).
 
 For more information on the dangers of analyzing raw proportion means, see Dixon (2008) and Jaeger (2008).
