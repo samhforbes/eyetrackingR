@@ -221,7 +221,7 @@ How can we interpret these results?
 summary(clust_analysis)
 ```
 
-The probabilities listed above tell us the probability of seeing the effect of each cluster (or bigger) if the null-hypothesis were true. Of course, these probabilities aren't accurate unless we run enough iterations to get a fuller simulation of the whole null distribution (we've just ommitted this for purposes of speed).
+The probabilities listed above tell us the probability of seeing the effect of each cluster (or bigger) if the null-hypothesis were true. Of course, these probabilities aren't accurate unless we run enough iterations to get a fuller simulation of the whole null distribution (we've just omitted this for purposes of speed).
 
 Note that we actually ended up getting virtually identical results to our initial analysis of sequential time-bins! That's because the effect here was quite large; we didn't have to worry about spuriously significant time-bins because there probably weren't any.
 

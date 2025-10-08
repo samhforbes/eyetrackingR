@@ -17,7 +17,7 @@ For more information and tutorials, visit \href{http://www.eyetracking-r.com/}{h
 \seealso{
 Useful links:
 \itemize{
-  \item \url{http://samforbes.me/eyetrackingR/}
+  \item \url{https://samforbes.me/eyetrackingR/}
   \item Report bugs at \url{https://github.com/samhforbes/eyetrackingR/issues}
 }
 
